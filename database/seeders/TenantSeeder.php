@@ -24,7 +24,7 @@ class TenantSeeder extends Seeder
         ]);
 
         $rol=Role::create([
-            'name' => 'Administrador'
+            'name' => 'Tenant'
         ]);
 
         $permisos=Permission::pluck('id','id')->all();

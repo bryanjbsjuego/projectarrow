@@ -9,9 +9,9 @@
             <h2>Roles</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             <div>
-                @can('crear-rol')
+                {{-- @can('crear-rol') --}}
                     <a href="{{ route('roles.create') }}" class="btn btn-raised btn-success">Agregar rol</a>
-                @endcan
+                {{-- @endcan --}}
             </div>
         </div>
 
@@ -35,14 +35,14 @@
                                         <td>{{ $rol->name}}</td>
                                         
                                         <td>
-                                            @can('editar-rol')
+                                            {{-- @can('editar-rol') --}}
                                                 <a class="btn btn-raised btn-warning btn-sm" href="{{ route('roles.edit', $rol->id) }}"><i class="fas fa-edit"></i></a>
-                                            @endcan
-                                            @can('borrar-rol')
+                                            {{-- @endcan
+                                            @can('borrar-rol') --}}
                                                 {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $rol->id], 'style'=>'display:inline']) !!}
                                                 {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm'] )  }}
                                                 {!! Form::close() !!}
-                                            @endcan
+                                            {{-- @endcan --}}
                                             
                                             
                                         </td>

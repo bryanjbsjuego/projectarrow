@@ -20,9 +20,9 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //$usuarios=User::paginate(5);
-        $id=Auth::id();
-        $usuarios=User::where('users.id_tenant',$id)->paginate(5);
+        $usuarios=User::paginate(5);
+        // $id=Auth::id();
+        // $usuarios=User::where('users.id_tenant',$id)->paginate(5);
         return view('usuarios.index',compact('usuarios'));
     }
 
