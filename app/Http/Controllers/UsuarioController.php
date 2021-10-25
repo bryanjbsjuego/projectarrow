@@ -45,12 +45,18 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request,
+        [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
-        ]);
+            'roles' => 'required',
+        ],
+        [
+            'name.required' => 'El campo nombre debe ser obligatorio'
+        ]
+        
+    );
 
         $usuario= new User;
         $usuario->name=$request->name;
