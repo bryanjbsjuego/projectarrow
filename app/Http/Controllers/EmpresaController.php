@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use App\Models\User;
 
 class EmpresaController extends Controller
 {
@@ -53,7 +54,17 @@ class EmpresaController extends Controller
             'ccem' => 'required'
         ]);
                 
-        Empresa::create($request->all());
+        $data=$request->only([
+            'nombre',
+            'ubicacion',
+            'rfc',
+            'imms',
+            'ccem',
+            'id_tenant'
+        ]);
+
+        $data['id_tenant']=auth()->id();
+        Empresa::create($data);
         return redirect()->route('empresas.index');
     }
 

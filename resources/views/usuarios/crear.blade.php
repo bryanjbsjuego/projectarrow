@@ -1,4 +1,8 @@
 @extends('layouts.panel')
+
+@section('estilos')
+<link href="{{asset('plugins/dropzone/dropzone.css')}}" rel="stylesheet">
+@endsection
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
@@ -56,6 +60,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                    <form  id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
+                                        <div class="dz-message">
+                                        <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
+                                            <h3>Haga clic para cargar su foto de perfil.</h3>
+                                            <!-- <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em> </div> -->
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                        </div>
+                                    </form>
+                                    </div>
+
                                 <div class="col-sm-6 ">
                                     {!! Form::select('roles[]', $roles,[],array('class' => 'form-control show-tick') ) !!}
                                 </div>
@@ -80,4 +96,8 @@
     </div>
 
     
+@endsection
+
+@section('scripts')
+<script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
 @endsection

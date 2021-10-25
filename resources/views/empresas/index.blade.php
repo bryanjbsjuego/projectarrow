@@ -14,63 +14,55 @@
                 @endcan
             </div>
         </div>
-
         <!-- Exportable Table -->
         <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+            @foreach ($empresas as $empresa)
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+             
                 <div class="card">
-                    
-                    <div class="body table-responsive">
-                        <table class="table table-bordered table-striped ">
-                            <thead>
-                                <tr>
-                                    
-                                    <th>Nombre</th>
-                                    <th>Ubicación</th>
-                                    <th>RFC</th>
-                                    <th>IMMS</th>
-                                    <th>CCEM</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($empresas as $empresa)
-                                    <tr>
-                                        <td>{{ $empresa->nombre}}</td>
-                                        <td>{{ $empresa->ubicacion}}</td>
-                                        <td>{{ $empresa->rfc}}</td>
-                                        <td>{{ $empresa->imms}}</td>
-                                        <td>{{ $empresa->ccem}}</td>
+                            <div class="body" style="box-shadow: 4px 10px 10px -6px #dd5e89">
+                               
+                                    <div class="member-card verified">
+                                       <!-- <div class="thumb-xl member-thumb">
+                                            <img src="images/random-avatar3.jpg" class="img-thumbnail rounded-circle" alt="profile-image">                                
+                                        </div> -->
+            
+                                        <div class="m-t-20">
+                                            <h4 class="m-b-0">{{ $empresa->nombre}}</h4>
+                                           <!--subtitulo -->
+                                           <!-- <p class="text-muted">Java<span> <a href="#" class="text-pink">websitename.com</a> </span></p> -->
+                                        </div>
+                                        <p>
+                                        <!-- Podria ser direccion de la empresa -->
+                                        <p class="text-muted" ><strong>Ubicación: </strong> {{ $empresa->ubicacion}}</p>       
+                                        <p class="text-muted"><strong>RFC: </strong> {{ $empresa->rfc}}</p>      
+                                        <p class="text-muted"><strong>IMMS: </strong> {{ $empresa->imms}}</p>      
+                                        <p class="text-muted"><strong>CCEM: </strong> {{ $empresa->ccem}}</p>                          
                                         
-                                        <td>
-                                            @can('editar-empresa')
-                                                <a class="btn btn-raised btn-warning btn-sm" href="{{ route('empresas.edit', $empresa->id) }}"><i class="fas fa-edit"></i></a>
-                                            @endcan
-                                            @can('borrar-empresa')
-                                                {!! Form::open(['method' => 'DELETE','route' => ['empresas.destroy', $empresa->id], 'style'=>'display:inline']) !!}
-                                                {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm'] )  }}
-                                                {!! Form::close() !!}
-                                            @endcan
-                                            
-                                            
-                                        </td>
-                                    
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="pagination justify-content-end">
-                            {!! $empresas->links() !!}
-                        </div>
-                    </div>
-                        
-                    
+                                        @can('editar-empresa')
+                                        <a class="btn btn-raised bg-amber btn-sm text-center " href="{{ route('empresas.edit', $empresa->id) }}">
+                                            <i class="material-icons mb-1">create</i>
+                                        </a>
+                                        @endcan
+
+                                        @can('borrar-empresa')
+                                            {!! Form::open(['method' => 'DELETE','route' => ['empresas.destroy', $empresa->id], 'style'=>'display:inline']) !!}
+                                            {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] ) }}
+                                            {!! Form::close() !!}
+                                        @endcan
+                                     
+                                    </div>
+                                </div>
+                            </div>
+                          
+                </div>
                     
                 </div>
             </div>
+            @endforeach
         </div>
         <!-- #END# Exportable Table -->
-    </div>
+   
     
 
 @endsection

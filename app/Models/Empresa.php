@@ -14,6 +14,7 @@ class Empresa extends Model
         'ubicacion',
         'rfc',
         'imms',
-        'ccem'
+        'ccem',
+        'id_tenant'
     ];
 }

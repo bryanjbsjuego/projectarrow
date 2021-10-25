@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableEmpresa extends Migration
+class CreateEmpresaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -21,6 +21,9 @@ class CreateTableEmpresa extends Migration
             $table->string('imms');
             $table->string('ccem');
             $table->timestamps();
+            $table->unsignedBigInteger('id_tenant')->nullable();
+            $table->foreign('id_tenant')->references('id')->on('users');
+            
         });
     }
 
@@ -31,6 +34,6 @@ class CreateTableEmpresa extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_empresa');
+        Schema::dropIfExists('empresa');
     }
 }

@@ -8,12 +8,12 @@
 <title>:: Arrow ::</title>
 <link rel="icon" href="{{ asset('images/favicon.ico')}}" type="image/x-icon">
 <link rel="stylesheet" href="{{asset('plugins/bootstrap/css/bootstrap.min.css')}}" />
-<!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <!-- Custom Css -->
 @yield('estilos')
 <link rel="stylesheet" href="{{asset('css/main.css')}}">
 <link rel="stylesheet" href="{{asset('css/themes/all-themes.css')}}"/>
-@yield('styles')
+
 </head>
 <body class="theme-blush">
 <!-- Page Loader -->
@@ -417,7 +417,7 @@
 <script src="{{asset('bundles/morphingsearchscripts.bundle.js')}}"></script> <!-- Main top morphing search -->
 
 @yield('scripts')
-<script src="https://kit.fontawesome.com/0daff41b97.js" crossorigin="anonymous"></script>
+{{-- <script src="https://kit.fontawesome.com/0daff41b97.js" crossorigin="anonymous"></script> --}}
 <script src="{{asset('plugins/jquery-sparkline/jquery.sparkline.min.js')}}"></script> <!-- Sparkline Plugin Js --> --}}
 <script src="{{asset('plugins/chartjs/Chart.bundle.min.js')}}"></script> <!-- Chart Plugins Js --> 
  <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js --> 
