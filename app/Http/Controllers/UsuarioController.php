@@ -45,26 +45,33 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,
-        [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|same:confirm-password',
-            'roles' => 'required',
-        ],
-        [
-            'name.required' => 'El campo nombre debe ser obligatorio'
-        ]
-        
-    );
+        try{
+            $this->validate($request,
+            [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|same:confirm-password',
+                'roles' => 'required',
+            ],
+            [
+                'name.required' => 'El campo nombre debe ser obligatorio'
+            ]
+            
+             );
+    
+            $usuario= new User;
+            $usuario->name=$request->name;
+            $usuario->email=$request->email;
+            $usuario['password'] = Hash::make($usuario['password']);
+            $usuario->id_tenant=Auth::id();
+            $usuario->save();
+            $usuario->assignRole($request->input('roles'));
 
-        $usuario= new User;
-        $usuario->name=$request->name;
-        $usuario->email=$request->email;
-        $usuario['password'] = Hash::make($usuario['password']);
-        $usuario->id_tenant=Auth::id();
-        $usuario->save();
-        $usuario->assignRole($request->input('roles'));
+        }catch(\Exception $e){
+            return response()->json(['status' => 'exception', 'msg' =>$e->getMessage()]);
+        }
+        return response()->json(['status' => 'success', "msg"=> "registro exitoso"]);
+       
 
         return redirect()->route('usuarios.index');
     }

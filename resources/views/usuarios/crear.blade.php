@@ -2,6 +2,25 @@
 
 @section('estilos')
 <link href="{{asset('plugins/dropzone/dropzone.css')}}" rel="stylesheet">
+<style>
+    #dropzoneDragArea{
+        background-color: #f2f2f2;
+        border: 1px dashed #c0ccda;
+        border-radius:6px;
+        padding: 60px;
+        text-align: center;
+        margin-bottom: 15px;
+        cursor:pointer;
+    }
+    .dropzone{
+        box-shadow: 0px 2px 20px 0px #f2f2f2;
+        border-radius: 10px;
+    }
+
+    #demoform{
+        background-color: white !important;
+    }
+</style>
 @endsection
 @section('contenido')
     <div class="container-fluid">
@@ -29,7 +48,7 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                            {!! Form::open(array('route' => 'usuarios.store','method' => 'POST')) !!}
+                            {!! Form::open(array('route' => 'usuarios.store','method' => 'POST', 'class' =>'dropzone', 'id' =>'demoform' , 'name' => 'demoform')) !!}
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -61,16 +80,14 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                                    <form  id="frmFileUpload" class="dropzone" method="post" enctype="multipart/form-data">
-                                        <div class="dz-message">
-                                        <div class="drag-icon-cph"> <i class="material-icons">touch_app</i> </div>
-                                            <h3>Haga clic para cargar su foto de perfil.</h3>
-                                            <!-- <em>(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</em> </div> -->
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple />
+                                    <div class="form-group">
+                                        <div id="dropzoneDragArea" class="dz-default dz-message dropzoneDragArea">
+                                            <span>Seleccione la imagen que desea subir</span>
                                         </div>
-                                    </form>
+                                        
                                     </div>
+                                    <div class="dropzon-previews"></div>
+                                </div>
 
                                 <div class="col-sm-6 ">
                                     {!! Form::select('roles[]', $roles,[],array('class' => 'form-control show-tick') ) !!}
@@ -99,5 +116,58 @@
 @endsection
 
 @section('scripts')
-<script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
+    <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
+    <script>
+        Dropzone.autoDiscover=false;
+        let token=$('meta[name="csrf-token"]').attr('content');
+        var myDropzone= new Dropzone("div#dropzoneDragArea",{
+            paramName:"file",
+            url:"{{url('/store')}}",
+            previewContainer:"div.dropzone-previews",
+            addRemoveLinks:true,
+            autoProcessQueue:false,
+            uploadMultiple:false,
+            paralleUploads:1,
+            maxFiles:1,
+            params:{
+                _token: token
+            },
+            init: function(){
+                var myDropzone = this;
+
+                $("form[name='demoform']").submit(function (event) {
+                    event.preventDefault();
+
+                    URL=$("#demoform").attr('action');
+                    formData=$("#demoform").serialize();
+                    $.ajax({
+                        type:'POST',
+                        url:URL,
+                        data:'formData',
+                        success:function(result){
+                            if(result=="success"){
+                                myDropzone.processQueue();
+
+                            }else{
+                                console.log("error");
+                            }
+
+                        }
+                    })
+                    
+                });
+
+                this.on('sending', function(file,xhr, formData){
+
+                });
+
+                this.on("success", function(file, response){
+
+                });
+                this.on("queuecomplete", function(){
+
+                });
+            }
+        });
+    </script>
 @endsection
