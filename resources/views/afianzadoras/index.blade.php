@@ -19,17 +19,16 @@
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-                    
+
                     <div class="body table-responsive">
                         <table class="table table-bordered table-striped ">
                             <thead>
                                 <tr>
-                                    
+
                                     <th>Nombre</th>
                                     <th>Fianza</th>
                                     <th>Fecha</th>
                                     <th>Número de fianza</th>
-                                    <th>Monto</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -37,11 +36,11 @@
                                 @foreach ($afianzadoras as $afianzadora)
                                     <tr>
                                         <td>{{ $afianzadora->nombre}}</td>
-                                        <td>{{ $afianzadora->ubicacion}}</td>
-                                        <td>{{ $afianzadora->rfc}}</td>
-                                        <td>{{ $afianzadora->imms}}</td>
-                                        <td>{{ $afianzadora->ccem}}</td>
-                                        
+                                        <td>{{ $afianzadora->fianza}}</td>
+                                        <td>{{ $afianzadora->fecha}}</td>
+                                        <td>{{ $afianzadora->num_fianza}}</td>
+
+
                                         <td>
                                             @can('editar-afianzadora')
                                                 <a class="btn btn-raised btn-warning btn-sm" href="{{ route('afianzadoras.edit', $afianzadora->id) }}"><i class="fas fa-edit"></i></a>
@@ -51,10 +50,10 @@
                                                 {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm'] )  }}
                                                 {!! Form::close() !!}
                                             @endcan
-                                            
-                                            
+
+
                                         </td>
-                                    
+
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -63,15 +62,15 @@
                             {!! $afianzadoras->links() !!}
                         </div>
                     </div>
-                        
-                    
-                    
+
+
+
                 </div>
             </div>
         </div>
         <!-- #END# Exportable Table -->
     </div>
-    
+
 
 @endsection
 

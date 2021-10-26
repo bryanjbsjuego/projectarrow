@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Afianzadora extends Model
 {
     use HasFactory;
+
+    protected $fillable=[
+        'nombre',
+        'fianza',
+        'fecha',
+        'num_fianza'
+    ];
+
 }

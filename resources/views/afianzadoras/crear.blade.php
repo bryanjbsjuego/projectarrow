@@ -9,9 +9,9 @@
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<div class="card">
 					<div class="header">
-						
+
 					</div>
-					<div class="body">                        
+					<div class="body">
                         <div class="row clearfix">
                             @if ($errors->any())
                                 <div class="col-md-12">
@@ -27,7 +27,7 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                            <form action="{{ route('empresas.store') }}" method="POST">
+                            <form action="{{ route('afianzadoras.store') }}" method="POST">
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -39,43 +39,36 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" ></textarea>
+                                            <input type="text" class="form-control"  id="fianza" name="fianza" placeholder="Fianza" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="rfc" name="rfc" placeholder="RFC" >
+                                            <input type="date" class="form-control"  id="fecha" name="fecha" placeholder="Fecha" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="imms" name="imms" placeholder="IMMS" >
+                                            <input type="text" class="form-control"  id="num_fianza" name="num_fianza" placeholder="Número de fianza" >
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control"  id="ccem" name="ccem" placeholder="CCEM" >
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                
-                                
-                                
-                                
-                                
+
+
+
+
+
+
                                 <br/>
                                 <br/>
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">Guardar</button>
-                                    <a href="{{ route('empresas.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
+                                    <a href="{{ route('afianzadoras.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
                                     </center>
                                 </div>
 
@@ -85,9 +78,9 @@
                     </div>
 				</div>
 			</div>
-		</div>        
-        
+		</div>
+
     </div>
 
-    
+
 @endsection

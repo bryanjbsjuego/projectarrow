@@ -32,7 +32,8 @@ class AfianzadoraController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('afianzadoras.crear');
     }
 
     /**
@@ -43,7 +44,18 @@ class AfianzadoraController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'fianza' => 'required',
+            'fecha' => 'required',
+            'num_fianza' => 'required'
+
+        ]);
+
+        Afianzadora::create($request->all());
+        return redirect()->route('afianzadoras.index');
+
+
     }
 
     /**
@@ -63,9 +75,11 @@ class AfianzadoraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Afianzadora $afianzadora)
     {
-        //
+
+
+        return view('afianzadoras.editar',compact('afianzadora'));
     }
 
     /**
@@ -75,9 +89,19 @@ class AfianzadoraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Afianzadora $afianzadora)
     {
-        //
+        request()->validate([
+            'nombre' => 'required',
+            'fianza' => 'required',
+            'fecha' => 'required',
+            'num_fianza' => 'required'
+
+        ]);
+
+        $afianzadora->update($request->all());
+        return redirect()->route('afianzadoras.index');
+
     }
 
     /**
@@ -86,8 +110,9 @@ class AfianzadoraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Afianzadora $afianzadora)
     {
-        //
+        $afianzadora->delete();
+        return redirect()->route('afianzadoras.index');
     }
 }

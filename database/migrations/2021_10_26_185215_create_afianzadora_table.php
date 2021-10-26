@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableAfianzadoras extends Migration
+class CreateAfianzadoraTable extends Migration
 {
     /**
      * Run the migrations.
@@ -19,7 +19,6 @@ class CreateTableAfianzadoras extends Migration
             $table->string('fianza');
             $table->date('fecha');
             $table->string('num_fianza');
-            $table->double('monto',16,2);
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateTableAfianzadoras extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_afianzadoras');
+        Schema::dropIfExists('afianzadora');
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-//Controladores 
+//Controladores
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
@@ -35,4 +35,5 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('usuarios',UsuarioController::class);
     Route::resource('empresas',EmpresaController::class);
     Route::resource('afianzadoras',AfianzadoraController::class);
+
 } );

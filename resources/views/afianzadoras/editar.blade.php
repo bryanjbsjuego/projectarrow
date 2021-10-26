@@ -2,16 +2,16 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Editar empresa</h2>
+            <h2>Editar afianzadora</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
         </div>
         <div class="row clearfix">
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<div class="card">
 					<div class="header">
-						
+
 					</div>
-					<div class="body">                        
+					<div class="body">
                         <div class="row clearfix">
                             @if ($errors->any())
                                 <div class="col-md-12">
@@ -27,56 +27,49 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                            <form action="{{ route('empresas.update',$empresa->id) }}" method="POST">
+                            <form action="{{ route('afianzadoras.update',$afianzadora->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->nombre }}"  id="nombre" name="nombre" placeholder="Nombre" >
+                                            <input type="text" class="form-control" value="{{ $afianzadora->nombre }}"  id="nombre" name="nombre" placeholder="Nombre" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" >{{ $empresa->ubicacion }}</textarea>
+                                            <input type="text" class="form-control" value="{{ $afianzadora->fianza }}"  id="fianza" name="fianza" placeholder="Fianza" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->rfc }}"  id="rfc" name="rfc" placeholder="RFC" >
+                                            <input type="date" class="form-control" value="{{ $afianzadora->fecha }}"  id="fecha" name="fecha" placeholder="Fecha" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->imms }}"  id="imms" name="imms" placeholder="IMMS" >
+                                            <input type="text" class="form-control" value="{{ $afianzadora->num_fianza }}"  id="num_fianza" name="num_fianza" placeholder="Número fianza" >
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->ccem }}"  id="ccem" name="ccem" placeholder="CCEM" >
-                                        </div>
-                                    </div>
-                                </div>
-                               
-                                
-                                
-                                
-                                
-                                
+
+
+
+
+
+
                                 <br/>
                                 <br/>
                                 <div class="col-sm-12">
                                     <center>
-                                    <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">Guardar</button>
-                                    <a href="{{ route('empresas.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
+                                    <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">Modificar</button>
+                                    <a href="{{ route('afianzadoras.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
                                     </center>
                                 </div>
 
@@ -86,9 +79,9 @@
                     </div>
 				</div>
 			</div>
-		</div>        
-        
+		</div>
+
     </div>
 
-    
+
 @endsection
