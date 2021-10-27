@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
-use App\Models\Afianzadora;
+use Illuminate\Support\Facades\Auth;
 
-class AfianzadoraController extends Controller
+class ClienteController extends Controller
 {
-    function __construct(){
-        $this->middleware('permission:ver-afianzadora|crear-afianzadora|editar-afianzadora|borrar-afianzadora')->only('index');
-        $this->middleware('permission:crear-afianzadora' , ['only' => ['create','store']] );
-        $this->middleware('permission:editar-afianzadora' , ['only' => ['edit','update']] );
-        $this->middleware('permission:borrar-afianzadora' , ['only' => ['destroy']] );
-    }
     /**
      * Display a listing of the resource.
      *
@@ -20,9 +16,9 @@ class AfianzadoraController extends Controller
      */
     public function index()
     {
-        $afianzadoras=Afianzadora::paginate(5);
-
-        return view('afianzadoras.index',compact('afianzadoras'));
+        $clientes=Cliente::all();
+        
+     return view('clientes.index',compact('clientes'));
     }
 
     /**
@@ -33,7 +29,12 @@ class AfianzadoraController extends Controller
     public function create()
     {
 
-        return view('afianzadoras.crear');
+        
+
+       
+        
+       return view('clientes.crear'); 
+
     }
 
     /**
@@ -44,18 +45,18 @@ class AfianzadoraController extends Controller
      */
     public function store(Request $request)
     {
+        
+        
+
         request()->validate([
             'nombre' => 'required',
-            'rfc' => 'required',
-            'razon_social' => 'required',
-            'domicilio' => 'required',
             'telefono' => 'required',
+            'email' => 'required',
 
         ]);
 
-        Afianzadora::create($request->all());
-        return redirect()->route('afianzadoras.index');
-
+        Cliente::create($request->all());
+        return redirect()->route('clientes.index');
 
     }
 
@@ -76,11 +77,10 @@ class AfianzadoraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Afianzadora $afianzadora)
+    public function edit(Cliente $cliente)
     {
-
-
-        return view('afianzadoras.editar',compact('afianzadora'));
+        
+        return view('clientes.editar',compact('cliente'));
     }
 
     /**
@@ -90,19 +90,20 @@ class AfianzadoraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Afianzadora $afianzadora)
+    public function update(Request $request, Cliente $cliente)
     {
+        
         request()->validate([
             'nombre' => 'required',
-            'rfc' => 'required',
-            'razon_social' => 'required',
-            'domicilio' => 'required',
             'telefono' => 'required',
+            'email' => 'required',
 
         ]);
 
-        $afianzadora->update($request->all());
-        return redirect()->route('afianzadoras.index');
+        $cliente->update($request->all());
+        return redirect()->route('clientes.index');
+
+
 
     }
 
@@ -112,9 +113,9 @@ class AfianzadoraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Afianzadora $afianzadora)
+    public function destroy(Cliente $cliente)
     {
-        $afianzadora->delete();
-        return redirect()->route('afianzadoras.index');
+        $cliente->delete();
+        return redirect()->route('clientes.index');
     }
 }

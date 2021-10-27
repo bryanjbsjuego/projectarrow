@@ -21,24 +21,26 @@
                 <div class="card">
 
                     <div class="body table-responsive">
-                        <table class="table table-bordered table-striped ">
-                            <thead>
-                                <tr>
+                        <table class="table table-bordered table-striped text-center" >
+                            <thead >
+                                <tr >
 
-                                    <th>Nombre</th>
-                                    <th>Fianza</th>
-                                    <th>Fecha</th>
-                                    <th>Número de fianza</th>
-                                    <th>Acciones</th>
+                                    <th class="text-center">Nombre</th>
+                                    <th class="text-center">RFC</th>
+                                    <th class="text-center">Razón social</th>
+                                    <th class="text-center">Domicilio</th>
+                                    <th class="text-center">Teléfono</th>
+                                    <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($afianzadoras as $afianzadora)
                                     <tr>
                                         <td>{{ $afianzadora->nombre}}</td>
-                                        <td>{{ $afianzadora->fianza}}</td>
-                                        <td>{{ $afianzadora->fecha}}</td>
-                                        <td>{{ $afianzadora->num_fianza}}</td>
+                                        <td>{{ $afianzadora->rfc}}</td>
+                                        <td>{{ $afianzadora->razon_social}}</td>
+                                        <td>{{ $afianzadora->domicilio}}</td>
+                                        <td>{{ $afianzadora->telefono}}</td>
 
 
                                         <td>

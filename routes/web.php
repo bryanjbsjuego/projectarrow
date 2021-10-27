@@ -7,8 +7,8 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\AfianzadoraController;
-
-
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\EmpleadoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +35,7 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('usuarios',UsuarioController::class);
     Route::resource('empresas',EmpresaController::class);
     Route::resource('afianzadoras',AfianzadoraController::class);
+    Route::resource('clientes',ClienteController::class);
+    Route::resource('empleados',EmpleadoController::class);
 
 } );

@@ -39,21 +39,30 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="fianza" name="fianza" placeholder="Fianza" >
+                                            <input type="text" class="form-control"  id="rfc" name="rfc" placeholder="RFC" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="date" class="form-control"  id="fecha" name="fecha" placeholder="Fecha" >
+                                            <input type="text" class="form-control"  id="razon_social" name="razon_social" placeholder="Razon Social" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="num_fianza" name="num_fianza" placeholder="Número de fianza" >
+                                            <textarea  style="height: 100px" class="form-control"  id="domicilio" name="domicilio" placeholder="Domicilio" ></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control"  id="telefono" name="telefono" placeholder="Télefono" >
                                         </div>
                                     </div>
                                 </div>
