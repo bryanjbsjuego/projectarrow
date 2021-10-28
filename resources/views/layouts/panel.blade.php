@@ -233,6 +233,14 @@
                 <li><a href="/empresas"><i class="zmdi zmdi-calendar-check"></i><span>Empresas</span> </a></li>
                 
                 <li><a href="/afianzadoras"><i class="zmdi zmdi-account"></i><span>Afianzadoras</span> </a></li>
+                <li><a href="/usuarios"><i class="zmdi zmdi-account"></i><span>Clientes</span> </a></li>
+               
+               
+               
+               
+               
+               
+               
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-outline"></i><span>Obras</span> </a>
                     <ul class="ml-menu">
                         <li><a href="students.html">All Students</a></li>
