@@ -19,7 +19,8 @@ class TenantSeeder extends Seeder
         $usuario=User::create([
             'name' => 'Bryan',
             'email'=> 'bryan@gmail.com',
-            'password' => bcrypt('12345678')
+            'password' => bcrypt('12345678'),
+            'photo' => 'dmlddkdkfkff'
 
         ]);
 

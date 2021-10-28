@@ -44,9 +44,11 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a class="btn btn-raised btn-warning btn-sm" href="{{ route('usuarios.edit', $usuario->id) }}"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-raised bg-amber btn-sm text-center " href="{{ route('usuarios.edit', $usuario->id) }}">
+                                                <i class="material-icons mb-1">create</i>
+                                            </a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['usuarios.destroy', $usuario->id], 'style'=>'display:inline']) !!}
-                                                {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm'] )  }}
+                                                {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] )  }}
                                             {!! Form::close() !!}
                                         </td>
                                     

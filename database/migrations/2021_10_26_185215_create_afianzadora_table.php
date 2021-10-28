@@ -30,6 +30,6 @@ class CreateAfianzadoraTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('afianzadora');
+        Schema::dropIfExists('afianzadoras');
     }
 }

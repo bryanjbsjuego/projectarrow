@@ -47,8 +47,8 @@
                                         </button>
                                 </div>
                             @endif
-                            <div class="col-md-12">
-                            {!! Form::open(array('route' => 'usuarios.store','method' => 'POST', 'class' =>'dropzone', 'id' =>'demoform' , 'name' => 'demoform')) !!}
+                            <div class="col-md-12">                                                                          
+                            {!! Form::open(array('route' => 'usuarios.store','method' => 'POST', 'file' => true, 'enctype' => 'multipart/form-data' )) !!}
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -80,13 +80,11 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                                    <div class="form-group">
-                                        <div id="dropzoneDragArea" class="dz-default dz-message dropzoneDragArea">
-                                            <span>Seleccione la imagen que desea subir</span>
-                                        </div>
+                                    
+                                        <input type="file" name="photo" id="photo" accept="image/*" />
                                         
-                                    </div>
-                                    <div class="dropzon-previews"></div>
+                                
+                                    
                                 </div>
 
                                 <div class="col-sm-6 ">
@@ -117,57 +115,5 @@
 
 @section('scripts')
     <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
-    <script>
-        Dropzone.autoDiscover=false;
-        let token=$('meta[name="csrf-token"]').attr('content');
-        var myDropzone= new Dropzone("div#dropzoneDragArea",{
-            paramName:"file",
-            url:"{{url('/store')}}",
-            previewContainer:"div.dropzone-previews",
-            addRemoveLinks:true,
-            autoProcessQueue:false,
-            uploadMultiple:false,
-            paralleUploads:1,
-            maxFiles:1,
-            params:{
-                _token: token
-            },
-            init: function(){
-                var myDropzone = this;
-
-                $("form[name='demoform']").submit(function (event) {
-                    event.preventDefault();
-
-                    URL=$("#demoform").attr('action');
-                    formData=$("#demoform").serialize();
-                    $.ajax({
-                        type:'POST',
-                        url:URL,
-                        data:'formData',
-                        success:function(result){
-                            if(result=="success"){
-                                myDropzone.processQueue();
-
-                            }else{
-                                console.log("error");
-                            }
-
-                        }
-                    })
-                    
-                });
-
-                this.on('sending', function(file,xhr, formData){
-
-                });
-
-                this.on("success", function(file, response){
-
-                });
-                this.on("queuecomplete", function(){
-
-                });
-            }
-        });
-    </script>
+    
 @endsection

@@ -20,9 +20,9 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        $usuarios=User::paginate(5);
-        // $id=Auth::id();
-        // $usuarios=User::where('users.id_tenant',$id)->paginate(5);
+        //$usuarios=User::paginate(5);
+        $id=Auth::id();
+        $usuarios=User::where('users.id_tenant',$id)->paginate(5);
         return view('usuarios.index',compact('usuarios'));
     }
 
@@ -45,13 +45,15 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+       
             $this->validate($request,
             [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|same:confirm-password',
+                'photo' => 'required',
                 'roles' => 'required',
+                
             ],
             [
                 'name.required' => 'El campo nombre debe ser obligatorio'
@@ -62,15 +64,20 @@ class UsuarioController extends Controller
             $usuario= new User;
             $usuario->name=$request->name;
             $usuario->email=$request->email;
-            $usuario['password'] = Hash::make($usuario['password']);
+            $usuario->password=bcrypt($request->input('password'));
             $usuario->id_tenant=Auth::id();
+            if($request->hasFile("photo")){
+                $imagen=$request->file("photo");
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+                $ruta=public_path("img/usuarios");
+                $imagen->move($ruta,$nombreImagen);
+                $usuario->photo=$nombreImagen;
+
+               
+            }
             $usuario->save();
             $usuario->assignRole($request->input('roles'));
 
-        }catch(\Exception $e){
-            return response()->json(['status' => 'exception', 'msg' =>$e->getMessage()]);
-        }
-        return response()->json(['status' => 'success', "msg"=> "registro exitoso"]);
        
 
         return redirect()->route('usuarios.index');
