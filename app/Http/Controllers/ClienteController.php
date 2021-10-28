@@ -46,16 +46,29 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         
+
+        $id=Auth::id();
+
+
+        // $empresa=Empresa::where('id_tenant','=', $idempresa)->get();
         
 
         request()->validate([
             'nombre' => 'required',
             'telefono' => 'required',
             'email' => 'required',
-
+          
         ]);
 
-        Cliente::create($request->all());
+
+        $data=$request->only([
+            'nombre',
+            'telefono',
+            'email'
+        ]);
+
+        $data['id_tenant']=$id;
+        Cliente::create($data);
         return redirect()->route('clientes.index');
 
     }

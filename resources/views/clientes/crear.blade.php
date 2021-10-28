@@ -50,13 +50,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                {{-- <div class="col-sm-6">
                                     <select class="form-control show-tick" name="empresa" id>
                                         @foreach ($empresas as $empresa)
                                         <option  value="{{$empresa->id}}">{{$empresa->nombre}}</option>
                                     @endforeach   
                                     </select>
-                                </div>     
+                                </div>      --}}
                                 <br/>
                                 <br/>
                                 <div class="col-sm-12">

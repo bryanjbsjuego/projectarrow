@@ -32,6 +32,9 @@ class EmpleadoController extends Controller
         //consulta para traer el idempresa
         $idempresa=Auth::id();
         $empresa=Empresa::where('id_tenant','=', $idempresa)->get();
+
+
+        return $empresa;
     
     
         return view('empleados.crear',compact('empresa'));

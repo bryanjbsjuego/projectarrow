@@ -50,6 +50,25 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control show-tick">
+                                        <option value="">-- Seleccione tipo de empleado --</option>
+                                        <option value="em">Empresa</option>
+                                        <option value="cl">Cliente</option>
+                                     
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <select class="form-control show-tick">
+                                        <option value="">-- Empresas --</option>
+                                        <option value="em">Empresa</option>
+                                        <option value="cl">Cliente</option>
+                                     
+                                    </select>
+                                </div>
+
                                 {{-- <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
@@ -76,13 +95,6 @@
                                 </div> --}}
 
 
-
-
-
-
-
-
-
                                 <br/>
                                 <br/>
                                 <div class="col-sm-12">
@@ -104,3 +116,4 @@
 
 
 @endsection
+
