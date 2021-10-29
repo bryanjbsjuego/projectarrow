@@ -148,9 +148,14 @@ class UsuarioController extends Controller
         $roles=Role::select('id','name')->get();
 
         //consulta para traer la empresa en caso de existir
+        $empresaE=DB::table('users')->join('empresas','empresas.id','=','users.empresa')
+        ->select('empresas.id','empresas.nombre')
+        ->where('empresas.id','=',$usuario->empresa)->first();
 
+        
 
-         return view('usuarios.editar',compact('usuario','empresas','roles','rolSelect'));
+        
+         return view('usuarios.editar',compact('usuario','empresas','roles','rolSelect','empresaE'));
 
 
 

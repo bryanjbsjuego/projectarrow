@@ -62,34 +62,26 @@
                                 
                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group drop-custum">
-                                        <p>{{$rolSelect->name}}</p>
-                                    <select class="form-control show-tick" id="rol" name="roles" required>
-
+                                      
+                                    <select class="form-control" id="rol" name="roles" required>
                                       @foreach ($roles as $rol) 
-                                      <option value="{{$rol->name}}" {{old('roles')==$rolSelect->name ? 'selected' : '' }} >{{$rol->name}} </option> 
-                                      <p>{{old('roles')}}</p>
+                                      <option value="{{$rol->name}}"@if ( $rol->name === $rolSelect->name ) selected @endif>{{$rol->name}}</option> 
                                       @endforeach    
                                     </select>
                                     </div>
                                 </div>
                            
-                                <br/>
-                                <br/>
-
-                                
-                                <br/>
-                                <br/>
-
-                                  {{-- <div class="col-md-6 col-sm-12 " id="empresa" style="display:none">
+                        
+                                  <div class="col-md-6 col-sm-12 " id="empresa" style="display:none">
                                     <div class="form-group drop-custum">
                                     <select class="form-control show-tick "  name="empresa" id="em">
                                         <option value="" selected>--Seleccione una empresa--</option>
                                      @foreach ($empresas as $empresa)
-                                     <option value="{{$empresa->id}}">{{$empresa->nombre}}</option>
+                                     <option value="{{$empresa->id}}" @if ( $empresa->nombre === $empresaE->nombre ) selected @endif>{{$empresa->nombre}}</option>
                                      @endforeach   
                                     </select>
                                     </div>
-                                </div> --}}
+                                </div>
 
                            
                                 {{-- <div class="col-sm-12 col-md-6">
@@ -126,28 +118,14 @@
     let $rol,$empresas,boton;
 
     $(function(){
-        $('#rol').change(()=>{
-            $rol=$("#rol").val();
-            console.log($rol);
+        $rol=$('#rol').val();
+        console.log($rol);
 
-            $empresas=$("#em").val();
+        if($rol=='Responsable de empresa'){
+            console.log("soy responsable");
+            document.getElementById('empresa').style.display = 'block';
+        }
         
-            if($rol=='Responsable de empresa' &&  $empresas !== null){
-                document.getElementById('empresa').style.display = 'block';
-                document.getElementById('boton').style.display = 'inline-block';           
-            }
-
-            else{
-                document.getElementById('empresa').style.display = 'none';
-                document.getElementById('boton').style.display = 'none';
-                document.getElementById('alerta').style.display = 'block';
-            }
-
-            if($rol !='Responsable de empresa'){
-                document.getElementById('boton').style.display = 'inline-block';
-                document.getElementById('alerta').style.display = 'none';
-            }
-        });
     });
 
 
@@ -155,38 +133,3 @@
     
 @endsection 
 
-@section('scripts')
-    <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
-
-    <script>
-    let $rol,$empresas,boton;
-
-    $(function(){
-        $('#rol').change(()=>{
-            $rol=$("#rol").val();
-            console.log($rol);
-
-            $empresas=$("#em").val();
-        
-            if($rol=='Responsable de empresa' &&  $empresas !== null){
-                document.getElementById('empresa').style.display = 'block';
-                document.getElementById('boton').style.display = 'inline-block';           
-            }
-
-            else{
-                document.getElementById('empresa').style.display = 'none';
-                document.getElementById('boton').style.display = 'none';
-                document.getElementById('alerta').style.display = 'block';
-            }
-
-            if($rol !='Responsable de empresa'){
-                document.getElementById('boton').style.display = 'inline-block';
-                document.getElementById('alerta').style.display = 'none';
-            }
-        });
-    });
-
-
-    </script>
-    
-@endsection
