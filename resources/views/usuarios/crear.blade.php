@@ -82,20 +82,49 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
                                     
                                         <input type="file" name="photo" id="photo" accept="image/*" />
-                                        
-                                
-                                    
+               
                                 </div>
 
-                                <div class="col-sm-6 ">
-                                    {!! Form::select('roles[]', $roles,[],array('class' => 'form-control show-tick') ) !!}
+                                {{-- <div class="col-sm-6 ">
+                                    {!! Form::select('roles[]->id', $roles,[],array('class' => 'form-control show-tick' ) ) !!}
+                                </div> --}}
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group drop-custum">
+                                    <select class="form-control show-tick" id="rol" name="roles" required>
+                                    <option value="0" selected>--Seleccione un rol--</option>
+                                     @foreach ($roles as $rol)
+                                     <option value="{{$rol->name}}">{{$rol->name}}</option>
+                                     @endforeach   
+                                    </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 " id="empresa" style="display:none">
+                                    <div class="form-group drop-custum">
+                                    <select class="form-control show-tick "  name="empresa" id="em">
+                                        <option value="" selected>--Seleccione una empresa--</option>
+                                     @foreach ($empresas as $empresa)
+                                     <option value="{{$empresa->id}}" >{{$empresa->nombre}}</option>
+                                     @endforeach   
+                                    </select>
+                                    </div>
+                                </div>
+
+                           
+                                <div class="col-sm-12 col-md-6">
+                                    <div class="alert bg-pink alert-dismissible" id="alerta" style="display: none" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                       No existen empresas registradas
+                                    </div>
                                 </div>
                                 
                                 <br/>
                                 <br/>
+                                
                                 <div class="col-sm-12">
                                     <center>
-                                    <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">Guardar</button>
+                                    <button type="submit" class="btn btn-raised waves-effect g-bg-blush2" style="display:inline-block" id="boton">Guardar</button>
                                     <a href="{{ route('usuarios.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
                                     </center>
                                 </div>
@@ -115,5 +144,36 @@
 
 @section('scripts')
     <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
+
+    <script>
+    let $rol,$empresas,boton;
+
+    $(function(){
+        $('#rol').change(()=>{
+            $rol=$("#rol").val();
+            console.log($rol);
+
+            $empresas=$("#em").val();
+        
+            if($rol=='Responsable de empresa' &&  $empresas !== null){
+                document.getElementById('empresa').style.display = 'block';
+                document.getElementById('boton').style.display = 'inline-block';           
+            }
+
+            else{
+                document.getElementById('empresa').style.display = 'none';
+                document.getElementById('boton').style.display = 'none';
+                document.getElementById('alerta').style.display = 'block';
+            }
+
+            if($rol !='Responsable de empresa'){
+                document.getElementById('boton').style.display = 'inline-block';
+                document.getElementById('alerta').style.display = 'none';
+            }
+        });
+    });
+
+
+    </script>
     
 @endsection

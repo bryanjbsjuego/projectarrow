@@ -22,6 +22,8 @@ class CreateTablerUsers extends Migration
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('id_tenant')->nullable();
             $table->foreign('id_tenant')->references('id')->on('users');
+            $table->integer('empresa')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

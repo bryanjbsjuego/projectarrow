@@ -21,6 +21,7 @@ class CreateEmpleadoTable extends Migration
             $table->string('tipo_empleado',2);
             $table->unsignedBigInteger('id_empresa')->nullable();
             $table->foreign('id_empresa')->references('id')->on('empresas');
+            
             $table->unsignedBigInteger('id_cliente')->nullable();
             $table->foreign('id_cliente')->references('id')->on('clientes');
         

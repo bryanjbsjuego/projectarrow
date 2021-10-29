@@ -25,7 +25,7 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                                {!! Form::model($user, ['method' => 'PUT', 'route'=> ['usuarios.update',$user->id]]) !!}
+                                {!! Form::model($usuario, ['method' => 'PUT', 'route'=> ['usuarios.update',$usuario->id]]) !!}
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -56,12 +56,49 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 ">
+                                {{-- <div class="col-sm-6 ">
                                     {!! Form::select('roles[]', $roles,$userRole, array('class' => 'form-control show-tick')) !!}
+                                </div> --}}
+                                
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group drop-custum">
+                                        <p>{{$rolSelect->name}}</p>
+                                    <select class="form-control show-tick" id="rol" name="roles" required>
+
+                                      @foreach ($roles as $rol) 
+                                      <option value="{{$rol->name}}" {{old('roles')==$rolSelect->name ? 'selected' : '' }} >{{$rol->name}} </option> 
+                                      <p>{{old('roles')}}</p>
+                                      @endforeach    
+                                    </select>
+                                    </div>
                                 </div>
+                           
+                                <br/>
+                                <br/>
+
                                 
                                 <br/>
                                 <br/>
+
+                                  {{-- <div class="col-md-6 col-sm-12 " id="empresa" style="display:none">
+                                    <div class="form-group drop-custum">
+                                    <select class="form-control show-tick "  name="empresa" id="em">
+                                        <option value="" selected>--Seleccione una empresa--</option>
+                                     @foreach ($empresas as $empresa)
+                                     <option value="{{$empresa->id}}">{{$empresa->nombre}}</option>
+                                     @endforeach   
+                                    </select>
+                                    </div>
+                                </div> --}}
+
+                           
+                                {{-- <div class="col-sm-12 col-md-6">
+                                    <div class="alert bg-pink alert-dismissible" id="alerta" style="display: none" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                       No existen empresas registradas
+                                    </div>
+                                </div> --}} 
+
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">Guardar</button>
@@ -79,5 +116,77 @@
         
     </div>
 
+    
+@endsection
+
+@section('scripts')
+    <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
+
+    <script>
+    let $rol,$empresas,boton;
+
+    $(function(){
+        $('#rol').change(()=>{
+            $rol=$("#rol").val();
+            console.log($rol);
+
+            $empresas=$("#em").val();
+        
+            if($rol=='Responsable de empresa' &&  $empresas !== null){
+                document.getElementById('empresa').style.display = 'block';
+                document.getElementById('boton').style.display = 'inline-block';           
+            }
+
+            else{
+                document.getElementById('empresa').style.display = 'none';
+                document.getElementById('boton').style.display = 'none';
+                document.getElementById('alerta').style.display = 'block';
+            }
+
+            if($rol !='Responsable de empresa'){
+                document.getElementById('boton').style.display = 'inline-block';
+                document.getElementById('alerta').style.display = 'none';
+            }
+        });
+    });
+
+
+    </script>
+    
+@endsection 
+
+@section('scripts')
+    <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
+
+    <script>
+    let $rol,$empresas,boton;
+
+    $(function(){
+        $('#rol').change(()=>{
+            $rol=$("#rol").val();
+            console.log($rol);
+
+            $empresas=$("#em").val();
+        
+            if($rol=='Responsable de empresa' &&  $empresas !== null){
+                document.getElementById('empresa').style.display = 'block';
+                document.getElementById('boton').style.display = 'inline-block';           
+            }
+
+            else{
+                document.getElementById('empresa').style.display = 'none';
+                document.getElementById('boton').style.display = 'none';
+                document.getElementById('alerta').style.display = 'block';
+            }
+
+            if($rol !='Responsable de empresa'){
+                document.getElementById('boton').style.display = 'inline-block';
+                document.getElementById('alerta').style.display = 'none';
+            }
+        });
+    });
+
+
+    </script>
     
 @endsection

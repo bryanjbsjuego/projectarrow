@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAfianzadoraTable extends Migration
+class CreateEmpresaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,16 @@ class CreateAfianzadoraTable extends Migration
      */
     public function up()
     {
-        Schema::create('afianzadoras', function (Blueprint $table) {
+        Schema::create('empresas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->string('ubicacion');
             $table->string('rfc');
-            $table->string('razon_social');
-            $table->string('domicilio');
-            $table->string('telefono');
+            $table->string('imms');
+            $table->string('ccem');
             $table->timestamps();
+            $table->unsignedBigInteger('id_tenant')->nullable();
+            $table->foreign('id_tenant')->references('id')->on('users');
         });
     }
 
@@ -31,6 +33,6 @@ class CreateAfianzadoraTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('afianzadoras');
+        Schema::dropIfExists('empresa');
     }
 }
