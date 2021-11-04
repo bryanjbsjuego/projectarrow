@@ -9,6 +9,8 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\AfianzadoraController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\TenantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +39,11 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('afianzadoras',AfianzadoraController::class);
     Route::resource('clientes',ClienteController::class);
     Route::resource('empleados',EmpleadoController::class);
+    Route::resource('perfil',PerfilController::class);
 
 } );
+
+
+
+
+Route::resource('tenant', TenantController::class);

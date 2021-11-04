@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Empresa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,10 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes=Cliente::all();
+        $id=Auth::id();
+        $id_tenant=User::select('id_tenant')->where('id','=',$id)->first();
+
+        $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)->get();
         
      return view('clientes.index',compact('clientes'));
     }
@@ -26,13 +30,9 @@ class ClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
 
-        
-
-       
-        
+ 
        return view('clientes.crear'); 
 
     }
@@ -45,11 +45,12 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+
+
+       
         
-
         $id=Auth::id();
-
-
+        $id_tenant=User::select('id_tenant')->where('id','=',$id)->first();
         // $empresa=Empresa::where('id_tenant','=', $idempresa)->get();
         
 
@@ -67,7 +68,7 @@ class ClienteController extends Controller
             'email'
         ]);
 
-        $data['id_tenant']=$id;
+        $data['id_tenant']=$id_tenant->id_tenant;
         Cliente::create($data);
         return redirect()->route('clientes.index');
 

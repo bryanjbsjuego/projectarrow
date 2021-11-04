@@ -27,7 +27,7 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                            <form action="{{ route('afianzadoras.store') }}" method="POST">
+                            <form action="{{ route('empleados.store') }}" method="POST">
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -52,7 +52,7 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <select class="form-control show-tick">
+                                    <select class="form-control show-tick" id="tipo_empleado" name="tipo_empleado">
                                         <option value="">-- Seleccione tipo de empleado --</option>
                                         <option value="em">Empresa</option>
                                         <option value="cl">Cliente</option>
@@ -60,14 +60,19 @@
                                     </select>
                                 </div>
 
-                                <div class="col-sm-6">
-                                    <select class="form-control show-tick">
-                                        <option value="">-- Empresas --</option>
-                                        <option value="em">Empresa</option>
-                                        <option value="cl">Cliente</option>
-                                     
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group drop-custum">
+                                    <select class="form-control show-tick" id="cliente" name="cliente" required>
+                                    <option value="0" selected>--Seleccione un cliente--</option>
+
+                                     @foreach ($clientes as $cliente)
+                                     <option value="{{$cliente->id}}" >{{$cliente->nombre}}</option>
+                                     @endforeach   
                                     </select>
+                                    </div>
                                 </div>
+
+                                
 
                                 {{-- <div class="col-sm-12">
                                     <div class="form-group">
@@ -117,3 +122,47 @@
 
 @endsection
 
+@section('scripts')
+    
+
+    <script>
+    let $empleado;
+
+    $(function(){
+        $('#tipo_empleado').change(()=>{
+            $tipoe=$("#tipo_empleado").val();
+            console.log($tipoe);
+
+            if($tipoe=='em'){
+                document.getElementById('cliente').style.display = 'none';
+            }else if($tipoe=='cl'){
+                document.getElementById('cliente').style.display = 'inline-block';
+            }else{
+                document.getElementById('cliente').style.display = 'none';
+                document.getElementById('empresa').style.display = 'none';
+            }
+
+            // $empresas=$("#em").val();
+        
+            // if($rol=='Responsable de empresa' &&  $empresas !== null){
+            //     document.getElementById('empresa').style.display = 'block';
+            //     document.getElementById('boton').style.display = 'inline-block';           
+            // }
+
+            // else{
+            //     document.getElementById('empresa').style.display = 'none';
+            //     document.getElementById('boton').style.display = 'none';
+            //     document.getElementById('alerta').style.display = 'block';
+            // }
+
+            // if($rol !='Responsable de empresa'){
+            //     document.getElementById('boton').style.display = 'inline-block';
+            //     document.getElementById('alerta').style.display = 'none';
+            // }
+        });
+    });
+
+
+    </script>
+    
+@endsection

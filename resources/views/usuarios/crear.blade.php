@@ -23,16 +23,22 @@
 </style>
 @endsection
 @section('contenido')
+
     <div class="container-fluid">
         <div class="block-header">
             <h2>Agregar usuario</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
         </div>
+
         <div class="row clearfix">
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<div class="card">
 					<div class="header">
-						
+                        @if (session('mensaje'))
+                        <div class="alert alert-danger" role="alert">
+                          {{session('mensaje')}}
+                        </div>
+                        @endif
 					</div>
 					<div class="body">                        
                         <div class="row clearfix">
@@ -53,14 +59,14 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="name" name="name" placeholder="Nombre" required>
+                                            <input type="text" class="form-control"  id="name" name="name" placeholder="Nombre"   value="{{old('name')}}"required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" id="email" name="email" placeholder="Correo" required>
+                                            <input type="text" class="form-control" id="email" name="email" placeholder="Correo" value="{{old('email')}}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -81,7 +87,7 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
                                     
-                                        <input type="file" name="photo" id="photo" accept="image/*" />
+                                        <input type="file" name="photo" id="photo"  accept="image/*" />
                
                                 </div>
 
@@ -93,8 +99,9 @@
                                     <div class="form-group drop-custum">
                                     <select class="form-control show-tick" id="rol" name="roles" required>
                                     <option value="0" selected>--Seleccione un rol--</option>
+
                                      @foreach ($roles as $rol)
-                                     <option value="{{$rol->name}}">{{$rol->name}}</option>
+                                     <option value="{{$rol->name}}"value="{{old('name')}}" >{{$rol->name}}</option>
                                      @endforeach   
                                     </select>
                                     </div>
@@ -105,7 +112,7 @@
                                     <select class="form-control show-tick "  name="empresa" id="em">
                                         <option value="" selected>--Seleccione una empresa--</option>
                                      @foreach ($empresas as $empresa)
-                                     <option value="{{$empresa->id}}" >{{$empresa->nombre}}</option>
+                                     <option value="{{$empresa->id}}" value="{{old('name')}}">{{$empresa->nombre}}</option>
                                      @endforeach   
                                     </select>
                                     </div>

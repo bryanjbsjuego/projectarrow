@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
-use App\Models\Empleado;
-use App\Models\Empresa;
 use App\Models\User;
-use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
-class EmpleadoController extends Controller
+class TenantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +17,7 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        $empleados=Empleado::all();
-        return view('empleados.index',compact('empleados'));
+        return view('auth.register');
     }
 
     /**
@@ -28,25 +25,9 @@ class EmpleadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-
-        //consulta para traer el idempresa
-        // $usuario=Auth::id();
-        // $empresa=User::select('empresa')->where('id','=',$usuario)->first();
-
-        // return $idempresa;
-        // $empresa=Empresa::where('id_tenant','=', $idempresa)->get();
-        $usuario=Auth::id();
-        $tenat=User::select('id_tenant')->where('id','=',$usuario)->first();
-
-        $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)->get();
-    
-
-        
-        // $clientes=Cliente::where('nombre','=',)
-    
-        return view('empleados.crear',compact('clientes'));
+      
     }
 
     /**
@@ -58,8 +39,32 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
 
+        $roles=Role::select('id')->where('id','=',1)->first();
+
+        $this->validate($request,
+        [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            
+        ],
+        [
+            'name.required' => 'El campo nombre debe ser obligatorio'
+        ]
         
-        // return $request->all();
+         );
+
+         $usuario= new User;
+         $usuario->name=$request->name;
+         $usuario->email=$request->email;
+         $usuario->password=bcrypt($request->input('password'));
+         $usuario->photo='tenant.png';
+         $usuario->save();
+         $usuario->assignRole($roles->id);
+        
+
+         return redirect()->route('login');
+     
     }
 
     /**

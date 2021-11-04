@@ -12,6 +12,18 @@
                 <a href="{{ route('usuarios.create') }}" class="btn btn-raised btn-success">Agregar usuario</a>
             </div>
         </div>
+        
+        @if (session('mensaje'))
+        <div class="alert alert-success" role="alert">
+          {{session('mensaje')}}
+        </div>
+        @endif
+
+        @if (session('mensaje_error'))
+        <div class="alert alert-danger" role="alert">
+          {{session('mensaje_error')}}
+        </div>
+        @endif
 
         <!-- Exportable Table -->
         <div class="row clearfix">

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\UseUse;
+use Symfony\Component\Console\Input\Input;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -43,7 +45,24 @@ class UsuarioController extends Controller
 
         // return $empresas;
 
-        $roles=Role::select('id','name')->get();
+        $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->select('roles.name')
+        ->where('users.id','=',$id)->first();
+        // $rolSelect= $rol;
+
+
+
+        if($rol->name=='Tenant'){
+            $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de obra', 'Asistente de obra'])->get();
+        }else if($rol->name=='Responsable de empresa'){
+            $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de empresa'])->get();
+        }
+
+
+
+
+        
         // return $roles;
         return view('usuarios.crear',compact('roles','empresas'));
     }
@@ -60,6 +79,7 @@ class UsuarioController extends Controller
         // $formulario=$request->all();
         $rol =$request->input(['roles']);
         $consulta=Role::select('id')->where('name','like',$rol)->first();
+        $mensaje=[];
       
         
         if($consulta->id==1){
@@ -83,30 +103,53 @@ class UsuarioController extends Controller
             
              );
     
-            $usuario= new User;
-            $usuario->name=$request->name;
-            $usuario->email=$request->email;
-            $usuario->password=bcrypt($request->input('password'));
-            $usuario->id_tenant=$id_tenant;
+    
+          $idempresa=$request->input('empresa');
+            
+            $busqueda= User::where('empresa', '=', $idempresa)->exists();// user found}
+
+            if($busqueda==1){
+                $mensaje="¡ERROR!, Esta empresa ya cuenta con un responsable.";
+
+                // return redirect()->route('usuarios.create')->with(compact('mensaje'));
+                // return  back()->with(compact('mensaje'));
+                return back()->withInput()->with(compact('mensaje'));
 
 
-            $usuario->empresa=$request->input('empresa');
-         
-            if($request->hasFile("photo")){
-                $imagen=$request->file("photo");
-                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
-                $ruta=public_path("img/usuarios");
-                $imagen->move($ruta,$nombreImagen);
-                $usuario->photo=$nombreImagen;
 
+            }else{
+                $usuario= new User;
+                $usuario->name=$request->name;
+                $usuario->email=$request->email;
+                $usuario->password=bcrypt($request->input('password'));
+                $usuario->id_tenant=$id_tenant;
+    
+    
+                $usuario->empresa=$request->input('empresa');
+                if($request->hasFile("photo")){
+                    $imagen=$request->file("photo");
+                    $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+                    $ruta=public_path("img/usuarios");
+                    $imagen->move($ruta,$nombreImagen);
+                    $usuario->photo=$nombreImagen;
+    
+                   
+                }
                
+              
+                $usuario->save();
+                $usuario->assignRole($consulta->id);
+
+                $mensaje="Usuario registrado exitosamente.";
+             
             }
-            $usuario->save();
-            $usuario->assignRole($consulta->id);
+        
+            
 
-       
-
-        return redirect()->route('usuarios.index');
+           
+            
+        return redirect()->route('usuarios.index')->with(compact('mensaje'));
+     
     }
 
     /**
@@ -117,7 +160,14 @@ class UsuarioController extends Controller
      */
     public function show($id)
     {
-        //
+        
+
+        $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->select('roles.name')
+        ->where('users.id','=',$id)->first();
+        $usuario=User::find($id);
+        return view('perfil.editperfil',compact('usuario','rol'));
     }
 
     /**
@@ -134,76 +184,132 @@ class UsuarioController extends Controller
         $empresas=DB::table('users')->join('empresas','empresas.id_tenant','=','users.id_tenant')
         ->select('empresas.id','empresas.nombre')
         ->where('empresas.id_tenant','=',$id)->groupBy('empresas.id')->get();
-
         //consulta para obtener el rol del usuario 
         $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
         ->join('roles','roles.id','=','model_has_roles.role_id')
         ->select('roles.name')
+        ->where('users.id','=',$id)->first();
+        //trae el rol que tiene
+        $rol2=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->select('roles.name')
         ->where('users.id','=',$usuario->id)->first();
-        $rolSelect= $rol;
+        $rolSelect= $rol2;
+        //todos los roles
+        // $roles=Role::select('id','name')->get();
+
+        if($rol->name=='Tenant'){
+            $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de obra', 'Asistente de obra'])->get();
+        }else if($rol->name=='Responsable de empresa'){
+            $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de empresa'])->get();
+        }
 
         // return $rol;
 
+
+        $empresaS = new Empresa();
         //consulta para obtener todos los roles
-        $roles=Role::select('id','name')->get();
+      
 
         //consulta para traer la empresa en caso de existir
         $empresaE=DB::table('users')->join('empresas','empresas.id','=','users.empresa')
         ->select('empresas.id','empresas.nombre')
         ->where('empresas.id','=',$usuario->empresa)->first();
 
-        
 
-        
-         return view('usuarios.editar',compact('usuario','empresas','roles','rolSelect','empresaE'));
+        if(!empty($empresaE)){
+            $empresaS->nombre=$empresaE->nombre;
+        }else{
+            $empresaS->nombre=0;
+        }
+         return view('usuarios.editar',compact('usuario','empresas','roles','rolSelect','empresaS'));
 
-
-
-        // $idu=Auth::id();
-        // $empresas=DB::table('users')->join('empresas','empresas.id_tenant','=','users.id_tenant')
-        // ->select('empresas.id','empresas.nombre')
-        // ->where('empresas.id_tenant','=',$idu)->groupBy('empresas.id')->get();
-        
-        
-        // $user=User::find($id);
-
-        // $roles=Role::select('id','name')->get();
-        // //$roles=Role::pluck('name','name')->all();
-        // $userRole=$user->roles->pluck('name','name')->all();
-        // return view('usuarios.editar',compact('user','roles','userRole','empresas'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $this->validate($request,[
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
-        ]);
+    
+    public function update(Request $request,User $usuario)   {
 
-        $input=$request->all();
-        if(!empty($input['password'])){
-            $input['password'] = Hash::make($input['password']);
+        $rol =$request->input(['roles']);
+        $consulta=Role::select('id')->where('name','like',$rol)->first();
+      
+        
+        if($consulta->id==1){
+            $id_tenant=null;
         }else{
-            $input=Arr::except($input,array('password'));
+            $id_tenant=Auth::id();
         }
+        
+            $this->validate($request,
+            [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$usuario->id,
+                'password' => 'same:confirm-password',
+                'roles' => 'required',
+                
+            ],
+            [
+                'name.required' => 'El campo nombre debe ser obligatorio'
+            ]
+            
+             );
 
-        $user=User::find($id);
-        $user->update($input);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
+          
+             $usuario->name=$request->name;
+             $usuario->email=$request->email;
 
-        $user->assignRole($request->input('roles'));
-        return redirect()->route('usuarios.index');
+             if(!empty($request->input('password'))){
+                $usuario->password=bcrypt($request->input('password'));
+             }else{
+                $v=$usuario->password;
+                $usuario->password=$v;
+             }
 
+             if(!empty( $request->hasFile('photo'))){
+                $imagen=$request->file("photo");
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+                $ruta=public_path("img/usuarios");
+                $imagen->move($ruta,$nombreImagen);
+                $usuario->photo=$nombreImagen;
+                
+            }else{
+                $p=$usuario->photo;
+                $usuario->photo=$p;
 
+            }
+
+        
+           
+             $usuario->id_tenant=$id_tenant;
+             
+             
+             $idempresa=$request->input('empresa');
+
+             if(!empty($idempresa)){
+
+                $busqueda= User::where('empresa', '=', $idempresa)->exists();// user found}
+                $busqueda2=User::select('id')->where('empresa','=',$idempresa)->first();
+                if($busqueda==1 && $busqueda2->id!=$usuario->id){
+
+                    $mensaje="¡ERROR!, Esta empresa ya cuenta con un responsable.";
+                   return back()->withInput()->with(compact('mensaje'));
+                }else{
+                   $usuario->empresa=$request->input('empresa');
+                   $usuario->update();
+                   $mensaje="Usuario modificado exitosamente: ".$usuario->name;
+                }
+
+             }else{
+             
+                $usuario->empresa=null;
+                $mensaje="Usuario modificado exitosamente: ".$usuario->name;
+                $usuario->update();
+             }
+            
+        
+
+                DB::table('model_has_roles')->where('model_id',$usuario->id)->delete();
+                $usuario->assignRole($consulta->id);
+                return redirect()->route('usuarios.index')->with(compact('mensaje'));
         
     }
 
@@ -215,7 +321,20 @@ class UsuarioController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('usuarios.index');
+        $busqueda= User::select('empresa')->where('id', '=', $id)->first();
+
+  
+      
+        if($busqueda->empresa == null){
+            User::find($id)->delete();
+            $mensaje='Usuario eliminado exitosamente';
+            return redirect()->route('usuarios.index')->with(compact('mensaje'));
+        }else{
+           
+            $mensaje_error='El usuario no se puede eliminar, cuenta con una empresa responsable';
+            return redirect()->route('usuarios.index')->with(compact('mensaje_error'));
+        }
+
+        
     }
 }

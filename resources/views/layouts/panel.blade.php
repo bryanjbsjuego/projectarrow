@@ -209,12 +209,12 @@
     <aside id="leftsidebar" class="sidebar"> 
         <!-- User Info -->
         <div class="user-info">
-            <div class="admin-image"> <img src="{{asset('images/random-avatar7.jpg')}}" alt=""> </div>
+            <div class="admin-image"> <img src="{{asset('img/usuarios/'.Auth::user()->photo)}}" alt=""> </div>
             <div class="admin-action-info"> <span>Bienvenido</span>
                 <span>{{ Auth::user()->name }}</span>
                 <ul>
                     
-                    <li><a data-placement="bottom" title="Go to Profile" href="profile.html"><i class="zmdi zmdi-account"></i></a></li>                    
+                    <li><a data-placement="bottom" title="Go to Profile" href="{{route('perfil.show',$id=Auth::user()->id)}}"><i class="zmdi zmdi-account"></i></a></li>                    
                     <li><a data-placement="bottom" title="Full Screen" href="sign-in.html" ><i class="zmdi zmdi-sign-in"></i></a></li>
                 </ul>
             </div>
