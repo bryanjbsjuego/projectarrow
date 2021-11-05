@@ -17,7 +17,7 @@
 
         <!-- Exportable Table -->
         <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-9 col-md-12 col-sm-12 m-auto">
                 <div class="card">
                     
                     <div class="body table-responsive">
@@ -25,8 +25,8 @@
                             <thead>
                                 <tr>
                                     
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
+                                    <th class="text-center">Nombre</th>
+                                    <th class="text-center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,13 +34,14 @@
                                     <tr>
                                         <td>{{ $rol->name}}</td>
                                         
-                                        <td>
+                                        <td class="d-flex justify-content-around">
                                             {{-- @can('editar-rol') --}}
-                                                <a class="btn btn-raised btn-warning btn-sm" href="{{ route('roles.edit', $rol->id) }}"><i class="fas fa-edit"></i></a>
+                                                <a  href="{{ route('roles.edit', $rol->id) }}"><i class="zmdi zmdi-edit text-warning"></i></a>
                                             {{-- @endcan
                                             @can('borrar-rol') --}}
                                                 {!! Form::open(['method' => 'DELETE','route' => ['roles.destroy', $rol->id], 'style'=>'display:inline']) !!}
-                                                {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm'] )  }}
+                                               
+                                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
                                                 {!! Form::close() !!}
                                             {{-- @endcan --}}
                                             

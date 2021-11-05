@@ -23,16 +23,17 @@
                          
 
                             <div class="col-lg-8 col-md-12 m-b-0">
-                            <div class="bg-info d-flex justify-content-between">
-                                <h5 class=""> Nombre: {{$cliente->nombre}} 
-                                <a href="{{route('clientes.edit', $cliente->id )}}" class="edit mr-6 d-flex">
+                            <div class=" d-flex justify-content-between">
+                                <h5 class=""> Nombre: {{$cliente->nombre}}  </h5>
+                                <a href="{{route('clientes.edit', $cliente->id )}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
+                                  
                                    
                                     {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $cliente->id], 'style'=>'display:inline']) !!}
-                                    {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] ) }}
+                                    {{-- {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] ) }} --}}
+                                    <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
                                     {!! Form::close() !!}
 
-
-                                <i class="zmdi zmdi-edit"></i></a></h5>
+                                   
                             </div>
                                 <address class="m-t-10 m-b-0">
                                     Correo:   {{$cliente->email}} <br>

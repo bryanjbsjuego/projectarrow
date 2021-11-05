@@ -39,11 +39,12 @@ class UsuarioController extends Controller
     {
 
         $id=Auth::id();
-        $empresas=DB::table('users')->join('empresas','empresas.id_tenant','=','users.id_tenant')
+        // return $id;
+        $empresas=DB::table('users')->join('empresas','users.id','=','empresas.id_tenant')
         ->select('empresas.id','empresas.nombre')
         ->where('empresas.id_tenant','=',$id)->groupBy('empresas.id')->get();
 
-        // return $empresas;
+        
 
         $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
         ->join('roles','roles.id','=','model_has_roles.role_id')

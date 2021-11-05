@@ -210,8 +210,8 @@
         <!-- User Info -->
         <div class="user-info">
             <div class="admin-image"> <img src="{{asset('img/usuarios/'.Auth::user()->photo)}}" alt=""> </div>
-            <div class="admin-action-info"> <span>Bienvenido</span>
-                <span>{{ Auth::user()->name }}</span>
+            <div class="admin-action-info"> <span>Bienvenido:  </span>
+                <span>  {{ Auth::user()->name }}</span>
                 <ul>
                     
                     <li><a data-placement="bottom" title="Go to Profile" href="{{route('perfil.show',$id=Auth::user()->id)}}"><i class="zmdi zmdi-account"></i></a></li>                    
@@ -230,10 +230,11 @@
                 
                 <li><a href="/roles"><i class="zmdi zmdi-calendar-check"></i><span>Roles</span> </a></li>
                 <li><a href="/usuarios"><i class="zmdi zmdi-account"></i><span>Usuarios</span> </a></li>
-                <li><a href="/empresas"><i class="zmdi zmdi-calendar-check"></i><span>Empresas</span> </a></li>
+                <li><a href="/empresas"><i class="material-icons">business</i><span>Empresas</span> </a></li>
                 
-                <li><a href="/afianzadoras"><i class="zmdi zmdi-account"></i><span>Afianzadoras</span> </a></li>
-                <li><a href="/usuarios"><i class="zmdi zmdi-account"></i><span>Clientes</span> </a></li>
+                <li><a href="/afianzadoras"><i class="material-icons">next_week</i><span>Afianzadoras</span> </a></li>
+                <li><a href="/clientes"><i class="material-icons">supervisor_account</i><span>Clientes</span> </a></li>
+                <li><a href="/empleados"><i class="material-icons">build</i><span>Empleados</span> </a></li>
                
                
                
@@ -241,21 +242,7 @@
                
                
                
-                <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-accounts-outline"></i><span>Obras</span> </a>
-                    <ul class="ml-menu">
-                        <li><a href="students.html">All Students</a></li>
-                        <li><a href="add-students.html">Add Students</a></li>                       
-                        <li><a href="students-profile.html">Students Profile</a></li>
-                        <li><a href="students-invoice.html">Students Invoice</a></li>
-                    </ul>
-                </li>
-                <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-graduation-cap"></i><span>Afianzadoras</span> </a>
-                    <ul class="ml-menu">
-                        <li><a href="courses.html">All Courses</a></li>
-                        <li><a href="add-courses.html">Add Courses</a></li>                       
-                        <li><a href="courses-info.html">Courses Info</a></li>
-                    </ul>
-                </li>
+               
                 
                 <li >
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" >

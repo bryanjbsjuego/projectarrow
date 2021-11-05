@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class EmpresaController extends Controller
 {
@@ -21,7 +22,11 @@ class EmpresaController extends Controller
      */
     public function index()
     {
-        $empresas=Empresa::paginate(5);
+
+        $usuario=Auth::id();
+        $empresas=Empresa::where('id_tenant','=',$usuario)->get();
+       
+        // $empresas=Empresa::paginate(5);
 
         return view('empresas.index',compact('empresas'));
 

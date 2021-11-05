@@ -9,6 +9,8 @@ use App\Models\User;
 use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Return_;
 
 class EmpleadoController extends Controller
 {
@@ -19,8 +21,25 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        $empleados=Empleado::all();
-        return view('empleados.index',compact('empleados'));
+
+        //id del tenar en el usuario
+        $usuario=Auth::id();
+        $empresaid=User::select('empresa')->where('id','=',$usuario)->first();
+        
+        
+        //empleados con esa empresa
+        $empleados=Empleado::where('id_empresa','=',$empresaid->empresa)->get();
+        $empresas=Empresa::where('id_tenant','=',$usuario)->get();
+      
+        //empelados que son de clientes Registrados
+        $id_tenant=User::select('id_tenant')->where('id','=',$usuario)->first();
+        $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)->get();
+
+        
+        
+
+
+        return view('empleados.index',compact('empleados','clientes'));
     }
 
     /**
@@ -40,13 +59,19 @@ class EmpleadoController extends Controller
         $usuario=Auth::id();
         $tenat=User::select('id_tenant')->where('id','=',$usuario)->first();
 
+        //obtener el id de la empresa
+        $id_empresa=User::select('empresa')->where('id','=',$usuario)->first();
+        //obtener nombre de la la empresa
+        $empresa=Empresa::select('id','nombre')->where('id','=',$id_empresa->empresa)->first();
+
+
         $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)->get();
     
 
         
         // $clientes=Cliente::where('nombre','=',)
     
-        return view('empleados.crear',compact('clientes'));
+        return view('empleados.crear',compact('clientes','empresa'));
     }
 
     /**
@@ -55,11 +80,64 @@ class EmpleadoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 
+    //  return $request->all();
+
+        $this->validate($request,
+        [
+            'nombre' => 'required',
+            'apellido_paterno' => 'required',
+            'apellido_materno' => 'required',
+            'tipo_empleado'=>'required',
+        ],
+        [
+            'name.required' => 'El campo nombre debe ser obligatorio'
+        ]
         
-        // return $request->all();
+         );
+
+
+         if($request->input('tipo_empleado')=='em' && $request->input('id_empresa')==0){
+            $mensaje_error="Por favor seleccione una empresa";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+
+         }if($request->input('tipo_empleado')=='cl' && $request->input('id_cliente')==0){
+            $mensaje_error="Por favor seleccione un cliente Encargado";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+         }else{
+            $empleado = new Empleado();
+            $empleado->nombre=$request->nombre;
+            $empleado->apellido_paterno=$request->apellido_paterno;
+            $empleado->apellido_materno=$request->apellido_materno;
+            $empleado->tipo_empleado=$request->tipo_empleado;
+   
+            if($request->input('id_empresa')==0){
+              $empleado->id_empresa=null;  
+            }else{
+                $empleado->id_empresa=$request->id_empresa;
+            }
+   
+            
+            if($request->input('id_cliente')==0){
+               $empleado->id_cliente=null;  
+             }else{
+                 $empleado->id_cliente=$request->id_cliente;
+             }
+         
+   
+   
+             $empleado->save();
+             $mensaje="Empleado ". $empleado->nombre ." Agregado exitosamente";
+
+             return redirect()->route('empleados.index')->with(compact('mensaje'));
+         }
+
+
+       
+    
     }
 
     /**
@@ -68,9 +146,34 @@ class EmpleadoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Empleado $empleado)
     {
-        //
+
+       
+
+        if($empleado->id_empresa!=null){
+            
+            // $idem=Empleado::select('id_empresa')->where('id','=',$empleado->id)->first();
+            $empresa=DB::table('empresas')->join('empleados','empresas.id','=','empleados.id_empresa')
+            ->select('empresas.nombre')->where('empleados.id','=',$empleado->id)->first();
+
+        }else{
+            $empresa=null;
+        }
+
+        if($empleado->id_cliente!=null){
+            
+            // $idem=Empleado::select('id_empresa')->where('id','=',$empleado->id)->first();
+            $cliente=DB::table('clientes')->join('empleados','clientes.id','=','empleados.id_cliente')
+            ->select('clientes.nombre')->where('empleados.id','=',$empleado->id)->first();
+
+
+        }else{
+            $cliente=null;
+        }
+
+        return view('empleados.show',compact('empleado','empresa','cliente'));
+
     }
 
     /**
@@ -79,9 +182,15 @@ class EmpleadoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Empleado $empleado)
     {
-        //
+    
+        $usuario=Auth::id();
+        $id_empresa=User::select('empresa')->where('id','=',$usuario)->first();
+        $empresa=Empresa::select('id','nombre')->where('id','=',$id_empresa->empresa)->first();
+        $tenat=User::select('id_tenant')->where('id','=',$usuario)->first();
+        $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)->get();
+         return view('empleados.editar',compact('empleado','empresa','clientes'));
     }
 
     /**
@@ -91,19 +200,68 @@ class EmpleadoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Empleado $empleado)
     {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+       
+        $this->validate($request,
+        [
+            'nombre' => 'required',
+            'apellido_paterno' => 'required',
+            'apellido_materno' => 'required',
+            'tipo_empleado'=>'required',
+        ],
+        [
+            'name.required' => 'El campo nombre debe ser obligatorio'
+        ]
+        
+         );
+
+
+         if($request->input('tipo_empleado')=='em' && $request->input('id_empresa')==0){
+            $mensaje_error="Por favor seleccione una empresa";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+
+         }if($request->input('tipo_empleado')=='cl' && $request->input('id_cliente')==0){
+            $mensaje_error="Por favor seleccione un cliente Encargado";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+         }else{
+           
+            $empleado->nombre=$request->nombre;
+            $empleado->apellido_paterno=$request->apellido_paterno;
+            $empleado->apellido_materno=$request->apellido_materno;
+            $empleado->tipo_empleado=$request->tipo_empleado;
+   
+            if($request->input('id_empresa')==0){
+              $empleado->id_empresa=null;  
+            }else{
+                $empleado->id_empresa=$request->id_empresa;
+            }
+   
+            
+            if($request->input('id_cliente')==0){
+               $empleado->id_cliente=null;  
+             }else{
+                 $empleado->id_cliente=$request->id_cliente;
+             }
+         
+   
+   
+             $empleado->save();
+             $mensaje="Empleado ". $empleado->nombre ." Modificado exitosamente";
+
+             return redirect()->route('empleados.index')->with(compact('mensaje'));
+    
+    }
+}
+
+   
     public function destroy($id)
     {
-        //
+        Empleado::find($id)->delete();
+        $mensaje='Empleado eliminado exitosamente';
+        return redirect()->route('empleados.index')->with(compact('mensaje'));
     }
 }

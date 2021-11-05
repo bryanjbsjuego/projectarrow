@@ -56,10 +56,11 @@
                             </div>
                           
                 </div>
-                    
-                </div>
+                @endforeach
             </div>
-            @endforeach
+         
+        </div>
+            
         </div>
         <!-- #END# Exportable Table -->
    

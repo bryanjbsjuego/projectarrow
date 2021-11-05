@@ -43,13 +43,14 @@
                                         <td>{{ $afianzadora->telefono}}</td>
 
 
-                                        <td>
+                                        <td class="d-flex justify-content-around">
                                             @can('editar-afianzadora')
-                                                <a class="btn btn-raised btn-warning btn-sm" href="{{ route('afianzadoras.edit', $afianzadora->id) }}"><i class="fas fa-edit"></i></a>
+                                                <a  href="{{ route('afianzadoras.edit', $afianzadora->id) }}"><i class="zmdi zmdi-edit text-warning"></i></a>
                                             @endcan
                                             @can('borrar-afianzadora')
                                                 {!! Form::open(['method' => 'DELETE','route' => ['afianzadoras.destroy', $afianzadora->id], 'style'=>'display:inline']) !!}
-                                                {{ Form::button('<i class="fa fa-trash"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm'] )  }}
+                
+                                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
                                                 {!! Form::close() !!}
                                             @endcan
 

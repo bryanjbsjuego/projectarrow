@@ -2,7 +2,7 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Agregar Empleado</h2>
+            <h2>Editar Empleado</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
         </div>
         <div class="row clearfix">
@@ -31,26 +31,27 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                            <form action="{{ route('empleados.store') }}" method="POST">
+                            <form action="{{ route('empleados.update', $empleado->id) }}" method="POST">
+                                @method('PUT');
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="nombre" name="nombre" placeholder="Nombre" >
+                                            <input type="text" class="form-control" value="{{$empleado->nombre}}"  id="nombre" name="nombre" placeholder="Nombre" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="apellido_paterno" name="apellido_paterno" placeholder="Apellido paterno" >
+                                            <input type="text" class="form-control" value="{{$empleado->apellido_paterno}}"  id="apellido_paterno" name="apellido_paterno" placeholder="Apellido paterno" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno" >
+                                            <input type="text" class="form-control"   value="{{$empleado->apellido_materno}}"  id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno" >
                                         </div>
                                     </div>
                                 </div>
@@ -58,69 +59,38 @@
                                 <div class="col-sm-6">
                                     <select class="form-control show-tick" id="tipo_empleado" name="tipo_empleado">
                                         <option value="0">-- Seleccione tipo de empleado --</option>
-                                        <option value="em">Empresa</option>
-                                        <option value="cl">Cliente</option>
+                                        <option value="em" @if ($empleado->tipo_empleado=='em') selected  @endif >Empresa</option>
+                                        <option value="cl" @if ($empleado->tipo_empleado=='cl') selected  @endif>Cliente</option>
                                      
                                     </select>
                                 </div>
 
-                                <div class="col-md-6 col-sm-12">
+
+
+                                 <div class="col-md-6 col-sm-12">
                                     <div class="form-group drop-custum">
                                     <select class="form-control show-tick" id="cliente" name="id_cliente" required>
                                     <option value="0" selected>--Seleccione un cliente--</option>
 
                                      @foreach ($clientes as $cliente)
-                                     <option value="{{$cliente->id}}" >{{$cliente->nombre}}</option>
+                                     <option value="{{$cliente->id}}" @if ($empleado->id_cliente == $cliente->id) selected  @endif   >{{$cliente->nombre}}</option>
                                      @endforeach   
                                     </select>
                                     </div>
-                                </div>
+                                </div> 
 
+                             
                                 <div class="col-sm-6">
-                                    <select class="form-control show-tick" id="empresa" name="id_empresa" style="display: none" required>
+                                    <select class="form-control show-tick" id="empresa" name="id_empresa"  required>
                                         <option value="0"  selected>--Seleccione una empresa--</option>
-                                        <option value="{{$empresa->id}}" id="opc">{{$empresa->nombre}}</option>
+                                        <option value="{{$empresa->id}}"  @if ($empleado->id_empresa == $empresa->id) selected  @endif   id="opc">{{$empresa->nombre}}</option>
                                      
                                     </select>
                                 </div>
+ 
 
 
 
-
-                                {{-- <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control"  id="apellido_materno" name="empresa2" value="{{$empresa->id}}" placeholder="{{$empresa->nombre}}" >
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-                                
-
-                                {{-- <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <textarea  style="height: 100px" class="form-control"  id="domicilio" name="domicilio" placeholder="Domicilio" ></textarea>
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-
-                                {{-- <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control"  id="telefono" name="telefono" placeholder="Télefono" >
-                                        </div>
-                                    </div>
-                                </div> --}}
-
-                                  {{-- <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control"  id="telefono" name="telefono" placeholder="Télefono" >
-                                        </div>
-                                    </div>
-                                </div> --}}
 
 
                                 <br/>
@@ -128,7 +98,7 @@
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">Guardar</button>
-                                    <a href="{{ route('afianzadoras.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
+                                    <a href="{{ route('empleados.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
                                     </center>
                                 </div>
 
@@ -149,6 +119,29 @@
     
 
     <script>
+
+
+$(document).ready(function(){
+    
+    $tipo=$('#tipo_empleado').val();
+    console.log($tipo);
+
+    if($tipo=='em'){
+        document.getElementById('cliente').style.display = 'none';
+                document.getElementById('empresa').style.display = 'inline-block';
+                 document.getElementById("cliente").value = '0';
+
+    }else{
+        document.getElementById('cliente').style.display = 'inline-block';
+                document.getElementById('empresa').style.display = 'none';
+                document.getElementById("empresa").value='0';
+    }
+
+});
+
+
+
+
     let $empleado;
 
     $(function(){
@@ -200,4 +193,4 @@
 
     </script>
     
-@endsection
+@endsection 
