@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Empleado;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EmpresaController extends Controller
 {
@@ -124,7 +126,21 @@ class EmpresaController extends Controller
      */
     public function destroy(Empresa $empresa)
     {
-        $empresa->delete();
-        return redirect()->route('empresas.index');
+
+        // return $empresa->id;
+
+        $existen=Empleado::where('id_empresa','=', $empresa->id)->select(DB::raw('count(*) as empleados'))
+        ->first();
+
+        if($existen->empleados<=0){
+       
+             $empresa->delete();
+             $mensaje='Empresa: '.$empresa->nombre." se elimino correctamente";
+            return redirect()->route('empresas.index')->with(compact('mensaje'));
+        }else{
+           $mensaje_error='No puedes eliminar '.$empresa->nombre. ' cuenta con empleados Activos';
+           return redirect()->route('empresas.index')->with(compact('mensaje_error'));
+        }
+
     }
 }

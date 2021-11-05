@@ -7,6 +7,18 @@
     <div class="container-fluid">
         <div class="block-header">
             <h2>Empresas</h2>
+
+            @if (session('mensaje'))
+            <div class="alert alert-success" role="alert">
+              {{session('mensaje')}}
+            </div>
+            @endif
+    
+            @if (session('mensaje_error'))
+            <div class="alert alert-danger" role="alert">
+              {{session('mensaje_error')}}
+            </div>
+            @endif
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             <div>
                 @can('crear-empresa')

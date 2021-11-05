@@ -48,7 +48,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                   
+                        <h4 class="text-center">Empleados de Empresa</h4>
                     </div>
                     <div class="body table-responsive">
                         <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -105,8 +105,8 @@
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-                    <div class="header">
-                   
+                    <div class="header" >
+                        <h4 class="text-center">Empleados de nuestros Clientes</h4>
                     </div>
                     <div class="body table-responsive">
                         <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -125,12 +125,12 @@
                                 @foreach ($clientes as $cliente)
                                 <tr>
                                     <td>{{$cliente->nombre}}</td>
-                                    <td>{{$empleado->apellido_materno}}</td>
-                                    <td>{{$empleado->apellido_paterno}}</td>
+                                    <td>{{$cliente->apellido_materno}}</td>
+                                    <td>{{$cliente->apellido_paterno}}</td>
                                   
                                       
                                       
-                                        @if ($empleado->tipo_empleado=='cl')
+                                        @if ($cliente->tipo_empleado=='cl')
                                         <td>Cliente</td>
                                         @else
                                         <td>Empresa</td>
@@ -138,11 +138,11 @@
                                         @endif
                                   <td class="d-flex justify-content-around">
 
-                                    <a href="{{route('empleados.edit',$empleado->id)}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
-                                   <a href="{{route('empleados.show',$empleado->id)}}" class=""><i class="material-icons text-success">visibility</i></a>
+                                    <a href="{{route('empleados.edit',$cliente->id)}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
+                                   <a href="{{route('empleados.show',$cliente->id)}}" class=""><i class="material-icons text-success">visibility</i></a>
                                   
 
-                                   <form action="{{route('empleados.destroy',$empleado->id)}}"   method="post">
+                                   <form action="{{route('empleados.destroy',$cliente->id)}}"   method="post">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>

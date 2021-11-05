@@ -8,6 +8,7 @@ use App\Models\Empresa;
 use App\Models\User;
 use Facade\FlareClient\Http\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
@@ -30,15 +31,20 @@ class EmpleadoController extends Controller
         //empleados con esa empresa
         $empleados=Empleado::where('id_empresa','=',$empresaid->empresa)->get();
         $empresas=Empresa::where('id_tenant','=',$usuario)->get();
+
+       
       
         //empelados que son de clientes Registrados
         $id_tenant=User::select('id_tenant')->where('id','=',$usuario)->first();
-        $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)->get();
+        // return $id_tenant;
+        // $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)->get();
 
-        
-        
+        $clientes=DB::table('users')->join('clientes', 'users.id_tenant','=','clientes.id_tenant')
+        ->join('empleados', 'empleados.id_cliente','=', 'clientes.id')
+        ->select('empleados.*')->where('clientes.id_tenant','=',$id_tenant->id_tenant)
+        ->groupBy('empleados.id')->get();
 
-
+       
         return view('empleados.index',compact('empleados','clientes'));
     }
 
