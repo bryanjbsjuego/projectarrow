@@ -20,6 +20,10 @@ class CreateClienteTable extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('id_tenant')->nullable();
             $table->foreign('id_tenant')->references('id')->on('users');
+            $table->unsignedBigInteger('id_empresa')->nullable();
+            $table->foreign('id_empresa')->references('id')->on('empresas');
+
+
             $table->timestamps();
         });
     }

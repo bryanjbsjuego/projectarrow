@@ -35,16 +35,17 @@ class EmpleadoController extends Controller
        
       
         //empelados que son de clientes Registrados
-        $id_tenant=User::select('id_tenant')->where('id','=',$usuario)->first();
+        $id_tenant=User::select('id_tenant','empresa')->where('id','=',$usuario)->first();
         // return $id_tenant;
         // $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)->get();
 
         $clientes=DB::table('users')->join('clientes', 'users.id_tenant','=','clientes.id_tenant')
         ->join('empleados', 'empleados.id_cliente','=', 'clientes.id')
+        ->join('empresas', 'empresas.id','=','clientes.id_empresa')
         ->select('empleados.*')->where('clientes.id_tenant','=',$id_tenant->id_tenant)
+        ->where('clientes.id_empresa','=',$id_tenant->empresa)
         ->groupBy('empleados.id')->get();
 
-       
         return view('empleados.index',compact('empleados','clientes'));
     }
 
@@ -63,7 +64,7 @@ class EmpleadoController extends Controller
         // return $idempresa;
         // $empresa=Empresa::where('id_tenant','=', $idempresa)->get();
         $usuario=Auth::id();
-        $tenat=User::select('id_tenant')->where('id','=',$usuario)->first();
+        $tenat=User::select('id_tenant','empresa')->where('id','=',$usuario)->first();
 
         //obtener el id de la empresa
         $id_empresa=User::select('empresa')->where('id','=',$usuario)->first();
@@ -71,7 +72,8 @@ class EmpleadoController extends Controller
         $empresa=Empresa::select('id','nombre')->where('id','=',$id_empresa->empresa)->first();
 
 
-        $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)->get();
+        $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)
+        ->where('id_empresa','=',$tenat->empresa)->get();
     
 
         
@@ -200,9 +202,13 @@ class EmpleadoController extends Controller
         $usuario=Auth::id();
         $id_empresa=User::select('empresa')->where('id','=',$usuario)->first();
         $empresa=Empresa::select('id','nombre')->where('id','=',$id_empresa->empresa)->first();
-        $tenat=User::select('id_tenant')->where('id','=',$usuario)->first();
-        $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)->get();
-         return view('empleados.editar',compact('empleado','empresa','clientes'));
+        $tenat=User::select('id_tenant','empresa')->where('id','=',$usuario)->first();
+
+        $clientes=Cliente::select('id','nombre')->where('id_tenant','=',$tenat->id_tenant)
+        ->where('id_empresa','=',$tenat->empresa)->get();
+        
+        
+        return view('empleados.editar',compact('empleado','empresa','clientes'));
     }
 
     /**

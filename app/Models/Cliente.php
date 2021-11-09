@@ -13,7 +13,8 @@ class Cliente extends Model
         'nombre',
         'telefono',
         'email',
-        'id_tenant'
+        'id_tenant',
+        'id_empresa'
         
     ];
 
