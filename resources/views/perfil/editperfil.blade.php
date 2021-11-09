@@ -31,9 +31,9 @@
                 <small class="text-muted">Arrow</small>
             </div>
             <div>
-                @can('editar-empresa')
+                {{-- @can('editar-empresa') --}}
                 <a href="{{route('perfil.edit', $usuario->id) }}" class="btn btn-raised btn-primary">Editar</a>
-                @endcan
+                {{-- @endcan --}}
             </div>
 
 

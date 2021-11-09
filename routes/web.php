@@ -7,8 +7,10 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\AfianzadoraController;
+use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\OperativoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TenantController;
 
@@ -39,7 +41,11 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('afianzadoras',AfianzadoraController::class);
     Route::resource('clientes',ClienteController::class);
     Route::resource('empleados',EmpleadoController::class);
+    Route::get('empleados/{empleado}/activar',[EmpleadoController::class,'activar'])->name('empleados.activar');
     Route::resource('perfil',PerfilController::class);
+    Route::resource('cargos',CargoController::class);
+    Route::resource('operativos',OperativoController::class);
+
 
 } );
 

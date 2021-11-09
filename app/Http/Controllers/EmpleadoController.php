@@ -109,16 +109,22 @@ class EmpleadoController extends Controller
             return back()->withInput()->with(compact('mensaje_error'));
 
 
-         }if($request->input('tipo_empleado')=='cl' && $request->input('id_cliente')==0){
+         }else if($request->input('tipo_empleado')=='cl' && $request->input('id_cliente')==0){
             $mensaje_error="Por favor seleccione un cliente Encargado";
             return back()->withInput()->with(compact('mensaje_error'));
 
-         }else{
+         }else if($request->input('tipo_empleado')==0 && $request->input('id_empresa')==0 && $request->input('id_cliente')==0){
+        
+            $mensaje_error="Por favor seleccione un tipo de empleado";
+            return back()->withInput()->with(compact('mensaje_error'));
+         }else {
             $empleado = new Empleado();
             $empleado->nombre=$request->nombre;
             $empleado->apellido_paterno=$request->apellido_paterno;
             $empleado->apellido_materno=$request->apellido_materno;
             $empleado->tipo_empleado=$request->tipo_empleado;
+            $empleado->num_casa=$request->num_casa;
+            $empleado->num_cel=$request->num_cel;
    
             if($request->input('id_empresa')==0){
               $empleado->id_empresa=null;  
@@ -228,17 +234,25 @@ class EmpleadoController extends Controller
             $mensaje_error="Por favor seleccione una empresa";
             return back()->withInput()->with(compact('mensaje_error'));
 
-
-         }if($request->input('tipo_empleado')=='cl' && $request->input('id_cliente')==0){
+         }else if($request->input('tipo_empleado')=='cl' && $request->input('id_cliente')==0){
             $mensaje_error="Por favor seleccione un cliente Encargado";
             return back()->withInput()->with(compact('mensaje_error'));
 
+         }else if($request->input('tipo_empleado')==0 && $request->input('id_cliente')==0 && $request->input('id_empresa')==0){
+            $mensaje_error="Por favor seleccione un tipo de empleado";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+         }else if($request->input('tipo_empleado')!='cl' && $request->input('tipo_empleado')!='em'){
+            $mensaje_error="Por favor seleccione un tipo de empleado";
+            return back()->withInput()->with(compact('mensaje_error'));
          }else{
            
             $empleado->nombre=$request->nombre;
             $empleado->apellido_paterno=$request->apellido_paterno;
             $empleado->apellido_materno=$request->apellido_materno;
             $empleado->tipo_empleado=$request->tipo_empleado;
+            $empleado->num_casa=$request->num_casa;
+            $empleado->num_cel=$request->num_cel;
    
             if($request->input('id_empresa')==0){
               $empleado->id_empresa=null;  
@@ -266,8 +280,17 @@ class EmpleadoController extends Controller
    
     public function destroy($id)
     {
-        Empleado::find($id)->delete();
-        $mensaje='Empleado eliminado exitosamente';
+
+        Empleado::where('id','=',$id)->update(['estatus'=>1]);
+        // Empleado::find($id)->delete();
+        $mensaje='Empleado dado de baja exitosamente';
+        return redirect()->route('empleados.index')->with(compact('mensaje'));
+    }
+
+    public function activar($id){
+        Empleado::where('id','=',$id)->update(['estatus'=>0]);
+        // Empleado::find($id)->delete();
+        $mensaje='Empleado Activado exitosamente';
         return redirect()->route('empleados.index')->with(compact('mensaje'));
     }
 }

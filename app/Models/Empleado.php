@@ -13,6 +13,8 @@ class Empleado extends Model
         'apellido_paterno',
         'apellido_materno',
         'tipo_empleado',
+        'num_casa',
+        'num_cel',
         'id_empresa',
         'id_cliente'
         

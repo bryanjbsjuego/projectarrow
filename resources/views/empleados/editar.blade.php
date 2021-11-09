@@ -56,6 +56,26 @@
                                     </div>
                                 </div>
 
+                                
+                                <div class="row m-2">
+                                   
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control"  id="num_casa" name="num_casa" value="{{$empleado->num_casa}}" placeholder="Ingrese su número de casa*" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control"  id="num_cel" name="num_cel"  value="{{$empleado->num_cel}}" placeholder="Ingrese su número telefonico" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> 
+
                                 <div class="col-sm-6">
                                     <select class="form-control show-tick" id="tipo_empleado" name="tipo_empleado">
                                         <option value="0">-- Seleccione tipo de empleado --</option>
@@ -88,7 +108,6 @@
                                     </select>
                                 </div>
  
-
 
 
 

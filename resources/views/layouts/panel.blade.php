@@ -229,7 +229,10 @@
                 <li class="active open"><a href="/home"><i class="zmdi zmdi-home"></i><span>Inicio</span></a></li>
                 
                 <li><a href="/roles"><i class="zmdi zmdi-calendar-check"></i><span>Roles</span> </a></li>
+                {{-- tenant --}}
                 <li><a href="/usuarios"><i class="zmdi zmdi-account"></i><span>Usuarios</span> </a></li>
+                {{-- Responsable de empresa --}}
+                <li><a href="/operativos"><i class="zmdi zmdi-account"></i><span>Usuarios-Operativo</span> </a></li>
                 <li><a href="/empresas"><i class="material-icons">business</i><span>Empresas</span> </a></li>
                 
                 <li><a href="/afianzadoras"><i class="material-icons">next_week</i><span>Afianzadoras</span> </a></li>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Afianzadora;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AfianzadoraController extends Controller
 {
@@ -20,7 +22,12 @@ class AfianzadoraController extends Controller
      */
     public function index()
     {
-        $afianzadoras=Afianzadora::paginate(5);
+
+        $id=Auth::id();
+        $empresa=User::select('empresa')->where('id','=',$id)->first();
+        $afianzadoras=Afianzadora::where('id_empresa','=',$empresa->empresa)->get();
+        $afianzadoras=Afianzadora::where('id_empresa','=',$empresa->empresa)->paginate(5);
+        // $afianzadoras=Afianzadora::paginate(5);
 
         return view('afianzadoras.index',compact('afianzadoras'));
     }
@@ -44,6 +51,11 @@ class AfianzadoraController extends Controller
      */
     public function store(Request $request)
     {
+
+        
+        $id=Auth::id();
+        $empresa=User::select('empresa')->where('id','=',$id)->first();
+
         request()->validate([
             'nombre' => 'required',
             'rfc' => 'required',
@@ -53,7 +65,24 @@ class AfianzadoraController extends Controller
 
         ]);
 
-        Afianzadora::create($request->all());
+
+        
+        $data=$request->only([
+            'nombre',
+            'rfc',
+            'razon_social',
+            'domicilio',
+            'telefono',
+            'id_empresa'
+        ]);
+
+
+         $data['id_empresa']=$empresa->empresa;
+        Afianzadora::create($data);
+
+        // $data['id_empresa']=auth()->id();
+
+        // Afianzadora::create($request->all());
         return redirect()->route('afianzadoras.index');
 
 

@@ -54,7 +54,7 @@
                                 </div>
                             @endif
                             <div class="col-md-12">                                                                          
-                            {!! Form::open(array('route' => 'usuarios.store','method' => 'POST', 'file' => true, 'enctype' => 'multipart/form-data' )) !!}
+                            {!! Form::open(array('route' => 'operativos.store','method' => 'POST', 'file' => true, 'enctype' => 'multipart/form-data' )) !!}
                                 @csrf
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -107,24 +107,17 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 col-sm-12 " id="empresa" style="display:none">
+                                <div class="col-md-6 col-sm-12 " id="empresa" style="display:inline-block">
                                     <div class="form-group drop-custum">
                                     <select class="form-control show-tick "  name="empresa" id="em">
-                                        <option value="" selected>--Seleccione una empresa--</option>
-                                     @foreach ($empresas as $empresa)
-                                     <option value="{{$empresa->id}}" value="{{old('name')}}">{{$empresa->nombre}}</option>
-                                     @endforeach   
+                                  
+                                     <option value="{{$empresa->id}}" value="{{old('name')}}" selected>{{$empresa->nombre}}</option>
+                                   
                                     </select>
                                     </div>
                                 </div>
 
-                           
-                                <div class="col-sm-12 col-md-6">
-                                    <div class="alert bg-pink alert-dismissible" id="alerta" style="display: none" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                       No existen empresas registradas
-                                    </div>
-                                </div>
+                         
                                 
                                 <br/>
                                 <br/>
@@ -132,7 +125,7 @@
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2" style="display:inline-block" id="boton">Guardar</button>
-                                    <a href="{{ route('usuarios.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
+                                    <a href="{{ route('operativos.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
                                     </center>
                                 </div>
 
@@ -152,7 +145,7 @@
 @section('scripts')
     <script src="{{asset('plugins/dropzone/dropzone.js')}}"></script>
 
-    <script>
+    {{-- <script>
     let $rol,$empresas,boton;
 
     $(function(){
@@ -183,6 +176,6 @@
     });
 
 
-    </script>
+    </script> --}}
     
 @endsection

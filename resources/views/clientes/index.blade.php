@@ -12,45 +12,51 @@
                 <a href="{{ route('clientes.create') }}" class="btn btn-raised btn-success">Agregar cliente</a>
             </div>
         </div>
+        @if (session('mensaje'))
+        <div class="alert alert-success" role="alert">
+          {{session('mensaje')}}
+        </div>
+        @endif
+
+        @if (session('mensaje_error'))
+        <div class="alert alert-danger" role="alert">
+          {{session('mensaje_error')}}
+        </div>
+        @endif
 
         <div class="row clearfix">
             @foreach ($clientes as $cliente)
+            
             <div class="col-lg-4 col-md-6 col-sm-12">
-               
                 <div class="card all-patients">
                     <div class="body">
-                        <div class="row d-flex justify-content-center" >
-                         
-
-                            <div class="col-lg-8 col-md-12 m-b-0">
-                            <div class=" d-flex justify-content-between">
-                                <h5 class=""> Nombre: {{$cliente->nombre}}  </h5>
-                                <a href="{{route('clientes.edit', $cliente->id )}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
-                                  
-                                   
-                                    {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $cliente->id], 'style'=>'display:inline']) !!}
-                                    {{-- {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] ) }} --}}
-                                    <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
-                                    {!! Form::close() !!}
-
-                                   
-                            </div>
-                                <address class="m-t-10 m-b-0">
+                            <div class="col-lg-12 col-md-12 m-b-0 text-center">
+                                <h5 class="">{{$cliente->nombre}}  </h5>
+                                <address class="">
                                     Correo:   {{$cliente->email}} <br>
                                     <abbr title="Phone">Teléfono:</abbr>  {{$cliente->telefono}}
                                 </address>
+                         
+                            <div class="col-lg-12 col-md-12">
+                                <a href="{{route('clientes.edit', $cliente->id )}}" class="edit ml-2"><i class="zmdi zmdi-edit text-warning"></i></a>
+                                {!! Form::open(['method' => 'DELETE','route' => ['clientes.destroy', $cliente->id], 'style'=>'display:inline']) !!}
+                                {{-- {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] ) }} --}}
+                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
+                                {!! Form::close() !!}
                             </div>
-                                
-                          
-                          
+                        </div>
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
+          
+
+        
         
         </div>
 
+        
 
 
     </div>

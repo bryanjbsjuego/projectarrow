@@ -7,13 +7,14 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
+          
+            <h2>Empleados</h2>
+            <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             @if (session('mensaje'))
             <div class="alert alert-success" role="alert">
               {{session('mensaje')}}
             </div>
             @endif
-            <h2>Empleados</h2>
-            <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             <div>
                 <a href="{{ route('empleados.create') }}" class="btn btn-raised btn-success">Agregar Empleado</a>
             </div>
@@ -59,6 +60,9 @@
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Tipo Empleado</th>
+                                    <th>Numero de contacto</th>
+                                    <th>Estatus</th>
+                                   
                                     <th>Acciones</th>
                                   
                                 </tr>
@@ -67,17 +71,26 @@
                                 @foreach ($empleados as $empleado)
                                 <tr>
                                     <td>{{$empleado->nombre}}</td>
-                                    <td>{{$empleado->apellido_materno}}</td>
                                     <td>{{$empleado->apellido_paterno}}</td>
+                                    <td>{{$empleado->apellido_materno}}</td>
                                   
-                                      
-                                      
                                         @if ($empleado->tipo_empleado=='cl')
                                         <td>Cliente</td>
                                         @else
                                         <td>Empresa</td>
                                   
                                         @endif
+
+
+                                        <td>{{$empleado->num_cel}}</td>
+                                        
+                                   
+                                        @if ($empleado->estatus==0)
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        @else
+                                       <td> <span class="badge bg-danger">Inactivo</span></td>
+                                        @endif
+
                                   <td class="d-flex justify-content-around">
 
                                     <a href="{{route('empleados.edit',$empleado->id)}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
@@ -117,6 +130,8 @@
                                     <th>Apellido Paterno</th>
                                     <th>Apellido Materno</th>
                                     <th>Tipo Empleado</th>
+                                    <th>Numero de contacto</th>
+                                    <th>Estatus</th>
                                     <th>Acciones</th>
                                   
                                 </tr>
@@ -125,10 +140,11 @@
                                 @foreach ($clientes as $cliente)
                                 <tr>
                                     <td>{{$cliente->nombre}}</td>
-                                    <td>{{$cliente->apellido_materno}}</td>
+                                   
                                     <td>{{$cliente->apellido_paterno}}</td>
+                                    <td>{{$cliente->apellido_materno}}</td>
                                   
-                                      
+                                
                                       
                                         @if ($cliente->tipo_empleado=='cl')
                                         <td>Cliente</td>
@@ -136,6 +152,13 @@
                                         <td>Empresa</td>
                                   
                                         @endif
+                                        <td>{{$cliente->num_cel}}</td>
+                                        @if ($cliente->estatus==0)
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        @else
+                                       <td> <span class="badge bg-danger">Inactivo</span></td>
+                                        @endif
+
                                   <td class="d-flex justify-content-around">
 
                                     <a href="{{route('empleados.edit',$cliente->id)}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>

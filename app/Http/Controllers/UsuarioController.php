@@ -27,6 +27,8 @@ class UsuarioController extends Controller
         // $usuarios=User::paginate(5);
         $id=Auth::id();
         $usuarios=User::where('users.id_tenant',$id)->paginate(5);
+
+        
         return view('usuarios.index',compact('usuarios'));
     }
 
@@ -77,12 +79,16 @@ class UsuarioController extends Controller
     public function store(Request $request)
     {
 
+
         // $formulario=$request->all();
         $rol =$request->input(['roles']);
         $consulta=Role::select('id')->where('name','like',$rol)->first();
         $mensaje=[];
+
+
+        // return $rol;
       
-        
+        //tenant
         if($consulta->id==1){
             $id_tenant=null;
         }else{
@@ -106,11 +112,35 @@ class UsuarioController extends Controller
     
     
           $idempresa=$request->input('empresa');
+
+
+
+             if($rol=='Responsable de empresa' && $request->input('empresa')==0){
+                $mensaje="¡ERROR!, por favor selecciona una empresa.";
+                return back()->withInput()->with(compact('mensaje'));
+             }
+
             
-            $busqueda= User::where('empresa', '=', $idempresa)->exists();// user found}
+            // $busqueda= User::where('empresa', '=', $idempresa)->exists();// user found}
+
+            //buscar role responsable
+            $role=Role::select('id')->where('name','=','Responsable de empresa')->first();
+
+
+             $busqueda = DB::table('users')
+             ->join('empresas', 'users.empresa', '=', 'empresas.id')
+             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+             ->where('users.id_tenant','=',$id_tenant)
+             ->where('empresas.id','=',$idempresa)
+             ->where('role_id','=',$role->id)->count();
+
+            //  return $users;
+            // ->select('users.*', 'contacts.phone', 'orders.price')
+            // ->get();
 
             if($busqueda==1){
                 $mensaje="¡ERROR!, Esta empresa ya cuenta con un responsable.";
+
 
                 // return redirect()->route('usuarios.create')->with(compact('mensaje'));
                 // return  back()->with(compact('mensaje'));
@@ -185,6 +215,7 @@ class UsuarioController extends Controller
         $empresas=DB::table('users')->join('empresas','empresas.id_tenant','=','users.id_tenant')
         ->select('empresas.id','empresas.nombre')
         ->where('empresas.id_tenant','=',$id)->groupBy('empresas.id')->get();
+
         //consulta para obtener el rol del usuario 
         $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
         ->join('roles','roles.id','=','model_has_roles.role_id')
@@ -206,6 +237,7 @@ class UsuarioController extends Controller
         }
 
         // return $rol;
+    
 
 
         $empresaS = new Empresa();
@@ -277,27 +309,36 @@ class UsuarioController extends Controller
                 $usuario->photo=$p;
 
             }
-
-        
            
              $usuario->id_tenant=$id_tenant;
              
              
              $idempresa=$request->input('empresa');
+             if($rol=='Responsable de empresa' && $request->input('empresa')==0){
+                $mensaje="¡ERROR!, por favor selecciona una empresa.";
+                return back()->withInput()->with(compact('mensaje'));
+             }
 
              if(!empty($idempresa)){
 
-                $busqueda= User::where('empresa', '=', $idempresa)->exists();// user found}
-                $busqueda2=User::select('id')->where('empresa','=',$idempresa)->first();
-                if($busqueda==1 && $busqueda2->id!=$usuario->id){
+                if($rol=='Responsable de empresa'){
+                    $role=Role::select('id')->where('name','=','Responsable de empresa')->first();
+                    $busqueda = DB::table('users')
+                    ->join('empresas', 'users.empresa', '=', 'empresas.id')
+                    ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                    ->where('users.id_tenant','=',$id_tenant)
+                    ->where('empresas.id','=',$idempresa)
+                    ->where('role_id','=',$role->id)->count();
+    
+                    if($busqueda>0){
 
-                    $mensaje="¡ERROR!, Esta empresa ya cuenta con un responsable.";
-                   return back()->withInput()->with(compact('mensaje'));
-                }else{
-                   $usuario->empresa=$request->input('empresa');
-                   $usuario->update();
-                   $mensaje="Usuario modificado exitosamente: ".$usuario->name;
-                }
+                        $mensaje="¡ERROR!, Esta empresa ya cuenta con un responsable.";
+                       return back()->withInput()->with(compact('mensaje'));
+                     }else{
+                        $usuario->empresa=$request->input('empresa');
+                        $usuario->update();
+                        $mensaje="Usuario modificado exitosamente: ".$usuario->name;
+                    }
 
              }else{
              
@@ -306,13 +347,16 @@ class UsuarioController extends Controller
                 $usuario->update();
              }
             
-        
-
                 DB::table('model_has_roles')->where('model_id',$usuario->id)->delete();
                 $usuario->assignRole($consulta->id);
                 return redirect()->route('usuarios.index')->with(compact('mensaje'));
         
-    }
+        }else{
+            DB::table('model_has_roles')->where('model_id',$usuario->id)->delete();
+            $usuario->assignRole($consulta->id);
+            return redirect()->route('usuarios.index');
+        }
+}
 
     /**
      * Remove the specified resource from storage.

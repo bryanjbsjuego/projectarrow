@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAfianzadoraTable extends Migration
+class CreateCargoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateAfianzadoraTable extends Migration
      */
     public function up()
     {
-        Schema::create('afianzadoras', function (Blueprint $table) {
+        Schema::create('cargos', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('rfc');
-            $table->string('razon_social');
-            $table->string('domicilio');
-            $table->string('telefono');
+            $table->string('nombre_cargo');
+            $table->string('descripcion');
+            $table->unsignedBigInteger('id_empresa')->nullable();
+            $table->foreign('id_empresa')->references('id')->on('empresas');
+
+
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateAfianzadoraTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('afianzadora');
+        Schema::dropIfExists('cargo');
     }
 }

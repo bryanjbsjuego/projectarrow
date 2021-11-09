@@ -36,25 +36,49 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="nombre" name="nombre" placeholder="Nombre" >
+                                            <input type="text" class="form-control"  id="nombre" name="nombre" value="{{old('nombre')}}" placeholder="Nombre" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="apellido_paterno" name="apellido_paterno" placeholder="Apellido paterno" >
+                                            <input type="text" class="form-control"  id="apellido_paterno"  value="{{old('apellido_paterno')}}" name="apellido_paterno" placeholder="Apellido paterno" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="apellido_materno" name="apellido_materno" placeholder="Apellido Materno" >
+                                            <input type="text" class="form-control"  id="apellido_materno" value="{{old('apellido_materno')}}" name="apellido_materno" placeholder="Apellido Materno" >
                                         </div>
                                     </div>
                                 </div>
 
+
+
+                                <div class="row m-2">
+                                   
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control"  id="num_casa" value="{{old('num_casa')}}" name="num_casa" placeholder="Ingrese su número de casa*" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-line">
+                                                <input type="text" class="form-control"  id="num_cel" value="{{old('num_cel')}}" name="num_cel" placeholder="Ingrese su número telefonico" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> 
+
+
+
+                              
                                 <div class="col-sm-6">
                                     <select class="form-control show-tick" id="tipo_empleado" name="tipo_empleado">
                                         <option value="0">-- Seleccione tipo de empleado --</option>

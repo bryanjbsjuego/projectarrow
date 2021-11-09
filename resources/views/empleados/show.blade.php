@@ -64,10 +64,24 @@
                     <p>Empresa: <strong>{{$empresa->nombre}}</strong></p>
                     @endif
 
+
+                    <strong>Numero de contacto 1</strong>
+                    <p>{{$empleado->num_casa}}</p>
+
+                    
+                    <strong>Numero de contacto 2</strong>
+                    <p>{{$empleado->num_cel}}</p>
                
-                
                     <hr>
-                
+
+
+
+                    @if ($empleado->estatus==1)
+                    <p>Estatus: <strong><span class="badge bg-danger">Inactivo</span></strong></p>
+                     <a href="{{route('empleados.activar',$empleado->id)}}" class="btn  btn-raised btn-info waves-effect">Activar Empleado</i></a>
+                     @else
+                     <p>Estatus: <strong><span class="badge bg-success">Activo</span></strong></p>
+                     @endif
                 </div>
             </div>
         </div>

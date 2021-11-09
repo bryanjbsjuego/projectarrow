@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Empleado;
 use App\Models\Empresa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ClienteController extends Controller
 {
@@ -129,7 +131,20 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
-        $cliente->delete();
-        return redirect()->route('clientes.index');
+
+        $empleados=Empleado::where('id_cliente','=',$cliente->id)->where('estatus','=',0)->count();
+        
+        if($empleados>0){
+            $mensaje_error="No se puede eliminar el cliente: ". $cliente->nombre. "  cuenta con empleados activos";
+            return redirect()->route('clientes.index')->with(compact('mensaje_error'));
+        }else{
+            
+            DB::table('empleados')->where('id_cliente','=',$cliente->id)->delete();
+            $cliente->delete();
+            $mensaje="Cliente:".$cliente->nombre." Eliminado exitosamente asi como sus empleados inactivos";
+            return redirect()->route('clientes.index')->with(compact('mensaje'));
+        }
+      
+      
     }
 }
