@@ -14,6 +14,7 @@ use App\Http\Controllers\OperativoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\UnidadController;
+use App\Http\Controllers\ContratosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,7 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('unidades',UnidadController::class);
     Route::get('eliminadas',[UnidadController::class,'eliminadas'])->name('unidades.baja');
     Route::get('unidades/{id}/activar',[UnidadController::class,'activar'])->name('unidades.activas');
-
+    Route::resource('contratos',ContratosController::class);
 
 } );
 
