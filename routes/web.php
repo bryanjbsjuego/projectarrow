@@ -13,6 +13,7 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\OperativoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TenantController;
+use App\Http\Controllers\UnidadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,9 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('perfil',PerfilController::class);
     Route::resource('cargos',CargoController::class);
     Route::resource('operativos',OperativoController::class);
+    Route::resource('unidades',UnidadController::class);
+    Route::get('eliminadas',[UnidadController::class,'eliminadas'])->name('unidades.baja');
+    Route::get('unidades/{id}/activar',[UnidadController::class,'activar'])->name('unidades.activas');
 
 
 } );
