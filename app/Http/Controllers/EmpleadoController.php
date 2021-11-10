@@ -145,7 +145,6 @@ class EmpleadoController extends Controller
    
              $empleado->save();
              $mensaje="Empleado ". $empleado->nombre ." Agregado exitosamente";
-
              return redirect()->route('empleados.index')->with(compact('mensaje'));
          }
 
