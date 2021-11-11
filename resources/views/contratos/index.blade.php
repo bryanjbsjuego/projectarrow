@@ -20,20 +20,24 @@
             </div>
         </div>
 
-        <div class="row clearfix">            
+        <div class="row clearfix">    
+            
+            @foreach ($contratos as $contrato)
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 <div class="thumbnail card">
-                    <img src="assets/images/course-3.jpg" alt=""  class="img-fluid">
-                    <div class="caption  body">
-                        <h3>Magento Programmer Course</h3>
-                        <p>First Year, MBA</p>
-                        <p>Price: <strong class="col-blush">$315.60</strong> Time: <strong class="col-green">9 months</strong></p>
-                        <p>Prof.: Prof. <strong>Will Smith</strong></p>
-                        <p>Students: <strong class="col-green">115</strong></p>
-                        <a href="courses-info.html" class="btn  btn-raised btn-info waves-effect" role="button">Read more</a>
+                    <img src="{{asset('images/course-3.jpg')}}" alt=""  class="img-fluid">
+                    <div class="caption  body text-center">
+                        <h3>Contrato: <br> {{$contrato->contrato}}</h3>
+                        <p>Nombre Obra: <br>{{$contrato->nombre_obra}}</p>
+                        <p>Descripción: <br> <strong class="">{{$contrato->descripcion}}</strong><br><br>
+                        Fecha de Registro: <br> <strong class="text-center">{{$contrato->fecha_alta}}</strong></p>
+                      
+                        <a href="{{route('contratos.show',$contrato->id)}}" class="btn  btn-raised btn-info waves-effect" role="button">Ver Contrato</a>
                     </div>
                 </div>
             </div>
+
+            @endforeach
            
         </div>
 

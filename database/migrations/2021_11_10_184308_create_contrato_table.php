@@ -14,8 +14,10 @@ class CreateContratoTable extends Migration
     public function up()
     {
         Schema::create('contratos', function (Blueprint $table) {
-            $table->primary('contrato');
+           
+            $table->id();
             $table->string('contrato');
+            $table->string('nombre_obra');
             $table->string('descripcion');
             $table->date('fecha_alta');
             $table->string('ubicacion');
@@ -24,6 +26,7 @@ class CreateContratoTable extends Migration
             $table->integer('plazo_dias');
             $table->double('importe', 20,2);
             $table->double('amortizacion', 20,2);
+            $table->integer('estatus')->default(0);
             $table->unsignedBigInteger('id_cliente')->nullable();
             $table->foreign('id_cliente')->references('id')->on('clientes');
             $table->unsignedBigInteger('id_empresa')->nullable();
