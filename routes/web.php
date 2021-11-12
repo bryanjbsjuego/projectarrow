@@ -52,10 +52,16 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('eliminadas',[UnidadController::class,'eliminadas'])->name('unidades.baja');
     Route::get('unidades/{id}/activar',[UnidadController::class,'activar'])->name('unidades.activas');
     Route::resource('contratos',ContratosController::class);
+
     Route::get('contratos/{id}/imagen',[ContratosController::class,'imagen'])->name('contratos.imagen');
     Route::post('contratos/guardar',[ContratosController::class,'guardar'])->name('contratos.guardar');
 
     //Route::resource('imagenescontratos',ImagenContratoController::class);
+
+
+    Route::get('contratobajas',[ContratosController::class,'eliminadas'])->name('contratos.baja');
+    Route::get('contratos/{id}/activar',[ContratosController::class,'activar'])->name('contratos.activar');
+
 
 } );
 

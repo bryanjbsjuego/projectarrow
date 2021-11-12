@@ -17,9 +17,7 @@
             @endif
             <div>
                 <a href="{{ route('contratos.create') }}" class="btn btn-raised btn-success">Agregar Contrato</a>
-                @if ($inactivos !=0)
-                <a href="{{route('contratos.baja')}}" class="btn btn-raised btn-warning">Contratos Inactivos</a>
-                @endif
+              
            
             </div>
             
@@ -40,6 +38,7 @@
                         Fecha de Registro: <br> <strong class="text-center">{{$contrato->fecha_alta}}</strong></p>
                       
                         <a href="{{route('contratos.show',$contrato->id)}}" class="btn  btn-raised btn-info waves-effect" role="button">Ver Contrato</a>
+                        
                     </div>
                 </div>
             </div>
