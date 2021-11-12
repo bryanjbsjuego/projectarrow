@@ -28,7 +28,11 @@ class ContratosController extends Controller
         $contratos=Contrato::where('id_empresa','=',$ide->empresa)
         ->where('estatus','=',0)->get();
 
-        return view ('contratos.index',compact('contratos'));
+        $inactivos=Contrato::where('id_empresa','=',$ide->empresa)
+        ->where('estatus','=',1)->count();
+
+
+        return view ('contratos.index',compact('contratos','inactivos'));
     }
 
     /**
@@ -269,8 +273,35 @@ class ContratosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy( Contrato $contrato)
     {
-        //
+      
+        //cambiar el estatus a 1
+        Contrato::where('id','=',$contrato->id)->update(['estatus'=>1]);
+        $mensaje='Contrato dado de baja';
+        return redirect()->route('contratos.index')->with(compact('mensaje'));
+    }
+
+    public function eliminadas(){
+
+        $id=Auth::id();
+        $ide=User::select('empresa')->where('id','=',$id)->first();
+        $contratos=Contrato::where('id_empresa','=',$ide->empresa)
+        ->where('estatus','=',1)->get();
+
+        // return $contratos;
+        return view ('contratos.eliminadas',compact('contratos'));
+    }
+
+    public function activar($id){
+
+     
+
+        Contrato::where('id','=',$id)->update(['estatus'=>0]);
+        // return $contratos;
+        // return view ('contratos.index');
+        return redirect('contratos');
+     
+        
     }
 }

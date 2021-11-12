@@ -32,7 +32,7 @@
                 <div class="body">
                     <div class="clearfix">
                         <div class="float-left">
-                            <h4 class="text-right"><img src="assets/images/logo-placeholder.jpg" width="70" alt="velonic"></h4>                                                
+                            <h4 class="text-right"><img src="" width="70" alt=""></h4>                                                
                         </div>
                         <div class="float-right">
                             <h4>Contrato # <br>
@@ -76,6 +76,7 @@
                                 <p class="m-t-10"><strong>Status: </strong> <span class="badge bg-green">Activo</span></p>
                                 @else
                                 <p class="m-t-10"><strong>Status: </strong> <span class="badge bg-red">Inactivo</span></p>
+                               
                                 @endif
                             
                             </div>
@@ -111,16 +112,31 @@
                         </div>
                     </div>
        
+                    <br>
                     <div class="row">
-                        <div class="col-sm-12 text-center">
+
+                        @if ($contratoUnion->estatus !=1)
+                        <div class="col-sm-12   d-flex ">
                          
                             <hr>
-                            <a href="javascript:window.print()" class="btn btn-raised btn-success"><i class="zmdi zmdi-print"></i></a>
-                            <a href="{{route('contratos.edit',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-warning">Editar</a>
-                            <a href="#" class="btn btn-raised btn-danger">Eliminar</a>
-                            <a href="#" class="btn btn-raised btn-info">Agregar Imagen </a>
-                            <a href="{{route('contratos.index')}}" class="btn btn-raised btn-success">Regresar</a>
+                            <a href="javascript:window.print()" class="btn btn-raised btn-success m-auto"  ><i class="zmdi zmdi-print"></i></a>
+                            <a href="{{route('contratos.edit',$contratoUnion->contrato_id)}}"  class=" m-auto btn btn-raised btn-warning">Editar</a>
+                  
+                            <a href="#" class="btn btn-raised btn-info m-auto" >Agregar Imagen </a>
+                            <a href="{{route('contratos.index')}}" class="btn btn-raised btn-success m-auto" >Regresar</a>
+                                
+                            <form action="{{route('contratos.destroy',$contratoUnion->contrato_id)}}" class="m-auto text-center "  method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-raised btn-danger">Eliminar</button>
+                              </form>
                         </div>
+                        @else
+                       
+                        <a href="{{route('contratos.activar',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-info m-auto" >Activar Contrato</a>
+                        @endif
+                    
+                     
                     </div>                        
                 </div>
             </div>
