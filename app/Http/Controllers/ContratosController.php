@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cliente;
 use App\Models\Contrato;
+use App\Models\ImagenContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 
@@ -49,7 +50,7 @@ class ContratosController extends Controller
         $clientes=Cliente::where('id_empresa', '=', $id_empresa->empresa)->get();
 
         $idr=Role::select('id')->where('name', '=', 'Responsable de obra')->first();
-        
+
         $responsables=DB::table('users')
         ->join('empresas', 'users.empresa', '=', 'empresas.id')
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -61,7 +62,7 @@ class ContratosController extends Controller
         ->get();
 
         $ida=Role::select('id')->where('name', '=', 'Asistente de obra')->first();
-        
+
         $asistentes=DB::table('users')
         ->join('empresas', 'users.empresa', '=', 'empresas.id')
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -73,7 +74,7 @@ class ContratosController extends Controller
         ->get();
 
         $date = Carbon::now()->toDateTimeString();
-        
+
 
         return view ('contratos.crear', compact('empresa', 'clientes', 'responsables', 'asistentes'));
 
@@ -87,7 +88,7 @@ class ContratosController extends Controller
      */
     public function store(Request $request)
     {
-        
+
 
         $date=$request->all();
 
@@ -109,7 +110,7 @@ class ContratosController extends Controller
             'id_empresa' => 'required',
             'id_responsable' => 'required',
             'id_asistente' => 'required'
-          
+
         ]);
 
         $data=$request->only([
@@ -145,7 +146,7 @@ class ContratosController extends Controller
      */
     public function show($id)
     {
- 
+
 
 
         $contrato=Contrato::where('id','=',$id)->first();
@@ -202,7 +203,7 @@ class ContratosController extends Controller
        ->first();
 
        $idr=Role::select('id')->where('name', '=', 'Responsable de obra')->first();
-        
+
        $responsables=DB::table('users')
        ->join('empresas', 'users.empresa', '=', 'empresas.id')
        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -214,7 +215,7 @@ class ContratosController extends Controller
        ->get();
 
        $ida=Role::select('id')->where('name', '=', 'Asistente de obra')->first();
-        
+
        $asistentes=DB::table('users')
        ->join('empresas', 'users.empresa', '=', 'empresas.id')
        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -239,8 +240,8 @@ class ContratosController extends Controller
      */
     public function update(Request $request, Contrato $contrato)
     {
-       
-  
+
+
 
         $contrato->contrato=$request->contrato;
         $contrato->descripcion=$request->descripcion;
@@ -260,7 +261,7 @@ class ContratosController extends Controller
         $contrato->save();
         return redirect()->route('contratos.index');
 
-        
+
     }
 
     /**
@@ -273,4 +274,49 @@ class ContratosController extends Controller
     {
         //
     }
+    public function imagen($id)
+    {
+
+
+        return view('contratos.imagencon',compact('id'));
+    }
+
+    public function guardar(Request $request){
+
+        $this->validate($request,
+        [
+            'descripcion' => 'required',
+            'photo' => 'required',
+            'id_contrato'
+
+        ],
+        [
+            'descripcion.required' => 'El campo nombre debe ser obligatorio'
+        ]
+
+         );
+
+
+         $guardar= new ImagenContrato;
+
+         $guardar->descripcion=$request->descripcion;
+
+         if($request->hasFile("photo")){
+            $imagen=$request->file("photo");
+            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+            $ruta=public_path("img/usuarios");
+            $imagen->move($ruta,$nombreImagen);
+            $guardar->photo=$nombreImagen;
+        }
+
+        $guardar->id_contrato=$request->id_contrato;
+
+        $guardar->save();
+
+        return redirect()->route('contratos.index');
+
+
+    }
+
+
 }
