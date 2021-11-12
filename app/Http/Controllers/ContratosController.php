@@ -33,6 +33,11 @@ class ContratosController extends Controller
         ->where('estatus','=',1)->count();
 
 
+
+       // return $contratos;
+
+
+
         return view ('contratos.index',compact('contratos','inactivos'));
     }
 
@@ -167,6 +172,10 @@ class ContratosController extends Controller
        'clientes.id as id_cliente','clientes.nombre as nombre_cliente')
        ->first();
 
+       $imagenes=DB::table('contratos')
+       ->join('imagenes_contratos','contratos.id','=','imagenes_contratos.id_contrato')
+       ->select('imagenes_contratos.*')
+       ->where('contratos.id','=',$id)->get();
 
 
        $asistente=DB::table('contratos')
@@ -175,7 +184,7 @@ class ContratosController extends Controller
        ->select('users.id as asistente_id','users.name as asistente_name')
        ->first();
 
-       return view('contratos.show',compact('contratoUnion','asistente'));
+       return view('contratos.show',compact('contratoUnion','asistente','imagenes'));
     }
 
     /**
@@ -276,7 +285,7 @@ class ContratosController extends Controller
      */
     public function destroy( Contrato $contrato)
     {
-      
+
         //cambiar el estatus a 1
         Contrato::where('id','=',$contrato->id)->update(['estatus'=>1]);
         $mensaje='Contrato dado de baja';
@@ -296,14 +305,14 @@ class ContratosController extends Controller
 
     public function activar($id){
 
-     
+
 
         Contrato::where('id','=',$id)->update(['estatus'=>0]);
         // return $contratos;
         // return view ('contratos.index');
         return redirect('contratos');
-     
-        
+
+
     }
     public function imagen($id)
     {
@@ -334,12 +343,12 @@ class ContratosController extends Controller
          if($request->hasFile("photo")){
             $imagenes=$request->file("photo");
             foreach ($imagenes as  $imagen) {
-                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension(); 
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
                 $ruta=public_path("img/usuarios");
                 $imagen->move($ruta,$nombreImagen);
                 $fotos[]=$nombreImagen;
             }
-        
+
         }
 
         $guardar->descripcion=$request->descripcion;
@@ -354,10 +363,17 @@ class ContratosController extends Controller
             //'id_contrato' => $request['id_contrato']
         //]);
 
-        
+
 
         return redirect()->route('contratos.index');
 
+
+    }
+
+    public function editarimagen(ImagenesContrato $imagenes){
+
+        return $imagenes;
+        //return view("contratos.editarimage",compact('imagenes'));
 
     }
 

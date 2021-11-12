@@ -7,7 +7,7 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-          
+
             <h2>Contratos</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             @if (session('mensaje'))
@@ -20,32 +20,33 @@
                 @if ($inactivos !=0)
                 <a href="{{route('contratos.baja')}}" class="btn btn-raised btn-warning">Contratos Inactivos</a>
                 @endif
-           
+
             </div>
-            
-          
+
+
 
         </div>
 
-        <div class="row clearfix">    
-            
+        <div class="row clearfix">
+
             @foreach ($contratos as $contrato)
             <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
                 <div class="thumbnail card">
-                    <img src="{{asset('images/course-3.jpg')}}" alt=""  class="img-fluid">
+
+
                     <div class="caption  body text-center">
                         <h3>Contrato: <br> {{$contrato->contrato}}</h3>
                         <p>Nombre Obra: <br>{{$contrato->nombre_obra}}</p>
                         <p>Descripción: <br> <strong class="">{{$contrato->descripcion}}</strong><br><br>
                         Fecha de Registro: <br> <strong class="text-center">{{$contrato->fecha_alta}}</strong></p>
-                      
+
                         <a href="{{route('contratos.show',$contrato->id)}}" class="btn  btn-raised btn-info waves-effect" role="button">Ver Contrato</a>
                     </div>
                 </div>
             </div>
 
             @endforeach
-           
+
         </div>
 
 

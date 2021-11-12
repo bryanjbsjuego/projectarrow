@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('contratos/{id}/imagen',[ContratosController::class,'imagen'])->name('contratos.imagen');
     Route::post('contratos/guardar',[ContratosController::class,'guardar'])->name('contratos.guardar');
-
+    Route::get('contratos/{id}/editarimagen',[ContratosController::class,'editarimagen'])->name('contratos.editarimagen');
     //Route::resource('imagenescontratos',ImagenContratoController::class);
 
 
