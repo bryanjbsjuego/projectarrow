@@ -37,13 +37,13 @@
             </div>
 
 
-         
+
         </div>
-    </div>        
+    </div>
     <div class="row clearfix">
         <div class="col-lg-5 col-md-12 col-sm-12 m-auto" >
             <div class="card text-center">
-                <img src="{{asset('img/usuarios/'.Auth::user()->photo)}}" class="img-fluid" style="max-width: 100%, height: auto;  "  alt="" >                              
+                <img src="{{asset('img/usuarios/'.Auth::user()->photo)}}" class="img-fluid" style="max-width: 100%, height: auto;  "  alt="" >
             </div>
             <div class="card">
                 <div class="header">
@@ -56,16 +56,17 @@
                     <p>{{$rol->name}}</p>
                     <strong>Email</strong>
                     <p>{{$usuario->email}}</p>
-                
+
                     <hr>
-                
+
                 </div>
             </div>
         </div>
-       
+
     </div>
 </div>
 
-    
+
 @endsection
+
 

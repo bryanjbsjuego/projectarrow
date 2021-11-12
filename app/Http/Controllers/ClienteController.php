@@ -20,9 +20,10 @@ class ClienteController extends Controller
     public function index()
     {
         $id=Auth::id();
-        $id_tenant=User::select('id_tenant')->where('id','=',$id)->first();
+        $id_tenant=User::select('id_tenant','empresa')->where('id','=',$id)->first();
+        $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)
+        ->where('id_empresa','=',$id_tenant->empresa)->get();
 
-        $clientes=Cliente::where('id_tenant','=',$id_tenant->id_tenant)->get();
         
      return view('clientes.index',compact('clientes'));
     }
@@ -53,6 +54,9 @@ class ClienteController extends Controller
         
         $id=Auth::id();
         $id_tenant=User::select('id_tenant')->where('id','=',$id)->first();
+        $id_empresa=User::select('empresa')->where('id','=',$id)->first();
+
+        // return $id_empresa;
         // $empresa=Empresa::where('id_tenant','=', $idempresa)->get();
         
 
@@ -71,6 +75,7 @@ class ClienteController extends Controller
         ]);
 
         $data['id_tenant']=$id_tenant->id_tenant;
+        $data['id_empresa']=$id_empresa->empresa;
         Cliente::create($data);
         return redirect()->route('clientes.index');
 
