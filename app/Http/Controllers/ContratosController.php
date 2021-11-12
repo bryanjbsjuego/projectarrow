@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cliente;
 use App\Models\Contrato;
-use App\Models\ImagenContrato;
+use App\Models\ImagenesContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 
@@ -327,22 +327,34 @@ class ContratosController extends Controller
 
          );
 
+         $guardar = new ImagenesContrato;
 
-         $guardar= new ImagenContrato;
-
-         $guardar->descripcion=$request->descripcion;
+         $fotos=array();
 
          if($request->hasFile("photo")){
-            $imagen=$request->file("photo");
-            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
-            $ruta=public_path("img/usuarios");
-            $imagen->move($ruta,$nombreImagen);
-            $guardar->photo=$nombreImagen;
+            $imagenes=$request->file("photo");
+            foreach ($imagenes as  $imagen) {
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension(); 
+                $ruta=public_path("img/usuarios");
+                $imagen->move($ruta,$nombreImagen);
+                $fotos[]=$nombreImagen;
+            }
+        
         }
 
+        $guardar->descripcion=$request->descripcion;
+        $guardar->imagen=implode("|",$fotos);
         $guardar->id_contrato=$request->id_contrato;
-
         $guardar->save();
+
+        //ImagenesContrato::insert([
+
+          //  'descripcion' => $request['descripction'],
+            //'imagen' => implode("|",$fotos),
+            //'id_contrato' => $request['id_contrato']
+        //]);
+
+        
 
         return redirect()->route('contratos.index');
 
