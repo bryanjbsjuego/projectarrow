@@ -12,13 +12,25 @@
                 @can('crear-afianzadora')
                     <a href="{{ route('afianzadoras.create') }}" class="btn btn-raised btn-success">Agregar afianzadora</a>
                 @endcan
+
+                @if (session('mensaje_error'))
+                <div class="alert alert-danger" role="alert">
+                  {{session('mensaje_error')}}
+                </div>
+                @endif
+               
             </div>
         </div>
 
+
+
         <!-- Exportable Table -->
         <div class="row clearfix">
+
             <div class="col-lg-12 col-md-12 col-sm-12">
+               
                 <div class="card">
+
 
                     <div class="body table-responsive">
                         <table class="table table-bordered table-striped text-center" >
