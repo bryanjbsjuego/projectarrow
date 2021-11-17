@@ -41,6 +41,24 @@
                         Fecha de Registro: <br> <strong class="text-center">{{$contrato->fecha_alta}}</strong></p>
 
                         <a href="{{route('contratos.show',$contrato->id)}}" class="btn  btn-raised btn-info waves-effect" role="button">Ver Contrato</a>
+                        <a href="{{route('fianza.show',$contrato->id)}}" class="btn  btn-raised btn-warning waves-effect" role="button">Ver Fianza</a>
+                        {{-- @foreach ($fianzas as $fianza)
+                        @if ($fianza == $contrato->id || $fianza !=null )
+                        <p> Fianza_id contrato :{{$fianza }}, Contrato _id : {{$contrato->id}} </p>
+                        <a href="{{route('fianza.crear',$contrato->id)}}" class="btn  btn-raised btn-success waves-effect" role="button">Ver Fianza</a>
+                     <p>sss</p>
+                         @break
+                        @else 
+                        <a href="{{route('fianza.crear',$contrato->id)}}" class="btn  btn-raised btn-success waves-effect" role="button">Agregar Fianza</a>
+                       <p>ss</p>
+                        @endif
+                        @endforeach
+                         --}}
+
+
+                         
+                       
+                    
                     </div>
                 </div>
             </div>

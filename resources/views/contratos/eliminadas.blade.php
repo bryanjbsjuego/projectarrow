@@ -38,7 +38,7 @@
                         Fecha de Registro: <br> <strong class="text-center">{{$contrato->fecha_alta}}</strong></p>
                       
                         <a href="{{route('contratos.show',$contrato->id)}}" class="btn  btn-raised btn-info waves-effect" role="button">Ver Contrato</a>
-                        
+                        <a href="{{route('fianza.show',$contrato->id)}}" class="btn  btn-raised btn-warning waves-effect" role="button">Ver Fianza</a>
                     </div>
                 </div>
             </div>

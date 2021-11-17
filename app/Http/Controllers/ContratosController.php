@@ -9,7 +9,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Cliente;
 use App\Models\Contrato;
+use App\Models\Fianza;
 use App\Models\ImagenesContrato;
+// use App\Models\ImagenesContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 
@@ -30,16 +32,25 @@ class ContratosController extends Controller
         $contratos=Contrato::where('id_empresa','=',$ide->empresa)
         ->where('estatus','=',0)->get();
 
+        // $fianzas=DB::table('fianzas')
+        // ->join('contratos', 'fianzas.id_contrato', '=', 'contratos.id')
+        // ->join('afianzadoras','fianzas.id_afianzadora','=','afianzadoras.id')
+        // ->select('contrato','contratos.contrato')
+        // ->get();
+
+        $fianzas=Fianza::pluck('id_contrato');
+
+        // return $fianzas;
+     
+        // return $fianzas;
+
+
+
         $inactivos=Contrato::where('id_empresa','=',$ide->empresa)
         ->where('estatus','=',1)->count();
 
 
-
-       // return $contratos;
-
-
-
-        return view ('contratos.index',compact('contratos','inactivos'));
+        return view ('contratos.index',compact('contratos','inactivos','fianzas'));
     }
 
     /**
@@ -337,6 +348,7 @@ class ContratosController extends Controller
 
          );
 
+         
          $guardar = new ImagenesContrato;
 
          $fotos=array();

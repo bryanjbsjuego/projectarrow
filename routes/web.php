@@ -15,7 +15,9 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\ContratosController;
+use App\Http\Controllers\FianzaController;
 use App\Http\Controllers\ImagenContratoController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -62,8 +64,8 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('contratobajas',[ContratosController::class,'eliminadas'])->name('contratos.baja');
     Route::get('contratos/{id}/activar',[ContratosController::class,'activar'])->name('contratos.activar');
-
-
+    Route::resource('fianza',FianzaController::class);
+    Route::get('fianza/{id}/crear',[FianzaController::class,'crear'])->name('fianza.crear');
 } );
 
 
