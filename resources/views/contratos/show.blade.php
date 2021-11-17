@@ -5,11 +5,11 @@
 
 @endsection
 @section('contenido')
-   
+
 
 <div class="container-fluid">
     <div class="block-header">
-      
+
         <h2>Detalle Contrato</h2>
         <small class="text-muted">Bienvenido a la aplicación ARROW</small>
         @if (session('mensaje'))
@@ -18,7 +18,7 @@
         </div>
         @endif
         <div>
-           
+
         </div>
     </div>
 
@@ -27,12 +27,13 @@
             <div class="card">
                 <div class="header">
                     <h2>Información</h2>
-                  
+
                 </div>
                 <div class="body">
                     <div class="clearfix">
                         <div class="float-left">
-                            <h4 class="text-right"><img src="" width="70" alt=""></h4>                                                
+
+
                         </div>
                         <div class="float-right">
                             <h4>Contrato # <br>
@@ -42,31 +43,31 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-12 ">                                                
+                        <div class="col-md-12 ">
                             <div class="float-left mt-20  text-center">
                                 <address>
                                   <strong>Ubicación:</strong><br>
                                   {{$contratoUnion->ubicacion}}<br>
-                            
+
                                   </address>
                                   <address>
                                     <strong>Responsable de obra:</strong><br>
                                     {{$contratoUnion->name}}<br>
-                              
+
                                     </address>
 
                                     <address>
                                         <strong>Asistente de obra:</strong><br>
                                         {{$asistente->asistente_name}}<br>
-                                  
+
                                         </address>
                             </div>
                             <br>
 
-                           
 
-                            
-                            
+
+
+
                             <div class="float-right mt-20">
                                 <p><strong>Fecha de alta contrato: </strong>{{$contratoUnion->fecha_alta}}</p>
                                 <p><strong>Fecha de inicio: </strong>{{$contratoUnion->fecha_inicio}}</p>
@@ -76,9 +77,9 @@
                                 <p class="m-t-10"><strong>Status: </strong> <span class="badge bg-green">Activo</span></p>
                                 @else
                                 <p class="m-t-10"><strong>Status: </strong> <span class="badge bg-red">Inactivo</span></p>
-                               
+
                                 @endif
-                            
+
                             </div>
                         </div>
                     </div>
@@ -103,28 +104,42 @@
                                             <td>{{$contratoUnion->amortizacion}}</td>
                                             <td>{{$contratoUnion->importe}}</td>
                                             <td>{{$contratoUnion->nombre_cliente}}</td>
-                                          
+
                                         </tr>
-                                   
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-       
+
+
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+
+                            <hr>
+                            <a href="javascript:window.print()" class="btn btn-raised btn-success"><i class="zmdi zmdi-print"></i></a>
+                            <a href="{{route('contratos.edit',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-warning">Editar</a>
+                            <a href="#" class="btn btn-raised btn-danger">Eliminar</a>
+                            <a href="{{ route('contratos.imagen',$contratoUnion->contrato_id) }}" class="btn btn-raised btn-info">Agregar Imagen </a>
+                            <a href="" class="btn btn-raised btn-success">Regresar</a>
+                        </div>
+                    </div>
+
+
                     <br>
                     <div class="row">
 
                         @if ($contratoUnion->estatus !=1)
                         <div class="col-sm-12   d-flex ">
-                         
+
                             <hr>
                             <a href="javascript:window.print()" class="btn btn-raised btn-success m-auto"  ><i class="zmdi zmdi-print"></i></a>
                             <a href="{{route('contratos.edit',$contratoUnion->contrato_id)}}"  class=" m-auto btn btn-raised btn-warning">Editar</a>
-                  
+
                             <a href="#" class="btn btn-raised btn-info m-auto" >Agregar Imagen </a>
                             <a href="{{route('contratos.index')}}" class="btn btn-raised btn-success m-auto" >Regresar</a>
-                                
+
                             <form action="{{route('contratos.destroy',$contratoUnion->contrato_id)}}" class="m-auto text-center "  method="post">
                                 @csrf
                                 @method('DELETE')
@@ -132,12 +147,39 @@
                               </form>
                         </div>
                         @else
-                       
+
                         <a href="{{route('contratos.activar',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-info m-auto" >Activar Contrato</a>
                         @endif
-                    
-                     
-                    </div>                        
+
+
+                    </div>
+                    <br><br>
+                    <div class="row clearfix">
+
+                        @foreach($imagenes as $imagen )
+                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
+                            <div class="thumbnail card">
+                                <div class="caption  body text-center">
+                                <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140" alt="velonic"></h3>
+                                <p><strong>Descripción: <strong> {{ $imagen->descripcion }}</p>
+                                    <a href="{{route('contratos.editarimagen',$imagen->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
+
+                            <form action="" class=""  method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
+                              </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        @endforeach
+
+
+                    </div>
+
                 </div>
             </div>
         </div>

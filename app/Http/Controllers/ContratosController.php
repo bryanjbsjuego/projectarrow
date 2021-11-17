@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Cliente;
 use App\Models\Contrato;
 use App\Models\Fianza;
+use App\Models\ImagenesContrato;
+// use App\Models\ImagenesContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 
@@ -68,7 +70,7 @@ class ContratosController extends Controller
         $clientes=Cliente::where('id_empresa', '=', $id_empresa->empresa)->get();
 
         $idr=Role::select('id')->where('name', '=', 'Responsable de obra')->first();
-        
+
         $responsables=DB::table('users')
         ->join('empresas', 'users.empresa', '=', 'empresas.id')
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -80,7 +82,7 @@ class ContratosController extends Controller
         ->get();
 
         $ida=Role::select('id')->where('name', '=', 'Asistente de obra')->first();
-        
+
         $asistentes=DB::table('users')
         ->join('empresas', 'users.empresa', '=', 'empresas.id')
         ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -92,7 +94,7 @@ class ContratosController extends Controller
         ->get();
 
         $date = Carbon::now()->toDateTimeString();
-        
+
 
         return view ('contratos.crear', compact('empresa', 'clientes', 'responsables', 'asistentes'));
 
@@ -106,7 +108,7 @@ class ContratosController extends Controller
      */
     public function store(Request $request)
     {
-        
+
 
         $date=$request->all();
 
@@ -128,7 +130,7 @@ class ContratosController extends Controller
             'id_empresa' => 'required',
             'id_responsable' => 'required',
             'id_asistente' => 'required'
-          
+
         ]);
 
         $data=$request->only([
@@ -164,7 +166,7 @@ class ContratosController extends Controller
      */
     public function show($id)
     {
- 
+
 
 
         $contrato=Contrato::where('id','=',$id)->first();
@@ -181,6 +183,10 @@ class ContratosController extends Controller
        'clientes.id as id_cliente','clientes.nombre as nombre_cliente')
        ->first();
 
+       $imagenes=DB::table('contratos')
+       ->join('imagenes_contratos','contratos.id','=','imagenes_contratos.id_contrato')
+       ->select('imagenes_contratos.*')
+       ->where('contratos.id','=',$id)->get();
 
 
        $asistente=DB::table('contratos')
@@ -189,7 +195,7 @@ class ContratosController extends Controller
        ->select('users.id as asistente_id','users.name as asistente_name')
        ->first();
 
-       return view('contratos.show',compact('contratoUnion','asistente'));
+       return view('contratos.show',compact('contratoUnion','asistente','imagenes'));
     }
 
     /**
@@ -221,7 +227,7 @@ class ContratosController extends Controller
        ->first();
 
        $idr=Role::select('id')->where('name', '=', 'Responsable de obra')->first();
-        
+
        $responsables=DB::table('users')
        ->join('empresas', 'users.empresa', '=', 'empresas.id')
        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -233,7 +239,7 @@ class ContratosController extends Controller
        ->get();
 
        $ida=Role::select('id')->where('name', '=', 'Asistente de obra')->first();
-        
+
        $asistentes=DB::table('users')
        ->join('empresas', 'users.empresa', '=', 'empresas.id')
        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
@@ -258,8 +264,8 @@ class ContratosController extends Controller
      */
     public function update(Request $request, Contrato $contrato)
     {
-       
-  
+
+
 
         $contrato->contrato=$request->contrato;
         $contrato->descripcion=$request->descripcion;
@@ -279,7 +285,7 @@ class ContratosController extends Controller
         $contrato->save();
         return redirect()->route('contratos.index');
 
-        
+
     }
 
     /**
@@ -290,7 +296,7 @@ class ContratosController extends Controller
      */
     public function destroy( Contrato $contrato)
     {
-      
+
         //cambiar el estatus a 1
         Contrato::where('id','=',$contrato->id)->update(['estatus'=>1]);
         $mensaje='Contrato dado de baja';
@@ -310,13 +316,78 @@ class ContratosController extends Controller
 
     public function activar($id){
 
-     
+
 
         Contrato::where('id','=',$id)->update(['estatus'=>0]);
         // return $contratos;
         // return view ('contratos.index');
         return redirect('contratos');
-     
-        
+
+
     }
+    public function imagen($id)
+    {
+
+
+        return view('contratos.imagencon',compact('id'));
+    }
+
+    public function guardar(Request $request){
+
+        $this->validate($request,
+        [
+            'descripcion' => 'required',
+            'photo' => 'required',
+            'id_contrato'
+
+        ],
+        [
+            'descripcion.required' => 'El campo nombre debe ser obligatorio'
+        ]
+
+         );
+
+         
+         $guardar = new ImagenesContrato;
+
+         $fotos=array();
+
+         if($request->hasFile("photo")){
+            $imagenes=$request->file("photo");
+            foreach ($imagenes as  $imagen) {
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+                $ruta=public_path("img/usuarios");
+                $imagen->move($ruta,$nombreImagen);
+                $fotos[]=$nombreImagen;
+            }
+
+        }
+
+        $guardar->descripcion=$request->descripcion;
+        $guardar->imagen=implode("|",$fotos);
+        $guardar->id_contrato=$request->id_contrato;
+        $guardar->save();
+
+        //ImagenesContrato::insert([
+
+          //  'descripcion' => $request['descripction'],
+            //'imagen' => implode("|",$fotos),
+            //'id_contrato' => $request['id_contrato']
+        //]);
+
+
+
+        return redirect()->route('contratos.index');
+
+
+    }
+
+    public function editarimagen(ImagenesContrato $imagenes){
+
+        return $imagenes;
+        //return view("contratos.editarimage",compact('imagenes'));
+
+    }
+
+
 }
