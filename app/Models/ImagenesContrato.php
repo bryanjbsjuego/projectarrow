@@ -11,6 +11,7 @@ class ImagenesContrato extends Model
 
     protected $fillable=[
         'imagen',
+        'descripcion',
         'id_contrato'
 
     ];

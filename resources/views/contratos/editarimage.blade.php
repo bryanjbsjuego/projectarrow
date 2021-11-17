@@ -48,21 +48,24 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                                <form action="" method="POST" file="true" enctype="multipart/form-data">
-                                @method('PUT')
+                                {!! Form::model($imagen, ['method' => 'PUT',  'file' => true, 'enctype' => 'multipart/form-data',  'route'=> ['contratos.actualizarimagen',$imagen->id]]) !!}
+
                                 @csrf
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                                <img src="{{asset('img/usuarios/'.$imagenes->imagen)}}" width="140" alt="velonic">
+                                <img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140" alt="velonic">
                                 </div>
+                                <br>
+                                <br>
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
 
-                                    <input type="file" name="photo[]" multiple id="photo[]" accept="image/*" />
+                                    <input type="file" name="imagen" id="imagen" accept="image/*" />
 
                                 </div>
+
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                     <div class="form-line">
-                                        <textarea  style="height: 100px" class="form-control"  id="descripcion" name="descripcion" placeholder="Descripcion" >{{ $imagenes->descripcion }}</textarea>
+                                        <textarea  style="height: 100px" class="form-control"  id="descripcion" name="descripcion" placeholder="Descripcion" >{{ $imagen->descripcion }}</textarea>
                                     </div>
                                     </div>
                                 </div>
@@ -74,7 +77,7 @@
                                     </center>
                                 </div>
 
-                            </form>
+                                {!! Form::close() !!}
                         </div>
                         </div>
                     </div>

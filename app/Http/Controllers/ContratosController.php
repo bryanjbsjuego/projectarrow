@@ -13,6 +13,7 @@ use App\Models\ImagenesContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 
+
 class ContratosController extends Controller
 {
     /**
@@ -370,11 +371,79 @@ class ContratosController extends Controller
 
     }
 
-    public function editarimagen(ImagenesContrato $imagenes){
+    public function editarimagen(ImagenesContrato $imagen){
 
-        return $imagenes;
-        //return view("contratos.editarimage",compact('imagenes'));
+        //return $imagen;
 
+        return view("contratos.editarimage",compact('imagen'));
+
+    }
+
+    public function actualizarimagen(Request $request, ImagenesContrato $imagen){
+
+
+
+
+         request()->validate([
+            'descripcion' => 'required',
+
+        ]);
+
+
+
+
+
+        $imagen->descripcion=$request->input("descripcion");
+
+
+
+        if(!empty($request->hasFile('imagen'))){
+            $imagen=$request->file("imagen");
+            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+            $ruta=public_path("img/usuarios");
+            $imagen->move($ruta,$nombreImagen);
+            $imagen->imagen=$nombreImagen;
+            // return "Entre aquì";
+
+        }else{
+            $p=$imagen->imagen;
+            $imagen->imagen=$p;
+            // return "Entre al otro";
+        }
+
+        $imagen->update();
+
+
+    //     $fotito=$request->input("imagen");
+
+    //    return $fotito;
+
+    //      $fotos=array();
+
+    //      if($request->hasFile("photo")){
+    //         $imagenes=$request->file("photo");
+    //         foreach ($imagenes as  $imagen) {
+    //             $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
+    //             $ruta=public_path("img/usuarios");
+    //             $imagen->move($ruta,$nombreImagen);
+    //             $fotos[]=$nombreImagen;
+    //         }
+
+    //     }else{
+    //         $p=$imagen->imagen;
+    //         $imagen->imagen=$p;
+
+    //     }
+
+    //     $imagen->descripcion=$request->descripcion;
+
+    //     $imagen->imagen=implode("|",$fotos);
+
+
+    // $imagen->update();
+
+
+       // return redirect()->route('contratos.index');
     }
 
 
