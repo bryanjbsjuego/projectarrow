@@ -10,9 +10,10 @@
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             <div>
                 <a href="{{route('operativos.create')}}" class="btn btn-raised btn-success">Agregar usuario</a>
+                <a class="btn btn-raised btn-primary" href="{{ route('operativos.createPDF') }}">Convertir a PDF</a>
             </div>
         </div>
-        
+
         @if (session('mensaje'))
         <div class="alert alert-success" role="alert">
           {{session('mensaje')}}
@@ -29,7 +30,7 @@
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
-                    
+
                     <div class="body table-responsive">
                         <table class="table table-bordered table-striped ">
                             <thead>
@@ -48,7 +49,7 @@
                                         <td>{{ $usuario->name}}</td>
                                         <td>{{ $usuario->email}}</td>
                                         <td>{{ $usuario->rol}}</td>
-                                    
+
                                          <td>
                                             <a class="btn btn-raised bg-amber btn-sm text-center " href="">
                                                 <i class="material-icons mb-1">create</i>
@@ -56,10 +57,10 @@
                                             {!! Form::open(['method' => 'DELETE','route' => ['operativos.destroy', $usuario->id], 'style'=>'display:inline']) !!}
                                                 {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] )  }}
                                             {!! Form::close() !!}
-                                        </td> 
+                                        </td>
 
-                                      
-                                    
+
+
                                     </tr>
                                     @endforeach
                             </tbody>
@@ -73,7 +74,7 @@
         </div>
         <!-- #END# Exportable Table -->
     </div>
-    
+
 
 @endsection
 

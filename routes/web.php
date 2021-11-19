@@ -50,6 +50,8 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('perfil',PerfilController::class);
     Route::resource('cargos',CargoController::class);
     Route::resource('operativos',OperativoController::class);
+    //Route::get('operativos/pdf', [OperativoController::class, 'createPDF'])->name('opertivos.pdf');
+    Route::get('operativos/createPDF',[OperativoController::class,'createPDF'])->name('operativos.createPDF');
     Route::resource('unidades',UnidadController::class);
     Route::get('eliminadas',[UnidadController::class,'eliminadas'])->name('unidades.baja');
     Route::get('unidades/{id}/activar',[UnidadController::class,'activar'])->name('unidades.activas');
@@ -61,7 +63,7 @@ Route::group(['middleware' => ['auth']], function (){
     Route::put('contratos/{img}/actualizarimagen',[ContratosController::class,'actualizarimagen'])->name('contratos.actualizarimagen');
     //Route::resource('imagenescontratos',ImagenContratoController::class);
     Route::delete('contratos/{imag}/eliminarimagen',[ContratosController::class,'eliminarimagen'])->name('contratos.eliminarimagen');
-    
+
 
 
     Route::get('contratobajas',[ContratosController::class,'eliminadas'])->name('contratos.baja');
