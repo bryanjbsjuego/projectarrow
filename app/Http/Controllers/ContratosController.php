@@ -338,7 +338,7 @@ class ContratosController extends Controller
         $this->validate($request,
         [
             'descripcion' => 'required',
-            'photo' => 'required',
+            'imagen' => 'required|image|mimes:jpeg,png|max:1024',
             'id_contrato'
 
         ],
@@ -348,36 +348,29 @@ class ContratosController extends Controller
 
          );
 
+         $imagen=$request->all();
 
-         $guardar = new ImagenesContrato;
+         //return $imagen;
 
-         $fotos=array();
 
-         if($request->hasFile("photo")){
-            $imagenes=$request->file("photo");
-            foreach ($imagenes as  $imagen) {
-                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
-                $ruta=public_path("img/usuarios");
+        $guardar = new ImagenesContrato;
+
+        //  $fotos=array();
+
+         if($imagen=$request->file("imagen")){
+                $ruta="img/usuarios/";
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
                 $imagen->move($ruta,$nombreImagen);
-                $fotos[]=$nombreImagen;
-            }
-
+                $guardar->imagen = $nombreImagen;
+        
         }
 
-        $guardar->descripcion=$request->descripcion;
-        $guardar->imagen=implode("|",$fotos);
-        $guardar->id_contrato=$request->id_contrato;
+         $guardar->descripcion=$request->descripcion;
+        // $guardar->imagen=implode("|",$fotos);
+         $guardar->id_contrato=$request->id_contrato;
         $guardar->save();
 
-        //ImagenesContrato::insert([
-
-          //  'descripcion' => $request['descripction'],
-            //'imagen' => implode("|",$fotos),
-            //'id_contrato' => $request['id_contrato']
-        //]);
-
-
-
+        
         return redirect()->route('contratos.index');
 
 
@@ -391,63 +384,47 @@ class ContratosController extends Controller
 
     }
 
-    public function actualizarimagen(Request $request, ImagenesContrato $imagen){
+    public function actualizarimagen(Request $request, ImagenesContrato $img){
 
 
 
 
-         $request->validate([
+        $this->validate($request,
+        [
             'descripcion' => 'required',
+            'imagen' => 'image|mimes:jpeg,png|max:1024',
 
-        ]);
+        ],
+        [
+            'descripcion.required' => 'El campo nombre debe ser obligatorio'
+        ]
 
+         );
 
-        $con=$request->all();
+        $image=$request->all();
 
-
-        if($imagen=$request->file('imagen')){
-            $ruta="img/usuarios";
+        if($imagen=$request->file("imagen")){
+            $ruta="img/usuarios/";
             $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
             $imagen->move($ruta,$nombreImagen);
-            $con['imagen']="$nombreImagen";
-
-
+            $img->imagen = $nombreImagen;
+    
         }else{
-            unset($con['imagen']);
+            unset($imagen['imagen']);
         }
 
-        $imagen->update($con);
+
+        $img->descripcion=$request->descripcion;
+        $img->id_contrato=$request->id_contrato;
+        $img->save();
 
 
-    //     $fotito=$request->input("imagen");
 
-    //    return $fotito;
+        return redirect()->route('contratos.index');
+    }
 
-    //      $fotos=array();
-
-    //      if($request->hasFile("photo")){
-    //         $imagenes=$request->file("photo");
-    //         foreach ($imagenes as  $imagen) {
-    //             $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
-    //             $ruta=public_path("img/usuarios");
-    //             $imagen->move($ruta,$nombreImagen);
-    //             $fotos[]=$nombreImagen;
-    //         }
-
-    //     }else{
-    //         $p=$imagen->imagen;
-    //         $imagen->imagen=$p;
-
-    //     }
-
-    //     $imagen->descripcion=$request->descripcion;
-
-    //     $imagen->imagen=implode("|",$fotos);
-
-
-    // $imagen->update();
-
-
+    public function eliminarimagen(ImagenesContrato $imag){
+        $imag->delete();
         return redirect()->route('contratos.index');
     }
 

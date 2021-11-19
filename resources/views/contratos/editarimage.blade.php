@@ -70,6 +70,8 @@
                                     </div>
                                 </div>
 
+                                <input type="hidden" name="id_contrato" value="{{ $imagen->id_contrato }}">
+
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2" style="display:inline-block" id="boton">Guardar</button>
