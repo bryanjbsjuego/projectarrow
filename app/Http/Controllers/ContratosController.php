@@ -41,7 +41,7 @@ class ContratosController extends Controller
         $fianzas=Fianza::pluck('id_contrato');
 
         // return $fianzas;
-     
+
         // return $fianzas;
 
 
@@ -348,7 +348,7 @@ class ContratosController extends Controller
 
          );
 
-         
+
          $guardar = new ImagenesContrato;
 
          $fotos=array();
@@ -396,34 +396,27 @@ class ContratosController extends Controller
 
 
 
-         request()->validate([
+         $request->validate([
             'descripcion' => 'required',
 
         ]);
 
 
+        $con=$request->all();
 
 
-
-        $imagen->descripcion=$request->input("descripcion");
-
-
-
-        if(!empty($request->hasFile('imagen'))){
-            $imagen=$request->file("imagen");
-            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->guessExtension();
-            $ruta=public_path("img/usuarios");
+        if($imagen=$request->file('imagen')){
+            $ruta="img/usuarios";
+            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
             $imagen->move($ruta,$nombreImagen);
-            $imagen->imagen=$nombreImagen;
-            // return "Entre aquì";
+            $con['imagen']="$nombreImagen";
+
 
         }else{
-            $p=$imagen->imagen;
-            $imagen->imagen=$p;
-            // return "Entre al otro";
+            unset($con['imagen']);
         }
 
-        $imagen->update();
+        $imagen->update($con);
 
 
     //     $fotito=$request->input("imagen");
@@ -455,7 +448,7 @@ class ContratosController extends Controller
     // $imagen->update();
 
 
-       // return redirect()->route('contratos.index');
+        return redirect()->route('contratos.index');
     }
 
 

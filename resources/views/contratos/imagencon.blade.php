@@ -53,8 +53,13 @@
                                 @csrf
                                 <input type="hidden" name="id_contrato" value="{{ $id }}">
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                                    <img id="imagenSeleccionada" style="max-height: 300px;">
+                                </div>
+                                <br>
+                                <br>
+                                <div class="col-lg-12 col-md-12 col-sm-12 text-center">
 
-                                    <input type="file" name="photo[]" multiple id="photo[]" accept="image/*" />
+                                    <input type="file" name="photo[]" multiple id="photo" accept="image/*" />
 
                                 </div>
                                 <div class="col-sm-12">
@@ -83,4 +88,17 @@
     </div>
 
 
+@endsection
+@section('scripts')
+    <script>
+    $(document).ready(function(e){
+        $('#photo').change(function(){
+            let reader= new FileReader();
+            reader.onload=(e)=>{
+                $('#imagenSeleccionada').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        });
+    });
+    </script>
 @endsection
