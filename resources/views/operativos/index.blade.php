@@ -10,7 +10,8 @@
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             <div>
                 <a href="{{route('operativos.create')}}" class="btn btn-raised btn-success">Agregar usuario</a>
-                <a class="btn btn-raised btn-primary" href="{{ route('operativos.createPDF') }}">Convertir a PDF</a>
+                <a class="btn btn-sm btn-raised btn-primary" href="{{ route('operativos.createPDF') }}">Exportar a PDF <i class="material-icons" style=" margin-bottom: 8px;">file_download</i> </a>
+                 
             </div>
         </div>
 

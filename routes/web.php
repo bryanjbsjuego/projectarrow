@@ -50,8 +50,8 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('perfil',PerfilController::class);
     Route::resource('cargos',CargoController::class);
     Route::resource('operativos',OperativoController::class);
-    //Route::get('operativos/pdf', [OperativoController::class, 'createPDF'])->name('opertivos.pdf');
-    Route::get('operativos/createPDF',[OperativoController::class,'createPDF'])->name('operativos.createPDF');
+    
+    Route::get('/pdf',[OperativoController::class,'createPDF'])->name('operativos.createPDF');
     Route::resource('unidades',UnidadController::class);
     Route::get('eliminadas',[UnidadController::class,'eliminadas'])->name('unidades.baja');
     Route::get('unidades/{id}/activar',[UnidadController::class,'activar'])->name('unidades.activas');

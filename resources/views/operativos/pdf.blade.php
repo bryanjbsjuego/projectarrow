@@ -5,23 +5,23 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<title>:: Arrow ::</title>
+<title>Reporte de usuarios operativos</title>
 <link rel="icon" href="{{ asset('images/favicon.ico')}}" type="image/x-icon">
 <link rel="stylesheet" href="{{asset('plugins/bootstrap/css/bootstrap.min.css')}}" />
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <!-- Custom Css -->
-@yield('estilos')
-<link rel="stylesheet" href="{{asset('css/main.css')}}">
-<link rel="stylesheet" href="{{asset('css/themes/all-themes.css')}}"/>
+
 
 </head>
 <body class="theme-blush">
+    <h2>Reporte de usuarios operativos</h2>
+    <br><br>
     <div class="row clearfix">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
 
                 <div class="body table-responsive">
-                    <table class="table table-bordered table-striped ">
+                    <table class="table table-bordered  ">
                         <thead>
                             <tr>
                                 <th>Id</th>

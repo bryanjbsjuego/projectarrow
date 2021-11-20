@@ -106,8 +106,11 @@ class OperativoController extends Controller
 
         // return $usuarios;
         $pdf=PDF::loadView('operativos.pdf',['usuarios'=>$usuarios]);
-        $pdf->loadHTML('<h1>Test</h1>');
-        return $pdf->stream();
+        //$pdf->loadHTML('<h1>Test</h1>');
+        // Con stream se muestra el pdf en el navegador y no lo imprime
+        //return $pdf->stream();
+
+        return $pdf->download('UsuariosOperativos.pdf');
 
 
 
