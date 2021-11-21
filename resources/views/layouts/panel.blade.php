@@ -32,15 +32,15 @@
         <p>Cargando...</p>
     </div>
 </div>
-<!-- #END# Page Loader --> 
+<!-- #END# Page Loader -->
 
 <!-- Overlay For Sidebars -->
 <div class="overlay"></div>
-<!-- #END# Overlay For Sidebars --> 
+<!-- #END# Overlay For Sidebars -->
 
 <!-- Morphing Search  -->
 <div id="morphsearch" class="morphsearch">
-    
+
     <div class="morphsearch-content">
         <div class="column">
             <h2>People</h2>
@@ -102,7 +102,7 @@
                 <img class="rounded-circle" src="{{ asset('images/sm/avatar3.jpg')}}" alt=""/>
                 <h3>Peter Finlan</h3>
             </a>
-            <a class="media-object" href="#"> 
+            <a class="media-object" href="#">
                 <img class="rounded-circle" src="{{ asset('images/sm/avatar4.jpg')}}" alt=""/>
                 <h3>Patrick Cox</h3>
             </a>
@@ -112,7 +112,7 @@
             </a>
         </div>
     </div>
-    <!-- /morphsearch-content --> 
+    <!-- /morphsearch-content -->
     <span class="morphsearch-close"></span>
 </div>
 
@@ -195,8 +195,8 @@
                     <li class="footer"> <a href="javascript:void(0);">View All Notifications</a> </li>
                 </ul>
             </li>
-            <!-- #END# Notifications --> 
-            
+            <!-- #END# Notifications -->
+
             <li><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="zmdi zmdi-settings"></i></a></li>
         </ul>
     </div>
@@ -204,37 +204,49 @@
 <!-- #Top Bar -->
 
 <!--Side menu and right menu -->
-<section> 
+<section>
     <!-- Left Sidebar -->
-    <aside id="leftsidebar" class="sidebar"> 
+    <aside id="leftsidebar" class="sidebar">
         <!-- User Info -->
         <div class="user-info">
             <div class="admin-image"> <img src="{{asset('img/usuarios/'.Auth::user()->photo)}}" alt=""> </div>
             <div class="admin-action-info"> <span>Bienvenido:  </span>
                 <span>  {{ Auth::user()->name }}</span>
                 <ul>
-                    
-                    <li><a data-placement="bottom" title="Go to Profile" href="{{route('perfil.show',$id=Auth::user()->id)}}"><i class="zmdi zmdi-account"></i></a></li>                    
+
+                    <li><a data-placement="bottom" title="Go to Profile" href="{{route('perfil.show',$id=Auth::user()->id)}}"><i class="zmdi zmdi-account"></i></a></li>
                     <li><a data-placement="bottom" title="Full Screen" href="sign-in.html" ><i class="zmdi zmdi-sign-in"></i></a></li>
                 </ul>
             </div>
         </div>
-        <!-- #User Info --> 
+        <!-- #User Info -->
         <!-- Menu -->
         <div class="menu">
             <ul class="list">
                 <li class="header">Navegación</li>
-                
-                
+                @php
+                    use App\Models\User;
+                    use Spatie\Permission\Models\Role;
+                    use Illuminate\Support\Facades\DB;
+                    use Illuminate\Support\Facades\Auth;
+                    $id=Auth::id();
+                    $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','roles.id','=','model_has_roles.role_id')
+                    ->select('roles.name')
+                    ->where('users.id','=',$id)->first();
+                @endphp
                 <li class="active open"><a href="/home"><i class="zmdi zmdi-home"></i><span>Inicio</span></a></li>
-                
+                @if ($rol->name=="Tenant")
                 <li><a href="/roles"><i class="zmdi zmdi-calendar-check"></i><span>Roles</span> </a></li>
                 {{-- tenant --}}
                 <li><a href="/usuarios"><i class="zmdi zmdi-account"></i><span>Usuarios</span> </a></li>
+                <li><a href="/empresas"><i class="material-icons">business</i><span>Empresas</span> </a></li>
+                @elseif ($rol->name=="Responsable de empresa")
+
                 {{-- Responsable de empresa --}}
                 <li><a href="/operativos"><i class="zmdi zmdi-account"></i><span>Usuarios-Operativo</span> </a></li>
-                <li><a href="/empresas"><i class="material-icons">business</i><span>Empresas</span> </a></li>
-                
+
+
                 <li><a href="/afianzadoras"><i class="material-icons">next_week</i><span>Afianzadoras</span> </a></li>
                 <li><a href="/clientes"><i class="material-icons">supervisor_account</i><span>Clientes</span> </a></li>
                 <li><a href="/empleados"><i class="material-icons">build</i><span>Empleados</span> </a></li>
@@ -257,14 +269,15 @@
                     @csrf
                     </form>
                   </li>
-                
-                
-    
+
+
+
+
             </ul>
         </div>
         <!-- #Menu -->
     </aside>
-    <!-- #END# Left Sidebar --> 
+    <!-- #END# Left Sidebar -->
     <!-- Right Sidebar -->
     <aside id="rightsidebar" class="right-sidebar">
         <ul class="nav nav-tabs tab-nav-right" role="tablist">
@@ -397,7 +410,7 @@
             </div>
         </div>
     </aside>
-    <!-- #END# Right Sidebar --> 
+    <!-- #END# Right Sidebar -->
 </section>
 <!--Side menu and right menu -->
 
@@ -405,13 +418,13 @@
 <section class="content home">
     @yield('contenido')
 
-    
+
 </section>
 <!-- main content -->
 
 <div class="color-bg"></div>
 
-<!-- Jquery Core Js --> 
+<!-- Jquery Core Js -->
 <script src="{{asset('bundles/libscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
 <script src="{{asset('bundles/vendorscripts.bundle.js')}}"></script> <!-- Lib Scripts Plugin Js -->
 <script src="{{asset('bundles/morphingsearchscripts.bundle.js')}}"></script> <!-- Main top morphing search -->
@@ -419,11 +432,11 @@
 @yield('scripts')
 {{-- <script src="https://kit.fontawesome.com/0daff41b97.js" crossorigin="anonymous"></script> --}}
 <script src="{{asset('plugins/jquery-sparkline/jquery.sparkline.min.js')}}"></script> <!-- Sparkline Plugin Js --> --}}
-<script src="{{asset('plugins/chartjs/Chart.bundle.min.js')}}"></script> <!-- Chart Plugins Js --> 
- <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js --> 
-<script src="{{asset('js/pages/charts/sparkline.min.js')}}"></script> 
+<script src="{{asset('plugins/chartjs/Chart.bundle.min.js')}}"></script> <!-- Chart Plugins Js -->
+ <script src="{{asset('bundles/mainscripts.bundle.js')}}"></script><!-- Custom Js -->
+<script src="{{asset('js/pages/charts/sparkline.min.js')}}"></script>
 
- <script src="{{asset('js/pages/index.js')}}"></script> 
+ <script src="{{asset('js/pages/index.js')}}"></script>
 
 
 

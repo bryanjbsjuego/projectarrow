@@ -48,9 +48,9 @@
                                 </div>
                             @endif
                             <div class="col-md-12">
-                                {!! Form::model($imagen, ['method' => 'PUT',  'file' => true, 'enctype' => 'multipart/form-data',  'route'=> ['contratos.actualizarimagen',$imagen->id]]) !!}
-
+                                <form method="POST" action="{{ route('contratos.actualizarimagen',$imagen->id) }}" enctype="multipart/form-data" >
                                 @csrf
+                                @method('PUT')
                                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
                                 <img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140" alt="velonic">
                                 </div>
@@ -70,6 +70,8 @@
                                     </div>
                                 </div>
 
+                                <input type="hidden" name="id_contrato" value="{{ $imagen->id_contrato }}">
+
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2" style="display:inline-block" id="boton">Guardar</button>
@@ -77,7 +79,7 @@
                                     </center>
                                 </div>
 
-                                {!! Form::close() !!}
+                                </form>
                         </div>
                         </div>
                     </div>

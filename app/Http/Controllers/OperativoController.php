@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\Input;
 use function PHPUnit\Framework\isEmpty;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Arr;
+use PDF;
 
 
 
@@ -48,7 +49,7 @@ class OperativoController extends Controller
         // ->where('users.id_tenant','=',$info->id_tenant)
         // ->whereNotIn('role_id', [$id_roltenant->id, $id_responsable->id,])
         // ->where('empresas.id','=',$info->empresa)->paginate(5);
-       
+
 
         $id=User::select('id_tenant','empresa')->where('id','=',Auth::id())->first();
 
@@ -70,6 +71,54 @@ class OperativoController extends Controller
         return view('operativos.index',compact('usuarios'));
     }
 
+    public function createPDF()
+    {
+
+        // primero obtenemos los id del responsable empresa y respobsale tenanat con la finalidad
+        // de que estos usuarios no sean mostrados como operativos
+
+        $id_roltenant=Role::select('id')->where('name','=','Tenant')->first();
+        $id_responsable=Role::select('id')->where('name','=','Responsable de empresa')->first();
+
+
+        //obtenemos la informacion del usuario para filtrar
+        // $info=User::select('id_tenant','empresa')->where('id','=',Auth::id())->first();
+
+        // $usuarios = DB::table('users')->select('name','users.id','users.email')
+        // ->join('empresas', 'users.empresa', '=', 'empresas.id')
+        // ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        // ->where('users.id_tenant','=',$info->id_tenant)
+        // ->whereNotIn('role_id', [$id_roltenant->id, $id_responsable->id,])
+        // ->where('empresas.id','=',$info->empresa)->paginate(5);
+
+
+        $id=User::select('id_tenant','empresa')->where('id','=',Auth::id())->first();
+
+        $usuarios=DB::table('users')
+        ->join('empresas', 'users.empresa', '=', 'empresas.id')
+        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->where('users.id_tenant',$id->id_tenant)
+        ->whereNotIn('role_id', [$id_roltenant->id, $id_responsable->id,])
+        ->where('empresas.id','=',$id->empresa)
+        ->select('users.*','roles.name as rol')
+        ->get();
+
+        // return $usuarios;
+        $pdf=PDF::loadView('operativos.pdf',['usuarios'=>$usuarios]);
+        //$pdf->loadHTML('<h1>Test</h1>');
+        // Con stream se muestra el pdf en el navegador y no lo imprime
+        //return $pdf->stream();
+
+        return $pdf->download('UsuariosOperativos.pdf');
+
+
+
+
+
+       // return view('operativos.pdf',compact('usuarios'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -83,7 +132,7 @@ class OperativoController extends Controller
         ->select('empresas.nombre','empresas.id')
         ->where('users.id','=',$id)
         ->first();
-    
+
         $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
         ->join('roles','roles.id','=','model_has_roles.role_id')
         ->select('roles.name')
@@ -95,9 +144,9 @@ class OperativoController extends Controller
             $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de empresa'])->get();
         }
 
-    
+
         // return $roles;
-     
+
 
         return view('operativos.crear',compact('roles','empresa'));
     }
@@ -131,7 +180,7 @@ class OperativoController extends Controller
             $imagen->move($ruta,$nombreImagen);
             $usuario->photo=$nombreImagen;
 
-          
+
             $usuario->save();
             $usuario->assignRole($consulta->id);
 
@@ -146,7 +195,7 @@ class OperativoController extends Controller
         // if($request->input('roles')=='0'){
         //     return "viaje vacio";
         // }else{
-            
+
         // }
     }
 

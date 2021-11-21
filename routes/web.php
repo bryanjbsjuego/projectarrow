@@ -53,6 +53,8 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('perfil',PerfilController::class);
     Route::resource('cargos',CargoController::class);
     Route::resource('operativos',OperativoController::class);
+    
+    Route::get('/pdf',[OperativoController::class,'createPDF'])->name('operativos.createPDF');
     Route::resource('unidades',UnidadController::class);
     Route::get('eliminadas',[UnidadController::class,'eliminadas'])->name('unidades.baja');
     Route::get('unidades/{id}/activar',[UnidadController::class,'activar'])->name('unidades.activas');
@@ -61,8 +63,10 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('contratos/{id}/imagen',[ContratosController::class,'imagen'])->name('contratos.imagen');
     Route::post('contratos/guardar',[ContratosController::class,'guardar'])->name('contratos.guardar');
     Route::get('contratos/{imagen}/editarimagen',[ContratosController::class,'editarimagen'])->name('contratos.editarimagen');
-    Route::put('contratos/{imagen}/actualizarimagen',[ContratosController::class,'actualizarimagen'])->name('contratos.actualizarimagen');
+    Route::put('contratos/{img}/actualizarimagen',[ContratosController::class,'actualizarimagen'])->name('contratos.actualizarimagen');
     //Route::resource('imagenescontratos',ImagenContratoController::class);
+    Route::delete('contratos/{imag}/eliminarimagen',[ContratosController::class,'eliminarimagen'])->name('contratos.eliminarimagen');
+
 
 
     Route::get('contratobajas',[ContratosController::class,'eliminadas'])->name('contratos.baja');

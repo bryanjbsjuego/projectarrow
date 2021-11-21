@@ -154,28 +154,25 @@
 
                     </div>
                     <br><br>
-                    <div class="row clearfix">
-
+                    <div class="container">
+                        <div class="row">
                         @foreach($imagenes as $imagen )
-                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail card">
-                                <div class="caption  body text-center">
-                                <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140" alt="velonic"></h3>
+                        
+                            <div class="col-4">
+                                <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140px" height="100px" alt="velonic"></h3>
                                 <p><strong>Descripción: <strong> {{ $imagen->descripcion }}</p>
                                     <a href="{{route('contratos.editarimagen',$imagen->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
 
-                            <form action="" class=""  method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
-                              </form>
-                                </div>
+                                <form action="{{route('contratos.eliminarimagen',$imagen->id)}}" class=""  method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
+                                </form>
                             </div>
-
-                        </div>
-
+                       
 
                         @endforeach
+                    </div>
 
 
                     </div>
