@@ -239,6 +239,7 @@
                 <li><a href="/clientes"><i class="material-icons">supervisor_account</i><span>Clientes</span> </a></li>
                 <li><a href="/empleados"><i class="material-icons">build</i><span>Empleados</span> </a></li>
                 <li><a href="/contratos"> <i class="material-icons">assignment</i><span>Contratos</span> </a></li>
+                <li><a href="/contratosR"> <i class="material-icons">assignment</i><span>Contratos-Asignados</span> </a></li>
                
                
                

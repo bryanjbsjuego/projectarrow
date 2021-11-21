@@ -20,6 +20,7 @@ class CreateFianzaTable extends Migration
             $table->integer('num_fianza');
             $table->unsignedBigInteger('id_contrato')->nullable();
             $table->foreign('id_contrato')->references('id')->on('contratos');
+            
             $table->unsignedBigInteger('id_afianzadora')->nullable();
             $table->foreign('id_afianzadora')->references('id')->on('afianzadoras');
             $table->timestamps();

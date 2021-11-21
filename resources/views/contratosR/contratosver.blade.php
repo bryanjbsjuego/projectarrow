@@ -114,45 +114,17 @@
                     </div>
 
 
-                    {{-- <div class="row">
+                    <div class="row">
                         <div class="col-sm-12 text-center">
 
                             <hr>
-                            <a href="javascript:window.print()" class="btn btn-raised btn-success"><i class="zmdi zmdi-print"></i></a>
-                            <a href="{{route('contratos.edit',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-warning">Editar</a>
-                            <a href="#" class="btn btn-raised btn-danger">Eliminar</a>
-                           
-                            <a href="" class="btn btn-raised btn-success">Regresar</a>
+                            <a href="{{route('contratosR.index')}}" class="btn btn-raised btn-success">Regresar</a>
                         </div>
-                    </div> --}}
+                    </div>
 
 
                     <br>
-                    <div class="row">
-
-                        @if ($contratoUnion->estatus !=1)
-                        <div class="col-sm-12   d-flex ">
-
-                            <hr>
-                            <a href="javascript:window.print()" class="btn btn-raised btn-success m-auto"  ><i class="zmdi zmdi-print"></i></a>
-                            <a href="{{route('contratos.edit',$contratoUnion->contrato_id)}}"  class=" m-auto btn btn-raised btn-warning">Editar</a>
-
-                            <a href="{{ route('contratos.imagen',$contratoUnion->contrato_id) }}" class="btn btn-raised btn-info">Agregar Imagen </a>
-                            <a href="{{route('contratos.index')}}" class="btn btn-raised btn-success m-auto" >Regresar</a>
-
-                            <form action="{{route('contratos.destroy',$contratoUnion->contrato_id)}}" class="m-auto text-center "  method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-raised btn-danger">Eliminar</button>
-                              </form>
-                        </div>
-                        @else
-
-                        <a href="{{route('contratos.activar',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-info m-auto" >Activar Contrato</a>
-                        @endif
-
-
-                    </div>
+                 
                     <br><br>
                     <div class="row clearfix">
 

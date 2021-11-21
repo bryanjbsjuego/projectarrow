@@ -9,12 +9,15 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\AfianzadoraController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CodigoController;
+use App\Http\Controllers\ConceptoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\OperativoController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\ContratosController;
+use App\Http\Controllers\ContratosResponsableController;
 use App\Http\Controllers\FianzaController;
 use App\Http\Controllers\ImagenContratoController;
 
@@ -66,7 +69,37 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('contratos/{id}/activar',[ContratosController::class,'activar'])->name('contratos.activar');
     Route::resource('fianza',FianzaController::class);
     Route::get('fianza/{id}/crear',[FianzaController::class,'crear'])->name('fianza.crear');
+
+    Route::resource('contratosR',ContratosResponsableController::class);
+
+    Route::resource('codigos',CodigoController::class);
+
+    Route::get('conceptos/{id}/',[CodigoController::class,'principal'])->name('codigo.principal');
+    Route::get('conceptos/{id}/crear',[CodigoController::class,'crear'])->name('codigo.crear');
+    
+    Route::get('conceptopri/{id}/create',[ConceptoController::class,'crear'])->name('concepto.create');
+   
+    Route::post('codigosecundario/create',[CodigoController::class,'createsecundario'])->name('secundario.crear');
+    Route::get('conceptog/{id}/crear',[CodigoController::class,'nuevoconcepto'])->name('conceptos.nuevo');
+    
+    Route::resource('conceptosec',ConceptoController::class);
+
+    Route::get('conceptosec/{id}/ver',[ConceptoController::class,'ver'])->name('concepto.ver');
+
+    Route::get('editarsec/{concepto}/editar',[ConceptoController::class,'editarsec'])->name('concepto.edit');
+    Route::post('editarsec/{concepto}/edit',[ConceptoController::class,'updatesec'])->name('secundario.update');
+  
+    Route::delete('eliminarsec/{concepto}/edit',[ConceptoController::class,'eliminarsec'])->name('secundario.delete');
+    
+    Route::get('editarsec/{concepto}/eliminados',[CodigoController::class,'eliminados'])->name('concepto.eliminados');
+
+    Route::get('conceptosec/{concepto}/activar',[ConceptoController::class,'activar'])->name('conceptose.activar');
+    Route::get('activarconceptos/{concepto}/activar',[ConceptoController::class,'secactivar'])->name('conceptosec.activar');
+
+   
 } );
+
+
 
 
 
