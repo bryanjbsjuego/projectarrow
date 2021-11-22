@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\Contrato;
 use App\Models\Empleado;
 use App\Models\Empresa;
 use App\Models\User;
@@ -138,9 +139,13 @@ class ClienteController extends Controller
     {
 
         $empleados=Empleado::where('id_cliente','=',$cliente->id)->where('estatus','=',0)->count();
+
+        $contratos=Contrato::where('id_cliente','=',$cliente->id)->count();
+
+        // return $contratos;
         
-        if($empleados>0){
-            $mensaje_error="No se puede eliminar el cliente: ". $cliente->nombre. "  cuenta con empleados activos";
+        if($empleados>0 || $contratos>0){
+            $mensaje_error="No se puede eliminar el cliente: ". $cliente->nombre. "  cuenta con empleados activos ó contratos";
             return redirect()->route('clientes.index')->with(compact('mensaje_error'));
         }else{
             
@@ -149,6 +154,8 @@ class ClienteController extends Controller
             $mensaje="Cliente:".$cliente->nombre." Eliminado exitosamente asi como sus empleados inactivos";
             return redirect()->route('clientes.index')->with(compact('mensaje'));
         }
+
+
       
       
     }

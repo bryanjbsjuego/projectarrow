@@ -75,8 +75,8 @@
                                             <td>{{$concepto->punitario}}</td>
                                             <td>{{$concepto->precio_letra}}</td>
                                             <td>{{$concepto->importe}}</td>
-                                            <td>{{$concepto->porcentaje}}</td> 
-                                            <td>{{$concepto->id_codigo}}</td> 
+                                            <td>{{$concepto->porcentaje}} %</td> 
+                                            {{-- <td>{{$concepto->id_codigo}}</td>  --}}
                                            
 
                                         </tr>

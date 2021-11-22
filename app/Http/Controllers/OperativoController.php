@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Empresa;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use Dompdf\Adapter\PDFLib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -103,6 +105,8 @@ class OperativoController extends Controller
         ->where('empresas.id','=',$id->empresa)
         ->select('users.*','roles.name as rol')
         ->get();
+        
+    
 
         // return $usuarios;
         $pdf=PDF::loadView('operativos.pdf',['usuarios'=>$usuarios]);
@@ -116,7 +120,7 @@ class OperativoController extends Controller
 
 
 
-       // return view('operativos.pdf',compact('usuarios'));
+       return view('operativos.pdf',compact('usuarios'));
     }
 
     /**
@@ -159,10 +163,36 @@ class OperativoController extends Controller
      */
     public function store(Request $request)
     {
-        $rol=$request->input(['roles']);
-        $consulta=Role::select('id')->where('name','like',$rol)->first();
 
-        if($rol !=0 || $rol !='' ){
+        // return $request->all();
+
+        $this->validate($request,
+        [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|same:confirm-password',
+            'photo' => 'required',
+            'roles' => 'required',
+            
+        ],
+        [
+            'name.required' => 'El campo nombre debe ser obligatorio',
+            'email.unique' => 'El email ingresado ya esta en uso'
+        ]
+        
+         );
+
+        //  return $request->all();
+
+        $rol=$request->input(['roles']);
+
+        // return var_dump( $request->input(['roles']));
+       
+        if($rol !="0"  ){
+
+            $rol=$request->input(['roles']);
+            $consulta=Role::select('id')->where('name','like',$rol)->first();
+    
 
             //obtenemos id del tenant
 
@@ -192,11 +222,7 @@ class OperativoController extends Controller
             return back()->withInput()->with(compact('mensaje'));
         }
 
-        // if($request->input('roles')=='0'){
-        //     return "viaje vacio";
-        // }else{
-
-        // }
+     
     }
 
     /**

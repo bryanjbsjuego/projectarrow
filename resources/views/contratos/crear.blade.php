@@ -20,6 +20,12 @@
                           {{session('mensaje')}}
                         </div>
                         @endif
+
+                        @if (session('mensaje_error'))
+                        <div class="alert alert-danger" role="alert">
+                          {{session('mensaje_error')}}
+                        </div>
+                        @endif
                         <div id="error_fecha" class="alert alert-danger" style="display: none">
                             <strong>Alerta!</strong> Porfavor seleccione una fecha valida en inicio y termino
                         </div>
@@ -42,21 +48,21 @@
                                 @csrf
         <div class="form-group">
             <div class="form-line">
-                <input type="text" name="contrato" class="form-control" placeholder="Contrato">
+                <input type="text" name="contrato" value="{{old('contrato')}}" class="form-control" placeholder="Contrato">
             </div>
         </div>
     </div>
     <div class="col-md-12 col-sm-12">
         <div class="form-group">
             <div class="form-line">
-                <input type="text" name="nombre_obra" class="form-control" placeholder="Nombre de la obra">
+                <input type="text" name="nombre_obra"  value="{{old('nombre_obra')}}"class="form-control" placeholder="Nombre de la obra">
             </div>
         </div>
     </div>
     <div class="col-sm-12">
         <div class="form-group">
         <div class="form-line">
-            <textarea  style="height: 100px" class="form-control"  id="descripcion" name="descripcion" placeholder="Descripcion" ></textarea>
+            <textarea  style="height: 100px" class="form-control"  id="descripcion" value="" name="descripcion" placeholder="Descripcion" >{{old('descripcion')}}</textarea>
         </div>
         </div>
     </div>
@@ -71,7 +77,7 @@
     <div class="col-sm-12">
         <div class="form-group">
              <div class="form-line">
-                <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" ></textarea>
+                <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" >{{old('ubicacion')}}</textarea>
              </div>
          </div>
     </div>
@@ -79,7 +85,7 @@
         <div class="form-group">
             <div class="form-line">
             <label for="start">Fecha inicio</label>
-            <input type="Date" value="<?php echo date("Y-n-j"); ?>" max="<?=date('Y-m-d',strtotime('now +30 days'));?>" min="<?=date('Y-m-d',strtotime('now -0 days'));?>" name="fecha_inicio" class="form-control" id="fecha_inicio" name="fecha_inicio" placeholder="Fecha de alta">
+            <input type="Date" value="<?php echo date("Y-n-j"); ?>" max="<?=date('Y-m-d',strtotime('now +30 days'));?>" min="<?=date('Y-m-d',strtotime('now -0 days'));?>" value="{{old('fecha_inicio')}}" name="fecha_inicio" class="form-control" id="fecha_inicio" name="fecha_inicio" placeholder="Fecha de alta">
             </div>
         </div>
     </div>
@@ -87,7 +93,7 @@
         <div class="form-group">
             <div class="form-line">
             <label for="start">Fecha termino</label>
-            <input type="Date" value="<?php echo date("Y-n-j"); ?>" max="<?=date('Y-m-d',strtotime('now +30 days'));?>" min="<?=date('Y-m-d',strtotime('now -0 days'));?>" id="fecha_termino" name="fecha_termino" class="form-control" placeholder="Fecha de termino">
+            <input type="Date"    value="<?php echo date("Y-n-j"); ?>"  min="<?=date('Y-m-d',strtotime('now -0 days'));?>" id="fecha_termino" value="{{old('fecha_termino')}}" name="fecha_termino" class="form-control" placeholder="Fecha de termino">
             </div>
         </div>
     </div>
@@ -104,21 +110,23 @@
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
             <div class="form-line">
-                <input type="number" name="plazo_dias" class="form-control" placeholder="Plazo de dias">
+                <input type="number" name="plazo_dias" value="{{old('plazo_dias')}}" class="form-control" placeholder="Plazo de dias">
             </div>
         </div>
     </div>
     <div class="col-md-6 col-sm-12">
         <div class="form-group">
             <div class="form-line">
-                <input type="number" name="importe" class="form-control" placeholder="$ Importe">
+                <input  min="0" step="0.01" step="any"  value="{{old('importe')}}" type="number" name="importe" class="form-control" placeholder="$ Importe">
+
+                                                   
             </div>
         </div>
     </div>
     <div class="col-md-12 col-sm-12">
         <div class="form-group">
             <div class="form-line">
-                <input type="number" name="amortizacion" class="form-control" placeholder="Amortización">
+                <input  min="0" step="0.01" step="any" type="number" value="{{old('amortizacion')}}" name="amortizacion" class="form-control" placeholder="Amortización">
             </div>
         </div>
     </div>
@@ -131,7 +139,7 @@
                                 <select class="form-control show-tick" name="id_cliente">
                                     <option value="">-- Cliente --</option>
                                     @foreach ($clientes as $cliente)
-                        <option value="{{$cliente->id}}">{{$cliente->nombre}}</option>
+                        <option value="{{$cliente->id}}" @if(old('id_cliente')==$cliente->id) selected @endif >{{$cliente->nombre}}</option>
                                     @endforeach 
                                 </select>
                             </div>
@@ -139,7 +147,7 @@
                                 <select class="form-control show-tick" name="id_responsable">
                                     <option value="0">-- Responsable de Obra --</option>
                                     @foreach ($responsables as $responsable)
-                        <option value="{{$responsable->id}}">{{$responsable->name}}</option>
+                        <option value="{{$responsable->id}}" @if(old('id_responsable')==$responsable->id) selected @endif >{{$responsable->name}}</option>
                                     @endforeach 
                                 </select>
                             </div>
@@ -147,7 +155,7 @@
                                 <select class="form-control show-tick" name="id_asistente">
                                     <option value="0">-- Asistente de Obra --</option>
                                     @foreach ($asistentes as $asistente)
-                        <option value="{{$asistente->id}}">{{$asistente->name}}</option>
+                        <option value="{{$asistente->id}}" @if(old('id_asistente')==$asistente->id) selected @endif>{{$asistente->name}}</option>
                                     @endforeach 
                                 </select>
                             </div>

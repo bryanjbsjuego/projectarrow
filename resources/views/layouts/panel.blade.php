@@ -259,7 +259,14 @@
                
                
                
+                @elseif ($rol->name=="Responsable de obra" || $rol->name="Asistente de obra")
+
+                {{-- Responsable de empresa --}}
+              
+
+                <li><a href="/contratosR"> <i class="material-icons">assignment</i><span>Contratos-Asignados</span> </a></li>
                
+                @endif
                 
                 <li >
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" >
@@ -269,7 +276,6 @@
                     @csrf
                     </form>
                   </li>
-
 
 
 

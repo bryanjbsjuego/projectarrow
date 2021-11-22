@@ -14,7 +14,7 @@ use App\Models\ImagenesContrato;
 // use App\Models\ImagenesContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
-
+use PhpParser\Node\Stmt\Return_;
 
 class ContratosController extends Controller
 {
@@ -111,6 +111,12 @@ class ContratosController extends Controller
     {
 
 
+        if($id_cliente=null || $request->id_responsable=="0" || $request->id_asistente=="0"){
+            $mensaje_error="Error es necesario  llenar todos los campos";
+            // return "error";
+            return back()->withInput()->with(compact('mensaje_error'));
+        }
+
         $date=$request->all();
 
         //   return $request->contrato;
@@ -172,17 +178,36 @@ class ContratosController extends Controller
 
         $contrato=Contrato::where('id','=',$id)->first();
 
-        // return $contrato;
+        // return $contrato->id_cliente;
 
-       $contratoUnion=DB::table('contratos')
-        ->join('empresas', 'contratos.id_empresa', '=', 'empresas.id')
-        ->join('users', 'contratos.id_responsable', '=', 'users.id')
-        ->join('clientes', 'contratos.id_cliente', '=', 'clientes.id')
-       ->where('contratos.id','=',$id)
-       ->select('contratos.*','contratos.id as contrato_id','users.name',
-       'users.id','empresas.id as id_empresa','empresas.nombre as nombre_empresa',
-       'clientes.id as id_cliente','clientes.nombre as nombre_cliente')
-       ->first();
+        if(empty($contrato->id_cliente)){
+          
+            $contratoUnion=DB::table('contratos')
+            ->join('empresas', 'contratos.id_empresa', '=', 'empresas.id')
+            ->join('users', 'contratos.id_responsable', '=', 'users.id')
+            
+           ->where('contratos.id','=',$id)
+           ->select('contratos.*','contratos.id as contrato_id','users.name',
+           'users.id','empresas.id as id_empresa','empresas.nombre as nombre_empresa')
+           ->first();
+
+           $contratoUnion->nombre_cliente="sin cliente asignado";
+
+        //    return $contratoUnion;
+    
+        }else{
+            $contratoUnion=DB::table('contratos')
+            ->join('empresas', 'contratos.id_empresa', '=', 'empresas.id')
+            ->join('users', 'contratos.id_responsable', '=', 'users.id')
+            ->join('clientes', 'contratos.id_cliente', '=', 'clientes.id')
+           ->where('contratos.id','=',$id)
+           ->select('contratos.*','contratos.id as contrato_id','users.name',
+           'users.id','empresas.id as id_empresa','empresas.nombre as nombre_empresa',
+           'clientes.id as id_cliente','clientes.nombre as nombre_cliente')
+           ->first();
+        }
+
+   
 
        $imagenes=DB::table('contratos')
        ->join('imagenes_contratos','contratos.id','=','imagenes_contratos.id_contrato')
@@ -196,6 +221,9 @@ class ContratosController extends Controller
        ->select('users.id as asistente_id','users.name as asistente_name')
        ->first();
 
+
+    //    return $asistente;
+
        return view('contratos.show',compact('contratoUnion','asistente','imagenes'));
     }
 
@@ -207,6 +235,9 @@ class ContratosController extends Controller
      */
     public function edit( Contrato $contrato)
     {
+
+
+        
         $id=Auth::id();
         $idt=User::select('id_tenant')->where('id', '=', $id)->first();
         $contrato=DB::table('contratos')
@@ -220,6 +251,9 @@ class ContratosController extends Controller
        ->first();
        $id_empresa=User::select('empresa')->where('id', '=', $id)->first();
        $clientes=Cliente::where('id_empresa', '=', $id_empresa->empresa)->get();
+
+    
+       
 
        $asistente=DB::table('contratos')
        ->join('users', 'contratos.id_asistente', '=', 'users.id')
@@ -265,6 +299,47 @@ class ContratosController extends Controller
      */
     public function update(Request $request, Contrato $contrato)
     {
+
+      
+        // return $request->all();
+
+        //   return $request->contrato;
+
+        // return $request->all();
+        request()->validate([
+            'contrato' => 'required',
+            'nombre_obra' => 'required',
+            'descripcion' => 'required',
+            'fecha_alta'  => 'required',
+            'ubicacion' => 'required',
+            'fecha_inicio' => 'required',
+            'fecha_termino' => 'required',
+            'plazo_dias' => 'required',
+            'importe' => 'required',
+            'amortizacion' => 'required',
+            'id_cliente' => 'required',
+            'id_empresa' => 'required',
+            'id_responsable' => 'required',
+            'id_asistente' => 'required'
+
+        ],
+        [
+            'id_cliente.required' => 'Debe elegir un cliente',
+            'id_responsable' => 'required',
+            'id_asistente' => 'required'
+
+        ]
+    );
+
+
+        
+
+
+        if($id_cliente=null || $request->id_responsable=="0" || $request->id_asistente=="0"){
+            $mensaje_error="Error es necesario  llenar todos los campos";
+            // return "error";
+            return back()->withInput()->with(compact('mensaje_error'));
+        }
 
 
 

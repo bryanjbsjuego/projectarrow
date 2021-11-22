@@ -15,9 +15,17 @@
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<div class="card">
 					<div class="header">
+                       
+
                         @if (session('mensaje'))
                         <div class="alert alert-danger" role="alert">
                           {{session('mensaje')}}
+                        </div>
+                        @endif
+
+                        @if (session('mensaje_error'))
+                        <div class="alert alert-danger" role="alert">
+                          {{session('mensaje_error')}}
                         </div>
                         @endif
                         <div id="error_fecha" class="alert alert-danger" style="display: none">
@@ -156,7 +164,7 @@
                         <br>
                     
     <div class="col-sm-12 mt-4 d-flex justify-content-center">
-        <button type="submit" class="btn btn-raised g-bg-blush2">Agregar</button>
+        <button type="submit" class="btn btn-raised g-bg-blush2">Editar</button>
         <button type="submit" class="btn btn-raised btn-default">Cancelar</button>
     </div>   
 </div>

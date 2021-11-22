@@ -101,8 +101,8 @@
                                             <td>{{$contratoUnion->nombre_obra}}</td>
                                             <td>{{$contratoUnion->descripcion}}</td>
                                             <td>{{$contratoUnion->plazo_dias}}</td>
-                                            <td>{{$contratoUnion->amortizacion}}</td>
-                                            <td>{{$contratoUnion->importe}}</td>
+                                            <td>$ {{$contratoUnion->amortizacion}}</td>
+                                            <td>$ {{$contratoUnion->importe}}</td>
                                             <td>{{$contratoUnion->nombre_cliente}}</td>
 
                                         </tr>
