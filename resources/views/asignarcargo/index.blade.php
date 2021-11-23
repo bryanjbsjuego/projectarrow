@@ -7,7 +7,7 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-          
+
             <h2>Cargos asignados</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             @if (session('mensaje'))
@@ -16,57 +16,57 @@
             </div>
             @endif
             <div>
-                <a href="" class="btn btn-raised btn-success">Asignar cargo</a>
+                <a href="asignarcargo/create" class="btn btn-raised btn-success">Asignar cargo</a>
             </div>
         </div>
 
-        
+
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="header">
-                        
+
                     </div>
                     <div class="body table-responsive">
                         <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                             <thead>
                                 <tr>
-                                    
+
                                     <th class="text-center">Nombre de empleado</th>
                                     <th class="text-center">Cargo asignado</th>
-                                    
-                                   
+
+
                                     <th class="text-center">Acciones</th>
-                                  
+
                                 </tr>
-                            </thead>                            
+                            </thead>
                             <tbody>
-                                
+
                                 {{-- @foreach ($contratos as $contrato)
-                                    
-                            
+
+
                                 <tr>
                                     <td class="text-center">{{$contrato->contrato}}</td>
                                     <td class="text-center">{{$contrato->nombre_obra}}</td>
                                     <td class="text-center">{{$contrato->ubicacion}}</td>
                                     <td class="text-center">{{$contrato->fecha_alta}}</td>
-                                 
-                                        
 
-                                        
+
+
+
                                   <td class="d-flex justify-content-around align-items-center">
 
                                     <a href="{{route('contratosR.show',$contrato->id)}} " class="mt-2"><i class="material-icons text-success">visibility</i></a>
-                                  
+
                                  <a href="{{route('codigo.principal',$contrato->id)}}" class="btn btn-info text-white" >Concepto</a>
-                               
 
 
-                           
+
+
                                 </td>
                                 </tr>
                                 @endforeach --}}
-                             
+
                             </tbody>
                         </table>
                     </div>
@@ -74,12 +74,12 @@
             </div>
         </div>
 
-    
+
 
 
 
     </div>
-    
+
 
 @endsection
 

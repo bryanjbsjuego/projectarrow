@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AsignarCargoController extends Controller
 {
@@ -23,7 +26,18 @@ class AsignarCargoController extends Controller
      */
     public function create()
     {
-        //
+        $id=Auth::id();
+
+        $empresa=User::select('empresa')->where('id','=',$id)->first();
+
+        $cargos=DB::table('empresas')
+        ->join('cargos', 'empresas.id', '=', 'cargos.id_empresa')
+        ->select('cargos.*')
+        ->where('empresas.id','=',$empresa->empresa)
+        ->get();
+
+
+        return view('asignarcargo.crear',compact('cargos'));
     }
 
     /**
@@ -34,7 +48,7 @@ class AsignarCargoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

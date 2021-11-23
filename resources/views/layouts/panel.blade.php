@@ -252,22 +252,23 @@
                 <li><a href="/empleados"><i class="material-icons">build</i><span>Empleados</span> </a></li>
                 <li><a href="/contratos"> <i class="material-icons">assignment</i><span>Contratos</span> </a></li>
                <li><a  href="/contratosR"> <i class="material-icons">assignment</i><span>Contratos-Asignados</span> </a></li>
+               <li><a  href="/cargos"> <i class="material-icons">assignment</i><span>Cargos</span> </a></li>
                 <li><a  href="/asignarcargo"> <i class="material-icons">assignment_ind</i><span>Asignar cargo</span> </a></li>
- 
-               
-               
-               
-               
-               
+
+
+
+
+
+
                 @elseif ($rol->name=="Responsable de obra" || $rol->name="Asistente de obra")
 
                 {{-- Responsable de empresa --}}
-              
+
 
                 <li><a href="/contratosR"> <i class="material-icons">assignment</i><span>Contratos-Asignados</span> </a></li>
-               
+
                 @endif
-                
+
                 <li >
                     <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" >
                       <i class="ni ni-button-power text-default "></i> Cerrar sesión
