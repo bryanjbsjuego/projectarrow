@@ -20,6 +20,7 @@ use App\Http\Controllers\ContratosController;
 use App\Http\Controllers\ContratosResponsableController;
 use App\Http\Controllers\FianzaController;
 use App\Http\Controllers\ImagenContratoController;
+use App\Http\Controllers\AsignarCargoController;
 
 
 /*
@@ -99,6 +100,9 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('conceptosec/{concepto}/activar',[ConceptoController::class,'activar'])->name('conceptose.activar');
     Route::get('activarconceptos/{concepto}/activar',[ConceptoController::class,'secactivar'])->name('conceptosec.activar');
+
+    Route::resource('asignarcargo',AsignarCargoController::class);
+    
 
    
 } );
