@@ -13,7 +13,7 @@ class CreateEmpleadosCargosTable extends Migration
      */
     public function up()
     {
-        Schema::create('empleados_cargos', function (Blueprint $table) {
+        Schema::create('empleado_cargos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_cargo')->nullable();
             $table->foreign('id_cargo')->references('id')->on('cargos');
@@ -30,6 +30,6 @@ class CreateEmpleadosCargosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('empleados_cargos');
+        Schema::dropIfExists('empleado_cargos');
     }
 }

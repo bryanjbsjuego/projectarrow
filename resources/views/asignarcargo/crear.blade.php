@@ -43,7 +43,7 @@
 
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group drop-custum">
-                                            <select class="form-control show-tick" id="cliente" name="id_cliente" required>
+                                            <select class="form-control show-tick" id="id_cargo" name="id_cargo" required>
                                             <option value="0" selected>--Seleccione un cargo--</option>
 
                                               @foreach ($cargos as $cargo)
@@ -54,13 +54,38 @@
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group  drop-custum">
-                                            <select class="form-control show-tick" id="empresa" name="id_empresa"  required>
-                                                <option value="0"  selected>--Seleccione una empresa--</option>
-                                                {{-- <option value="{{$empresa->id}}" id="opc">{{$empresa->nombre}}</option> --}}
-
+                                            <select class="form-control show-tick" id="tipo_empleado" name="tipo_empleado">
+                                                <option value="0">-- Seleccione tipo de empleado --</option>
+                                                <option value="em">Empresa</option>
+                                                <option value="cl">Cliente</option>
+                                             
                                             </select>
                                         </div>
                                     </div>
+                                    
+                                    <div class="col-md-6 col-sm-12">
+                                        
+                                            <select class="form-control show-tick" id="cliente" name="id_cliente" required>
+                                                <option value="0" selected>--Seleccione un empleado por cliente--</option>
+            
+                                                 @foreach ($empleadosC as $cliente)
+                                                 <option value="{{$cliente->id}}" >{{$cliente->nombre.' '. $cliente->apellido_paterno .' '. $cliente->apellido_materno}}</option>
+                                                 @endforeach  
+                                                </select>    
+                                        
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <select class="form-control show-tick" id="empresa" name="id_empresa" style="display: none" required>
+                                            <option value="0"  selected>--Seleccione un empleado por empresa--</option>
+                                            @foreach ($empleadosE as $empleado)
+                                                 <option value="{{$empleado->id}}" >{{$empleado->nombre.' '. $empleado->apellido_paterno .' '. $empleado->apellido_materno}}</option>
+                                                 @endforeach  
+                                         
+                                        </select>
+                                    </div>
+
+
+                                    
 
                                 </div>
 
@@ -97,7 +122,7 @@
 @section('scripts')
 
 
-    {{-- <script>
+    <script>
     let $empleado;
 
     $(function(){
@@ -147,6 +172,6 @@
     });
 
 
-    </script> --}}
+    </script>
 
 @endsection

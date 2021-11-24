@@ -31,7 +31,7 @@
                         <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                             <thead>
                                 <tr>
-
+                                   
                                     <th class="text-center">Nombre de empleado</th>
                                     <th class="text-center">Cargo asignado</th>
 
@@ -42,30 +42,31 @@
                             </thead>
                             <tbody>
 
-                                {{-- @foreach ($contratos as $contrato)
+                                @foreach ($cargosasignados as $cargoasignado)
 
 
                                 <tr>
-                                    <td class="text-center">{{$contrato->contrato}}</td>
-                                    <td class="text-center">{{$contrato->nombre_obra}}</td>
-                                    <td class="text-center">{{$contrato->ubicacion}}</td>
-                                    <td class="text-center">{{$contrato->fecha_alta}}</td>
+                                    
+                                    <td class="text-center">{{$cargoasignado->nombre.' '.$cargoasignado->paterno.' '.$cargoasignado->materno}}</td>
+                                    <td class="text-center">{{$cargoasignado->cargo}}</td>
+                                    <td class="d-flex justify-content-around">
 
-
-
-
-                                  <td class="d-flex justify-content-around align-items-center">
-
-                                    <a href="{{route('contratosR.show',$contrato->id)}} " class="mt-2"><i class="material-icons text-success">visibility</i></a>
-
-                                 <a href="{{route('codigo.principal',$contrato->id)}}" class="btn btn-info text-white" >Concepto</a>
-
-
-
-
-                                </td>
+                                        <a href="{{route('asignarcargo.edit',$cargoasignado->id)}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
+                                       
+                                      
+    
+                                       <form action="{{route('asignarcargo.destroy',$cargoasignado->id)}}"   method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
+                                      </form>
+    
+                               
+                                    </td>
+                                
+                                  
                                 </tr>
-                                @endforeach --}}
+                                @endforeach
 
                             </tbody>
                         </table>
