@@ -90,6 +90,7 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('conceptosec',ConceptoController::class);
 
     Route::get('conceptosec/{id}/ver',[ConceptoController::class,'ver'])->name('concepto.ver');
+    //Route::get('conceptosec/{id}/imagen',[ConceptoController::class,'imagen'])->name('concepto.imagen');
 
     Route::get('editarsec/{concepto}/editar',[ConceptoController::class,'editarsec'])->name('concepto.edit');
     Route::post('editarsec/{concepto}/edit',[ConceptoController::class,'updatesec'])->name('secundario.update');
