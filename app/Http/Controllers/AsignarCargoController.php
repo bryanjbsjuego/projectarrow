@@ -69,7 +69,6 @@ class AsignarCargoController extends Controller
         ->join('empleados','clientes.id','=','empleados.id_cliente')
         ->select('empleados.*')
         ->where('empresas.id','=',$empresa->empresa)
-
         ->get();
 
 

@@ -166,6 +166,8 @@ class UsuarioController extends Controller
     
                    
                 }
+
+                $usuario->confirmed=true;
                
               
                 $usuario->save();

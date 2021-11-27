@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Concepto;
 use App\Models\Contrato;
+use App\Models\imgConceptos;
 use App\Models\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -123,7 +124,14 @@ class ConceptoController extends Controller
         ->join('conceptos', 'unidad.id','=','conceptos.id_unidad')
         ->where('conceptos.id','=',$id)->first();
 
-        return view('conceptos.show',compact('concepto'));
+        $imagenes=DB::table('conceptos')
+       ->join('img_conceptos','conceptos.id','=','img_conceptos.id_concepto')
+       ->select('img_conceptos.*')
+       ->where('conceptos.id','=',$id)->get();
+
+      
+
+        return view('conceptos.show',compact('concepto','imagenes'));
     }
 
     /**
@@ -310,6 +318,109 @@ class ConceptoController extends Controller
 
 
     }
+
+    public function imagen($id){
+        
+        
+
+        return view('conceptos.imagen',compact('id'));
+    }
+
+    public function guardarimagen(Request $request){
+
+        $idcp=Concepto::where('id','=',$request->input('id_concepto'))->first();
+
+        $this->validate($request,
+        [
+            'descripcion' => 'required',
+            'imagen' => 'required|image|mimes:jpeg,png|max:1024',
+            'id_concepto'
+
+        ],
+        [
+            'descripcion.required' => 'El campo nombre debe ser obligatorio'
+        ]
+
+         );
+
+         $imagen=$request->all();
+
+         //return $imagen;
+
+
+        $guardar = new imgConceptos;
+
+        //  $fotos=array();
+
+         if($imagen=$request->file("imagen")){
+                $ruta="img/usuarios/";
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
+                $imagen->move($ruta,$nombreImagen);
+                $guardar->imagen = $nombreImagen;
+        
+        }
+
+         $guardar->descripcion=$request->descripcion;
+        // $guardar->imagen=implode("|",$fotos);
+         $guardar->id_concepto=$request->id_concepto;
+        $guardar->save();
+
+        
+        return redirect()->route('conceptosec.show',$idcp->id_concepto);
+    }
+
+    public function editarimagen(imgConceptos $imagen){
+
+        //return $imagen;
+
+        return view("conceptos.editarimage",compact('imagen'));
+
+    }
+
+    public function actualizarimagen(Request $request, imgConceptos $img){
+
+
+
+
+        $this->validate($request,
+        [
+            'descripcion' => 'required',
+            'imagen' => 'image|mimes:jpeg,png|max:1024',
+
+        ],
+        [
+            'descripcion.required' => 'El campo nombre debe ser obligatorio'
+        ]
+
+         );
+
+        $image=$request->all();
+
+        if($imagen=$request->file("imagen")){
+            $ruta="img/usuarios/";
+            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
+            $imagen->move($ruta,$nombreImagen);
+            $img->imagen = $nombreImagen;
+    
+        }else{
+            unset($imagen['imagen']);
+        }
+
+
+        $img->descripcion=$request->descripcion;
+        $img->id_concepto=$request->id_concepto;
+        $img->save();
+
+
+
+        //return redirect()->route('contratos.index');
+    }
+
+    public function eliminarimagen(imgConceptos $imag){
+        $imag->delete();
+        //return redirect()->route('contratos.index');
+    }
+
 
 
    

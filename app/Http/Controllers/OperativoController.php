@@ -209,6 +209,7 @@ class OperativoController extends Controller
             $ruta=public_path("img/usuarios");
             $imagen->move($ruta,$nombreImagen);
             $usuario->photo=$nombreImagen;
+            $usuario->confirmed=true;
 
 
             $usuario->save();
