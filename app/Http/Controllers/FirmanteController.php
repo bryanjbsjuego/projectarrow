@@ -125,9 +125,28 @@ class FirmanteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Firmante $firmante)
     {
-        //
+
+        $id=Auth::id();
+
+        $empresa=User::select('empresa')->where('id','=',$id)->first();
+
+        $cargosasignados=DB::table('cargos')
+        ->join('empleado_cargos', 'cargos.id', '=', 'empleado_cargos.id_cargo')
+        ->join('empleados', 'empleados.id','=' ,'empleado_cargos.id_empleado')
+        ->select('empleado_cargos.id as id', 'empleados.nombre as nombre' ,
+        'empleados.apellido_paterno as paterno', 'empleados.apellido_materno as materno')
+        ->where('cargos.id_empresa','=',$empresa->empresa)
+        ->get();
+
+
+        $contratos=Contrato::where('id_empresa','=',$empresa->empresa)
+        ->where('estatus','=',0)->get();
+
+        
+
+        return view('firmantes.editar',compact('firmante','cargosasignados','contratos'));
     }
 
     /**
@@ -137,9 +156,36 @@ class FirmanteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Firmante $firmante)
     {
-        //
+        $this->validate($request,
+        [
+            'id_empleado_cargo' => 'required',
+            'id_contrato' => 'required',
+
+        ],);
+
+
+        if($request->input('id_empleado_cargo')==0){
+            $mensaje_error="Por favor seleccione un firmante.";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+        }
+        else if($request->input('id_contrato')==0){
+            $mensaje_error="Por favor seleccione un contrato.";
+            return back()->withInput()->with(compact('mensaje_error'));
+
+
+         }else {
+        
+
+            $firmante->id_empleado_cargo=$request->id_empleado_cargo;
+            $firmante->id_contrato=$request->id_contrato;
+
+            $firmante->save();
+            $mensaje="Firmante modificado exitosamente.";
+            return redirect()->route('firmantes.index')->with(compact('mensaje'));
+        }
     }
 
     /**
@@ -148,8 +194,13 @@ class FirmanteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Firmante $firmante)
     {
-        //
+        
+            $firmante->delete();
+            $mensaje='Firmante eliminado correctamente';
+            return redirect()->route('firmantes.index')->with(compact('mensaje'));
+        
+
     }
 }

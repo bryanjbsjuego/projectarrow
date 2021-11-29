@@ -26,7 +26,17 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="header">
-                    <h2>Información</h2>
+                    <h2 class="text-center"><strong>Información</strong></h2>
+                    <div class="float-left mt-20  ">
+                        <address>
+                            <span><strong>Firmantes</strong></span><br>
+                    @foreach ($firmantes as $firmante)
+                        <span><strong>Nombre: </strong> {{$firmante->nombre.' '.$firmante->paterno}} </span><br>
+                        <span><strong>Cargo: </strong> {{$firmante->cargo}} </span><br>
+                    @endforeach
+                        </address>
+                    </div>
+                    
 
                 </div>
                 <div class="body">
