@@ -165,7 +165,7 @@
                                 <div class="col-sm-12">
                                     <center>
                                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2" style="display:inline-block" id="boton">Guardar</button>
-                                    <a href="{{route('conceptosec.index')}}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
+                                    <a href="{{ URL::previous() }}" class="btn btn-raised btn-default waves-effect">Cancelar</a>
                                     </center>
                                 </div>
 

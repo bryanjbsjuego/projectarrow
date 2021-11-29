@@ -328,7 +328,9 @@ class ConceptoController extends Controller
 
     public function guardarimagen(Request $request){
 
-        $idcp=Concepto::where('id','=',$request->input('id_concepto'))->first();
+        $conceptos=Concepto::where('id','=',$request->input('id_concepto'))->first();
+
+        
 
         $this->validate($request,
         [
@@ -345,12 +347,11 @@ class ConceptoController extends Controller
 
          $imagen=$request->all();
 
-         //return $imagen;
 
 
         $guardar = new imgConceptos;
 
-        //  $fotos=array();
+       
 
          if($imagen=$request->file("imagen")){
                 $ruta="img/usuarios/";
@@ -365,8 +366,10 @@ class ConceptoController extends Controller
          $guardar->id_concepto=$request->id_concepto;
         $guardar->save();
 
-        
-        return redirect()->route('conceptosec.show',$idcp->id_concepto);
+        //return $conceptos->id;
+
+        $mensaje="Plano agregado correctamente";
+        return redirect()->route('concepto.ver',$conceptos->id)->with(compact('mensaje'));
     }
 
     public function editarimagen(imgConceptos $imagen){
@@ -379,7 +382,7 @@ class ConceptoController extends Controller
 
     public function actualizarimagen(Request $request, imgConceptos $img){
 
-
+        $conceptos=Concepto::where('id','=',$request->input('id_concepto'))->first();
 
 
         $this->validate($request,
@@ -413,12 +416,19 @@ class ConceptoController extends Controller
 
 
 
-        //return redirect()->route('contratos.index');
+        $mensaje="Plano actualizado correctamente";
+        return redirect()->route('concepto.ver',$conceptos->id)->with(compact('mensaje'));
     }
 
     public function eliminarimagen(imgConceptos $imag){
+        
+        $conceptos=Concepto::where('id','=',$imag->id_concepto)->first();
+
+        
         $imag->delete();
-        //return redirect()->route('contratos.index');
+        
+        $mensaje="Plano eliminado correctamente";
+        return redirect()->route('concepto.ver',$conceptos->id)->with(compact('mensaje'));
     }
 
 
