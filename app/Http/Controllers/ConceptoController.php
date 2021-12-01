@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Avance;
 use App\Models\Concepto;
 use App\Models\Contrato;
 use App\Models\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Return_;
+
+
 
 class ConceptoController extends Controller
 {
@@ -40,7 +44,6 @@ class ConceptoController extends Controller
     public function store(Request $request)
     {
 
-    
 
         $idcp=Concepto::where('id','=',$request->input('id_codigo'))->first();
 
@@ -78,6 +81,17 @@ class ConceptoController extends Controller
         
     
         $concepto=Concepto::create($data);
+
+       
+        $a = new Avance();
+
+        $a->id_concepto=$concepto->id;
+
+        $a->save();
+
+     
+     
+
 
         return redirect()->route('codigo.principal',$idcp->id_contrato);
 

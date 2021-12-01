@@ -77,7 +77,7 @@
                                                     <button type="submit" class="m-auto" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i> </button>
                                               </form >
                                               
-                                              <a href="" class="m-auto"><i class="material-icons">trending_up</i></a>
+                                              <a href="{{route('Avance.show',$concepto->id)}}" class="m-auto"><i class="material-icons">trending_up</i></a>
                                                 @endif
                           
                                                 {{-- <button type="button" class="btn btn-sm btn-raised bg-grey waves-effect"> Ver avance </button> --}}

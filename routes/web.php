@@ -7,6 +7,7 @@ use App\Http\Controllers\RolController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\AfianzadoraController;
+use App\Http\Controllers\AvanceController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CodigoController;
@@ -20,7 +21,7 @@ use App\Http\Controllers\ContratosController;
 use App\Http\Controllers\ContratosResponsableController;
 use App\Http\Controllers\FianzaController;
 use App\Http\Controllers\ImagenContratoController;
-
+use App\Models\Avance;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,7 +101,26 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('conceptosec/{concepto}/activar',[ConceptoController::class,'activar'])->name('conceptose.activar');
     Route::get('activarconceptos/{concepto}/activar',[ConceptoController::class,'secactivar'])->name('conceptosec.activar');
 
-   
+       
+    Route::resource('Avance',AvanceController::class);
+
+    Route::get('agregarf/{id}/fecha',[AvanceController::class,'agregarf'])->name('crearf');
+
+    Route::post('agregarf/{id}/guardar',[AvanceController::class,'guardarf'])->name('avancef.guardar');
+
+    Route::get('agregarf/{id}/opciones',[AvanceController::class,'agregaropc'])->name('registrar.datos');
+    Route::post('agregarop/{id}/guardar',[AvanceController::class,'guardaropc'])->name('guardar.opc');
+    Route::get('avancet/{id}/ver',[AvanceController::class,'veravance'])->name('ver.avance');
+    
+    Route::get('formulario/{id}/ver',[AvanceController::class,'formulario'])->name('registrar.avance');
+    Route::get('formularioI/{id}/ver',[AvanceController::class,'formularioIzquierdo'])->name('registrar.avanceI');
+
+    Route::post('registrarA/{id}/guardar',[AvanceController::class,'registrarAvance'])->name('registrar.Avance');
+    Route::post('registrarI/{id}/guardar',[AvanceController::class,'registrarAvanceIzquierdo'])->name('registrar.AvanceIz');
+
+    Route::get('editarHombro/{id}/concepto',[AvanceController::class,'editarIz'])->name('editar.izquierdo');
+
+
 } );
 
 
