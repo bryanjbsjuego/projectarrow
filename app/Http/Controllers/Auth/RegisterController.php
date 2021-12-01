@@ -8,6 +8,10 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -29,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    //protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -53,6 +57,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'terminos' => ['accepted']
         ]);
     }
 
@@ -64,10 +69,61 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        
+        $roles=Role::select('id')->where('id','=',1)->first();
+
+        // $user= new User;
+
+       
+        $data['confirmation_code']=str::random(25);
+        
+        // $user->name=$data['name'];
+        // $user->email=$data['email'];
+        // $user->password=Hash::make($data['password']);
+        // $user->photo='tenant.jpg';
+        // $user->confirmation_code=$data['confirmation_code'];
+        // $user->save();
+
+
+        
+
+        $user= User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'photo' =>'tenant.png',
+            'confirmation_code'=>$data['confirmation_code'],
         ]);
+        
+        $user->assignRole($roles->id);
+
+        return $user;
+
+        
+
+        Mail::send('emails.confirmation_code',$data, function ($message) use ($data) {
+        
+            $message->to($data['email'], $data['name']);
+            $message->subject('Por favor confirma tu correo');
+            
+           
+        });
+
+       
     }
+
+    public function verify($code){
+
+        $user=User::where('confirmation_code',$code)->first();
+
+        if(!$user){
+            return  redirect('/');
+        }
+
+        $user->confirmed=true;
+        $user->confirmation_code=null;
+        $user->save();
+
+        return redirect()->route('login')->with('notification','Has confirmado correctamente tu correo electrónico ');
+    } 
 }

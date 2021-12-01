@@ -21,7 +21,12 @@ use App\Http\Controllers\ContratosController;
 use App\Http\Controllers\ContratosResponsableController;
 use App\Http\Controllers\FianzaController;
 use App\Http\Controllers\ImagenContratoController;
+
 use App\Models\Avance;
+
+use App\Http\Controllers\AsignarCargoController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FirmanteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +46,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Email verificacion
+
+Route::get('register/verify/{code}', [App\Http\Controllers\Auth\RegisterController::class,'verify'])->name('verify');
 
 Route::group(['middleware' => ['auth']], function (){
 
@@ -65,7 +74,7 @@ Route::group(['middleware' => ['auth']], function (){
     Route::post('contratos/guardar',[ContratosController::class,'guardar'])->name('contratos.guardar');
     Route::get('contratos/{imagen}/editarimagen',[ContratosController::class,'editarimagen'])->name('contratos.editarimagen');
     Route::put('contratos/{img}/actualizarimagen',[ContratosController::class,'actualizarimagen'])->name('contratos.actualizarimagen');
-    //Route::resource('imagenescontratos',ImagenContratoController::class);
+    
     Route::delete('contratos/{imag}/eliminarimagen',[ContratosController::class,'eliminarimagen'])->name('contratos.eliminarimagen');
 
 
@@ -90,6 +99,7 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('conceptosec',ConceptoController::class);
 
     Route::get('conceptosec/{id}/ver',[ConceptoController::class,'ver'])->name('concepto.ver');
+    //Route::get('conceptosec/{id}/imagen',[ConceptoController::class,'imagen'])->name('concepto.imagen');
 
     Route::get('editarsec/{concepto}/editar',[ConceptoController::class,'editarsec'])->name('concepto.edit');
     Route::post('editarsec/{concepto}/edit',[ConceptoController::class,'updatesec'])->name('secundario.update');
@@ -120,12 +130,19 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('editarHombro/{id}/concepto',[AvanceController::class,'editarIz'])->name('editar.izquierdo');
 
+    Route::resource('asignarcargo',AsignarCargoController::class);
 
+    Route::resource('firmantes',FirmanteController::class);
+    
 } );
 
 
 
+  
 
+   
 
 
 Route::resource('tenant', TenantController::class);
+
+// Contrasela de mailgun fHVp4w0CK03W*&qY

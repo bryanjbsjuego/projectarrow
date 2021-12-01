@@ -36,7 +36,7 @@
                                    
                             </div>
                                 <address class="m-t-10 m-b-0">
-                                    Correo:   {{$cargo->descripcion}} <br>
+                                    Descripción:   {{$cargo->descripcion}} <br>
                                     
                                 </address>
                             </div>

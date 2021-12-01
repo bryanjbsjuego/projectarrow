@@ -100,7 +100,7 @@
                                 <a href="javascript:window.print()" class="btn btn-raised btn-success m-auto"  ><i class="zmdi zmdi-print"></i></a>
                                 <a href="{{route('conceptosec.edit',$concepto->id)}}"  class=" m-auto btn btn-raised btn-warning">Editar</a>
     
-                                <a href="" class="btn btn-raised btn-info">Agregar Imagen </a>
+                                <a href="{{route('conceptosec.imagen',$concepto->id)}}" class="btn btn-raised btn-info">Agregar Imagen </a>
                                 <a href="{{route('conceptosec.show',$concepto->id_codigo)}}" class="btn btn-raised btn-success m-auto" >Regresar</a>
     
                               
@@ -117,28 +117,27 @@
                     <br>
                  
                     <br><br>
-                    <div class="row clearfix">
-
-                        {{-- @foreach($imagenes as $imagen )
-                        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-3">
-                            <div class="thumbnail card">
-                                <div class="caption  body text-center">
-                                <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140" alt="velonic"></h3>
-                                <p><strong>Descripción: <strong> {{ $imagen->descripcion }}</p>
-                                    <a href="{{route('contratos.editarimagen',$imagen->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
-
-                            <form action="" class=""  method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
-                              </form>
-                                </div>
+                    
+                    <div class="container">
+                        <div class="row">
+                        @foreach($imagenes as $imagen )
+                        
+                            <div class="col-4">
+                                <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140px" height="100px" alt="velonic"></h3>
+                                <p><strong>Descripción: </strong> {{ $imagen->descripcion }}</p>
+                                
+                                    <a href="{{route('conceptosec.editarimagen',$imagen->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
+                                
+                                <form action="{{route('conceptosec.eliminarimagen',$imagen->id)}}" class=""  method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
+                                </form>
                             </div>
+                       
 
-                        </div>
-
-
-                        @endforeach --}}
+                        @endforeach
+                    </div>
 
 
                     </div>

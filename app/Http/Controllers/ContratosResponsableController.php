@@ -25,6 +25,7 @@ class ContratosResponsableController extends Controller
     ->select('roles.name')
     ->where('users.id','=',$id)->first();
 
+   
         
     if($rol->name=='Responsable de obra'){
         // $contratos=Contrato::where('id_responsable','=',$id)->get();

@@ -221,10 +221,21 @@ class ContratosController extends Controller
        ->select('users.id as asistente_id','users.name as asistente_name')
        ->first();
 
+       $firmantes=DB::table('contratos')
+       ->join('firmantes','contratos.id','=','firmantes.id_contrato')
+       ->join('empleado_cargos','empleado_cargos.id','=','firmantes.id_empleado_cargo')
+       ->join('empleados','empleados.id','=','empleado_cargos.id_empleado')
+       ->join('cargos','cargos.id','=','empleado_cargos.id_cargo')
+       ->select('firmantes.id as id', 'empleados.nombre as nombre','empleados.apellido_paterno as paterno'
+       ,'empleados.apellido_materno as materno','contratos.contrato','cargos.nombre_cargo as cargo')
+       ->where('contratos.id','=',$contrato->id)
+       ->get();
+
+
 
     //    return $asistente;
 
-       return view('contratos.show',compact('contratoUnion','asistente','imagenes'));
+       return view('contratos.show',compact('contratoUnion','asistente','imagenes','firmantes'));
     }
 
     /**

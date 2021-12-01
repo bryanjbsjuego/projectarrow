@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class imgConceptos extends Model
+class Firmante extends Model
 {
     use HasFactory;
-    protected $fillable=[
-        'imagen',
-        'descripcion',
-        'id_concepto'
+
+    protected $fillable = [
+        'id_empleado_cargo',
+        'id_contrato',
 
     ];
-
 }
