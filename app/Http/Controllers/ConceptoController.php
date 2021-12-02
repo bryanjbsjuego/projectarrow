@@ -127,7 +127,6 @@ class ConceptoController extends Controller
 
 
 
-
         return view('conceptos.listaConceptos',compact('conceptos','concepto'));
     }
 

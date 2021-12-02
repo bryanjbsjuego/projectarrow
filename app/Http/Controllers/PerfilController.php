@@ -33,12 +33,14 @@ class PerfilController extends Controller
         ->select('roles.name')
         ->where('users.id','=',$id)->first();
         $usuario=User::find($id);
+       
         return view('perfil.editperfil',compact('usuario','rol'));
+
+    
     }
 
     public function edit($id)
     {
-
         $usuario=User::find($id);
 
         return view('perfil.formulario',compact('usuario'));
@@ -56,6 +58,8 @@ class PerfilController extends Controller
         ->select('roles.name')
         ->where('users.id','=',$id)->first();
         $usuario=User::find($id);
+
+        
 
         $this->validate($request,
         [
@@ -89,10 +93,18 @@ class PerfilController extends Controller
             $usuario->photo=$p;
         }
 
+
+
+
+       
+
         $usuario->save();
         
+
         
-         return view('perfil.editperfil',compact('usuario','rol'));
+        return redirect()->route('perfil.show',$usuario->id);
+        
+        //  return view('perfil.editperfil',compact('usuario','rol'));
         
 
       

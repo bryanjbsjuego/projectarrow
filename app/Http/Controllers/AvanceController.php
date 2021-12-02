@@ -61,6 +61,9 @@ class AvanceController extends Controller
         $imgc=imgConceptos::where('id_concepto','=',$conceptopp->id)
         ->where('descripcion','=','croquis')->first();
 
+         $p=$concepto->id_codigo;
+
+        //  return $p;
        
 
         // return $imgc;
@@ -123,7 +126,7 @@ class AvanceController extends Controller
          
   
 
-        return view("avances.show",compact('avance','imgc','imgco','unidad','avancef','dato'));
+        return view("avances.show",compact('avance','imgc','imgco','unidad','avancef','dato','p'));
     }
 
     /**

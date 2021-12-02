@@ -8,16 +8,14 @@
     <div class="container-fluid">
         <div class="block-header">
           
-            <h2>Empleados</h2>
+            <h2>Contratos </h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             @if (session('mensaje'))
             <div class="alert alert-success" role="alert">
               {{session('mensaje')}}
             </div>
             @endif
-            <div>
-                <a href="" class="btn btn-raised btn-success">Agregar Empleado</a>
-            </div>
+         
         </div>
 
         

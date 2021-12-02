@@ -15,6 +15,7 @@ class ContratosResponsableController extends Controller
     {
     
 
+
     $id=Auth::id();
 
     // return $id;
@@ -33,9 +34,11 @@ class ContratosResponsableController extends Controller
         // $contratos
 
         $contratos=DB::table('contratos')
-        ->join('fianzas','contratos.id','=','fianzas.id_contrato')
+        // ->join('fianzas','contratos.id','=','fianzas.id_contrato')
         ->select('contratos.*')
-        ->where('contratos.id_responsable','=',$id)->get();
+        ->where('contratos.id_responsable','=',$id)
+        ->where('estatus','=',0)
+        ->get();
 
         //  return $contratos;
 

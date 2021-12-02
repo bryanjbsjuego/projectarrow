@@ -174,8 +174,42 @@ class CodigoController extends Controller
 
     public function principal($id){
 
+       
+
         $contrato=Contrato::select('contrato','id')->where('id','=',$id)->first();
         $conceptose=0;
+
+    
+// wwww
+        // $conceptop = DB::table('conceptos')
+        //    ->where('id_codigo', '=', null)
+        //    ->where('id_contrato','=',$contrato->id)
+        //    ->first();
+
+        // //id padre 
+
+   
+
+        // $conceptoh=DB::table('conceptos')->select('id')
+        // ->where('id_codigo', '=', $conceptop->id)
+        // ->get();
+
+
+        //   count($conceptoh);
+        //  $hijos=[];
+
+        // return $conceptoh;
+        //  for($i=0; $i<count($conceptoh); $i++ ){
+        //     $hijos[]=$conceptoh=DB::table('conceptos')
+        //     ->where('id_codigo', '=', $conceptoh[$i]->id)
+        //     ->get();
+        //  }
+
+        // return $hijos;
+
+
+
+        // ddd
         
         $codigo=Concepto::where('id_contrato','=',$id)
         ->where('id_codigo','=',null)->first();

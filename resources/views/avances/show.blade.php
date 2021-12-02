@@ -28,8 +28,10 @@
              
                                              
                 {{--Cabecera  --}}
-                <div class="header clearfix">
-                    <h2 class="">Información</h2>
+                <div class="header clearfix d-flex justify-content-center">
+                    <a href="{{route('conceptosec.show',$p)}}" class="btn btn-raised btn-light  " ><i class="material-icons">arrow_back</i></a>
+                   
+                    <h2 class="m-auto">Información</h2>
                    
 
                 </div>
@@ -37,6 +39,7 @@
                 <div class="body">
                     <div class="clearfix ">
                         <div class="row ">
+                           
                         
                             <div class="col-4 ">
                                 <img class="img-fluid" src="{{asset('img/usuarios/'. $imgco[0]->imagen)}}" alt="cargando"  width="200px" height="250px" >
@@ -85,6 +88,8 @@
 
 
                         <a href="{{route('ver.avance',$avancef->id)}}" class="btn btn-raised btn-warning m-auto">Ver el registro avance</a>                          
+                        <a href="" class="btn btn-raised btn-success m-auto"> Imagenes de avance</a>                          
+                     
                     </div>
 
                     

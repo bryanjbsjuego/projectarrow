@@ -133,6 +133,18 @@ Route::group(['middleware' => ['auth']], function (){
     Route::resource('asignarcargo',AsignarCargoController::class);
 
     Route::resource('firmantes',FirmanteController::class);
+
+    Route::get('conceptosec/{id}/imagen',[ConceptoController::class,'imagen'])->name('conceptosec.imagen');
+
+    Route::post('conceptosec/guardarimagen',[ConceptoController::class,'guardarimagen'])->name('conceptosec.guardarimagen');
+
+    Route::get('conceptosec/{imagen}/editarimagen',[ConceptoController::class,'editarimagen'])->name('conceptosec.editarimagen');
+
+    Route::put('conceptosec/{img}/actualizarimagen',[ConceptoController::class,'actualizarimagen'])->name('conceptosec.actualizarimagen');
+
+    Route::delete('conceptosec/{imag}/eliminarimagen',[ConceptoController::class,'eliminarimagen'])->name('conceptosec.eliminarimagen');
+
+
     
 } );
 

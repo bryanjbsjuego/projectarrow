@@ -56,7 +56,7 @@
                                     <thead>
 
                                         <?php $total_estimado=0; $total_estimado1=0;  $total_estimado2=0; $total_pieza=0; $total_pieza1=0; $total_estimado3=0;
-                                        $total_estimado4=0; $vt=0; $vta=0;  $est=0?>
+                                        $total_estimado4=0; $vt=0; $vta=0; $totalp=0;  $est=0?>
 
                                         @if ($pie==1 && $l!=1 )
                                         <th  class="text-center bg-info">Posicion</th>
@@ -128,8 +128,6 @@
                                            @if ($ap==1 && $l==1  && $are!=1 && $vt!=1 && $pie!=1 && $es!=1 && $al==1 )  
                                            <th class="text-center">Total</th>
                                            @endif
-
-                    
 
                                  
 
@@ -291,13 +289,21 @@
                                        
 
                                        {{-- Cunado se tiene longitud y pieza --}}
-                                       @if ($pie==1 && $l==1 && $es!=1  )
+                               
+                                       @if ($pie==1 && $l==1 && $es!=1 && $an!=1  )
                                        <td class="text-center ">{{$dato->pieza}}</td>
                                        <?php $total_pieza+= $dato->pieza;?>
                                        @endif
 
-                                        {{-- El total cuando se tiene longitud ancho promedio area --}}
+                                          {{-- Cunado se tiene longitud y pieza y ancho promerdio --}}
+                                        {{--ss  --}}
+                                          @if ($pie==1 && $l==1 && $es!=1 && $an==1 && $are!=1  )
+                                          <td class="text-center ">{{($dato->hombro_derecho2-$dato->hombro_derecho1)*(($dato->ancho1+$dato->ancho2)/2)}}</td>
+                                          <?php $totalp+=($dato->hombro_derecho2-$dato->hombro_derecho1)*(($dato->ancho1+$dato->ancho2)/2); ?>
+                                     
+                                          @endif
 
+                                        {{-- El total cuando se tiene longitud ancho promedio area --}}
                                         @if ($l==1 && $an==1 && $ap!=1 && $are==1 && $vtt!=1 && $pie!=1 && $es!=1  )
                                         <th  class="text-center">{{($dato->hombro_derecho2-$dato->hombro_derecho1)*(($dato->ancho1+$dato->ancho2)/2)}}</th>
                                         <?php $total_estimado4+=($dato->hombro_derecho2-$dato->hombro_derecho1)*(($dato->ancho1+$dato->ancho2)/2); ?>
@@ -447,10 +453,23 @@
                                     
 
                                     {{-- Cunado se tiene longitud y pieza --}}
-                                    @if ($pie==1 && $l==1 && $es!=1  )
+                                    @if ($pie==1 && $l==1 && $es!=1   && $an!=1  )
                                     <td class="text-center">{{$dato->pieza}}</td>
                                     <?php $total_pieza+= $dato->pieza;?>
                                     @endif
+
+
+                                      {{-- Cunado se tiene longitud y pieza y ancho promerdio --}}
+                                        {{--ss  --}}
+                                        @if ($pie==1 && $l==1 && $es!=1 && $an==1 && $are!=1  )
+                                        <td class="text-center ">{{($dato->hombro_izquierdo2-$dato->hombro_izquierdo1)*(($dato->ancho1+$dato->ancho2)/2)}}</td>
+                                        <?php $totalp+=($dato->hombro_izquierdo2-$dato->hombro_izquierdo1)*(($dato->ancho1+$dato->ancho2)/2); ?>
+                                   
+                                        @endif
+
+                                    
+                                     
+
 
                                      {{-- El total cuando se tiene longitud ancho promedio area --}}
 
@@ -509,7 +528,9 @@
                              @endif
 
                               {{-- Total cuando se tiene solo la pieza y longitud  --}}
-                               @if ( $pie==1 && $l==1 && $es!=1 )   
+                              
+                              
+                              @if ( $pie==1 && $l==1 && $es!=1 && $an!=1  )   
                               <tr>
  
                                  <td class="text-center" colspan="4"><strong>Total Estimado: </strong></td>
@@ -528,8 +549,8 @@
                                 </tr>
                                 @endif
 
-                                 {{-- Total cuando se tiene el ancho promedio--}}
-                                 @if ( $an==1 && $are!=1 && $vtt!=1 && $pie!=1 && $es!=1)   
+                                 {{-- Total cuando se tiene el ancho promedio modificado--}}
+                                 @if ( $l!=1 && $ap==1 &&  $an==1 && $are!=1 && $vtt!=1 && $pie!=1 && $es!=1)   
                                  <tr>
     
                                     <td class="text-center" colspan="4"><strong>Total Estimado: </strong></td>
@@ -570,7 +591,7 @@
 
                                            
                                         {{-- El total cuando se tiene espesor y pieza--}}
-                                        @if ($l==1 && $an==1 && $ap!=1 && $are!=1 && $vt!=1 && $pie==1 && $es==1  )
+                                        @if ($l==1 && $an==1 && $ap!=1 && $are!=1 && $vt!=1 && $pie==1 && $es==1 )
                                         <tr>
                                  
                                     <td class="text-center" colspan="8"><strong>Total Estimado: </strong></td>
@@ -578,6 +599,30 @@
                                                            
                                       </tr>
                                      @endif 
+
+                                
+                                     {{-- el total cuando se tiene longitud y ancho promedio --}}
+                                     @if ( $l==1 && $ap!=1&& $an==1 && $are!=1 && $vtt!=1 && $pie!=1 && $es!=1)   
+                                     <tr>
+        
+                                        <td class="text-center" colspan="6"><strong>Total Estimado: </strong></td>
+                                        <td class="bg-info text-white text-center" ><?php echo number_format( $total_estimado3*10, 2, '.', ',');  ?></td>
+                                  
+                                     </tr>
+                                     @endif
+
+
+
+                                     {{-- Total cuando se tiene solo la pieza  longitud y ancho promedio  --}}
+                              
+                                        @if ( $pie==1 && $l==1 && $es!=1 && $an==1  )   
+                                        <tr>
+          
+                                          <td class="text-center" colspan="7"><strong>Total Estimado: </strong></td>
+                                          <td class="bg-info text-white text-center" ><?php echo number_format( $totalp, 2, '.', ',');  ?></td>
+                                    
+                                        </tr>
+                                        @endif
 
                                        
 
