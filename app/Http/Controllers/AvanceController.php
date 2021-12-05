@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Avance;
 use App\Models\Concepto;
 use App\Models\Dato;
+use App\Models\imgAvance;
 use App\Models\ImagenesContrato;
 use App\Models\imgConceptos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
+use Stevebauman\Location\Facades\Location;
 
 class AvanceController extends Controller
 {
@@ -78,6 +80,7 @@ class AvanceController extends Controller
 
         $avancef=Avance::where('id_concepto','=',$id)->first();
 
+
         // if($avancef->inicio=null || $avancef->inicio=null  ){
         //     $avancef=1;
         // }
@@ -123,10 +126,25 @@ class AvanceController extends Controller
 
          $dato=Dato::where('id_concepto','=',$id)->count();
 
-         
+         $imagenesavances=DB::table('avances')
+         ->join('img_avances','avances.id','=','img_avances.id_avance')
+         ->select('img_avances.*')
+         ->where('img_avances.id_avance','=', $avancef->id)
+         ->get();
+
+        //  $json=DB::table('avances')
+        //  ->join('img_avances','avances.id','=','img_avances.id_avance')
+        //  ->select('img_avances.*')
+        //  ->where('img_avances.id_avance','=', $avancef->id)
+        //  ->get();
+
+        //  $data=['success' => true, 'iamagenesa' => $json]; 
+
+        //  return response()->json($data, 200, []);
+ 
   
 
-        return view("avances.show",compact('avance','imgc','imgco','unidad','avancef','dato','p'));
+        return view("avances.show",compact('avance','imgc','imgco','unidad','avancef','dato','p','imagenesavances'));
     }
 
     /**
@@ -607,6 +625,106 @@ class AvanceController extends Controller
 
 
     }
+
+    public function agregarimagenubi($id){
+
+        //$ip='fe80::d41c:6072:dac2:df66%15';
+        $ip = request()->ip(); 
+        $data = Location::get('https://'.$ip);
+        
+        //$data = Location::get($ip);
+
+        //dd($locationData);
+    
+
+       return view('avances.imagen',compact('id','data'));
+    }
+
+    public function guardarimagen(Request $request){
+
+        //  $id_avance=$request->id_avance;
+        //  $ip=$request->ip; 
+        //  $country=$request->country; 
+        //  $countrycode=$request->countrycode; 
+        //  $regioncode=$request->regioncode; 
+        //  $regionname=$request->regionname; 
+        //  $cityname=$request->cityname;
+        //  $zipcode=$request->zipcode; 
+        //  $postalcode=$request->postalcode; 
+        //  $latitude=$request->latitude; 
+        //  $longitude=$request->longitude; 
+        //  $descripcion=$request->descripcion;        
+
+        $guardar = new imgAvance;
+
+
+        $guardar->id_avance=$request->id_avance;
+        $guardar->ip=$request->ip; 
+        $guardar->country=$request->country; 
+        $guardar->countrycode=$request->countrycode; 
+        $guardar->regioncode=$request->regioncode; 
+        $guardar->regionname=$request->regionname; 
+        $guardar->cityname=$request->cityname;
+        $guardar->zipcode=$request->zipcode; 
+        $guardar->postalcode=$request->postalcode; 
+        $guardar->latitude=$request->latitude; 
+        $guardar->longitude=$request->longitude; 
+        $guardar->descripcion=$request->descripcion;
+
+        if($imagen=$request->file("imagen")){
+
+
+            // foreach($imagen as $img ){
+
+                $ruta="img/usuarios/";
+                $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
+                $imagen->move($ruta,$nombreImagen);
+                $guardar->imagen = $nombreImagen;
+        
+
+            //     $datasave=[
+            //         'id_avance' => $id_avance[$i],
+            //         'ip' => $ip[$i],
+            //         'country' => $country[$i],
+            //         'countrycode' => $countrycode[$i],
+            //         'regioncode' => $regioncode[$i],
+            //         'regionname' => $regionname[$i],
+            //         'cityname' => $cityname[$i],
+            //         'zipcode' => $zipcode[$i],
+            //         'postalcode' => $postalcode[$i],
+            //         'latitude' => $latitude[$i],
+            //         'longitude' => $longitude[$i],
+            //         'imagen'=> $imagen[$i],
+            //         'descripcion' => $descripcion[$i]
+
+            //     ];
+
+            //    imgAvance::create([
+                
+            //         'id_avance' => $id_avance,
+            //         'ip' => $ip,
+            //         'country' => $country,
+            //         'countrycode' => $countrycode,
+            //         'regioncode' => $regioncode,
+            //         'regionname' => $regionname,
+            //         'cityname' => $cityname,
+            //         'zipcode' => $zipcode,
+            //         'postalcode' => $postalcode,
+            //         'latitude' => $latitude,
+            //         'longitude' => $longitude,
+            //         'imagen'=> $nombreImagen,
+            //         'descripcion' => $descripcion
+            //    ]);
+                
+            //  }
+
+        }
+
+         $guardar->save();
+
+        return "Guardado";
+
+    } 
 
    
 }

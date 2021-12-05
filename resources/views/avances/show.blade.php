@@ -3,6 +3,12 @@
     <!-- JQuery DataTable Css -->
     <link href="{{asset('plugins/jquery-datatable/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
+    <style type="text/css">
+        #mapa {
+          height: 50vh;
+        }
+      </style>
+       
 @endsection
 @section('contenido')
 
@@ -88,8 +94,23 @@
 
 
                         <a href="{{route('ver.avance',$avancef->id)}}" class="btn btn-raised btn-warning m-auto">Ver el registro avance</a>                          
-                        <a href="" class="btn btn-raised btn-success m-auto"> Imagenes de avance</a>                          
-                     
+                        <a href="{{route('avances.agregarimagenubi',$avancef->id)}}" class="btn btn-raised btn-success m-auto"> Imagenes de avance</a>                          
+                        
+
+                        <br><br>
+                        <p>Imagenes de avances</p>
+                        @foreach ($imagenesavances as $imgavance )
+                        <img class="img-fluid" src="{{asset('img/usuarios/'. $imgavance->imagen)}}" alt="cargando"  width="200px" height="250px" >
+                        <p>Ubicación de la foto tomada<br>
+                            <span>País:  {{$imgavance->country}}</span><br>
+                            <span>Código de la región:  {{$imgavance->regioncode}}</span><br>
+                            <span>Nombre de la ciudad:  {{$imgavance->cityname}}</span>
+                        </p>
+                    
+                        @endforeach
+                        <br><br>
+                        <p>Ubicaciones de las fotos</p>
+                        <div id="mapa"></div>
                     </div>
 
                     
@@ -248,4 +269,147 @@
     <script src="{{ asset('bundles/mainscripts.bundle.js')}}"></script>
     <!-- Custom Js -->
     <script src="{{ asset('js/pages/tables/jquery-datatable.js')}}"></script>
+
+    {{-- <script src="https://maps.googleapis.com/maps/apis/js?key={{config('googlemap')['map_apikey']}}&callback=initMap" async defer></script> --}}
+    {{-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnGmrbJMv3UVC2f2Cds1vFfbM49pNBaDg&callback=initMap"
+type="text/javascript"></script>  --}}
+
+<script async defer  src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script>
+
+    {{-- <script>
+        function initMap(){
+
+            var mapElement=document.getElementByID('mapa');
+
+
+
+            function mapDisplay(datas){
+                var options={
+                    center: {lat:Number(datas[0].coords_lat), lng:Number(datas[0].coords_lng) },
+                    zoom:10
+                }
+
+                var map=new google.maps.Map(mapElement, options);
+
+                var markers = new Array();
+
+                for(let index=0; index < datas.length; index++){
+                    markers.push({
+                        coords:{ lat: Number(datas[index].coords_lat,lng: Number(datas[index].coords_lng))},
+                        content:`<div><h5>${data[index].location_title}</h5><p><i class="icon address-icon"></i>${data[index].addressline1}</p><p>${data[index].addressline2}</p>, ${datas[index].city}<p><small>${datas[index].location_email}</small></div>`
+                    })
+                }
+
+                for(var i=0; i< markers.length; i++){
+                    addMarker(markers[i]);
+
+                }
+
+                function addMarker(props){
+                    var marker = new google.maps.Marker({
+                        position:props.coords,
+                        map: map
+                    });
+                    if(props.iconImage){
+                        marker.setIcon(props.iconImage);
+                    }
+
+                    if(props.content){
+                        var infoWindow= new google.maps.infoWindow({
+                            content:props.content;
+                        });
+
+                        marker.addListener('click', function(){
+                            infoWindow.open(map, marker);
+                        })
+                    }
+                }
+            }
+        }
+    </script> --}}
+
+    <script>
+
+    (function(){
+        if(!!navigator.geolocation){
+
+            let map;
+            var OpcionesMapa = {
+            zoom: 16,
+            mapTypeId: 'roadmap'
+            };
+
+            map = new google.maps.Map(document.getElementById('mapa'), {
+              OpcionesMapa
+             });
+
+           // map = new google.maps.Map(document.getElementById('mapa'), OpcionesMapa);
+            
+
+            navigator.geolocation.getCurrentPosition(function(position){
+                var geolocate= new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                
+                var infoVentana = new google.maps.InfoWindow({
+                    map: map,
+                    position: geolocate,
+                    content: '<h1>Está es tú ubicación con Geolocalización </h1>'+
+                    '<p>Latitud: '+position.coords.latitude+' </p>'+ 
+                    '<p>Longitud: '+position.coords.longitude+' </p>'
+                    
+                });
+
+                map.setCenter(geolocate);
+            });
+
+
+        }else{
+            document.getElementById("mapa").innerHTML="No se soporta geolocalización";
+        }
+    })();
+
+
+        
+//   function initMap() {
+    
+ 
+//     var map;
+//     //constructor
+
+//           var marcadores={!! json_encode($imagenesavances) !!};
+
+//           var ventanaInfo= {!! json_encode($imagenesavances) !!};
+
+//           for(var i=0; i<marcadores.length; i++) {
+//             var marker= new google.maps.Marker({
+//                 position: new google.maps.LatLng(marcadores[i]['latitude'],marcadores[i]['longitude']),
+//                 map: map,
+//                 title: marcadores[i]['regionname'],
+                
+                
+//                });
+               
+//                console.log(marcadores[i]['regionname'])
+//             }
+
+          
+ 
+//               //var contentString = "<h1><span class='glyphicon glyphicon-asterisk' aria-hidden='true'></span>&#160marcadores[3]['country']""</h1><p><span class='glyphicon glyphicon-screenshot' aria-hidden='true'></span>&#160<b>Dirección</b><br> </p><p><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>&#160 </p>";
+ 
+//             //   var infowindow = new google.maps.InfoWindow({
+//             //     content: contentString
+//             //   });
+ 
+              
+          
+         
+
+
+//       }
+
+      
+// window.onload = initMap;
+
+    
+
+    </script>
 @endsection

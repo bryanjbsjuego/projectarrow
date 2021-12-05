@@ -130,6 +130,10 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('editarHombro/{id}/concepto',[AvanceController::class,'editarIz'])->name('editar.izquierdo');
 
+    Route::get('avances/{id}/imagen',[AvanceController::class,'agregarimagenubi'])->name('avances.agregarimagenubi');
+
+    Route::post('avances/guardarimagen',[AvanceController::class,'guardarimagen'])->name('avances.guardarimagen');
+    
     Route::resource('asignarcargo',AsignarCargoController::class);
 
     Route::resource('firmantes',FirmanteController::class);
