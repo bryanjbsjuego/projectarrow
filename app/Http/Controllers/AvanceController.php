@@ -1057,12 +1057,13 @@ class AvanceController extends Controller
 
     } 
 
- HEAD
+ 
     public function editarimagen(imgAvance $imagen){
 
         $ip = request()->ip(); 
         $data = Location::get('https://'.$ip);
 
+        
        
 
         return view("avances.editarimage",compact('imagen','data'));
@@ -1111,15 +1112,25 @@ class AvanceController extends Controller
 
         $img->save();
 
-        return "Modificado";
+        $avance=Avance::where('id','=',$request->id_avance)->first();
+
+        //  return $avance;
+
+         return redirect()->route('Avance.show',$avance->id_concepto);
+
+  
 
 
     }
 
     public function eliminarimagen(imgAvance $imag){
+
+        // return $imag;
         $imag->delete();
-        
-        return "Eliminado";
+        $avance=Avance::where('id','=',$imag->id_avance)->first();
+
+
+         return redirect()->route('Avance.show',$avance->id_concepto);
     }
 
 
