@@ -951,10 +951,11 @@ class AvanceController extends Controller
 
     public function agregarimagenubi($id){
 
-        //$ip='fe80::d41c:6072:dac2:df66%15';
+        //$ip='192.168.1.70';
         $ip = request()->ip(); 
         $data = Location::get('https://'.$ip);
         
+        // dd($data);
         //$data = Location::get($ip);
 
         //dd($locationData);
@@ -1045,7 +1046,14 @@ class AvanceController extends Controller
 
          $guardar->save();
 
-        return "Guardado";
+         $avance=Avance::where('id','=',$request->id_avance)->first();
+
+        //  return $avance;
+
+         return redirect()->route('Avance.show',$avance->id_concepto);
+
+
+        // return "Guardado";
 
     } 
 
