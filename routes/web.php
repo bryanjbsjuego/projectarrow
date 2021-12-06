@@ -131,8 +131,15 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('editarHombro/{id}/concepto',[AvanceController::class,'editarIz'])->name('editar.izquierdo');
 
+
     Route::get('/avance/{id}/pdf',[AvanceController::class,'createPDF'])->name('avence.createPDF');
     Route::get('/concepto/{id}/pdf',[AvanceController::class,'create2PDF'])->name('concepto.createPDF');
+
+    Route::get('avances/{id}/imagen',[AvanceController::class,'agregarimagenubi'])->name('avances.agregarimagenubi');
+
+    Route::post('avances/guardarimagen',[AvanceController::class,'guardarimagen'])->name('avances.guardarimagen');
+    
+
     Route::resource('asignarcargo',AsignarCargoController::class);
 
     Route::resource('firmantes',FirmanteController::class);

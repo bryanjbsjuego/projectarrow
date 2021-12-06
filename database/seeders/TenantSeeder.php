@@ -20,7 +20,7 @@ class TenantSeeder extends Seeder
             'name' => 'Bryan',
             'email'=> 'bryan@gmail.com',
             'password' => bcrypt('12345678'),
-            'photo' => 'dmlddkdkfkff'
+            'photo' => 'tenant.png'
 
         ]);
 
