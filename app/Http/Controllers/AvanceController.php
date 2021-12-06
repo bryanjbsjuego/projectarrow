@@ -726,5 +726,69 @@ class AvanceController extends Controller
 
     } 
 
+    public function editarimagen(imgAvance $imagen){
+
+        $ip = request()->ip(); 
+        $data = Location::get('https://'.$ip);
+
+       
+
+        return view("avances.editarimage",compact('imagen','data'));
+
+    }
+
+    public function actualizarimagen(Request $request, imgAvance $img){
+
+        $this->validate($request,
+        [
+            'descripcion' => 'required',
+            'imagen' => 'image|mimes:jpeg,png|max:1024',
+
+        ],
+        [
+            'descripcion.required' => 'El campo nombre debe ser obligatorio'
+        ]
+
+         );
+
+        $image=$request->all();
+
+        if($imagen=$request->file("imagen")){
+            $ruta="img/usuarios/";
+            $nombreImagen=strtotime(now()).rand(11111,99999).'.'.$imagen->getClientOriginalExtension();
+            $imagen->move($ruta,$nombreImagen);
+            $img->imagen = $nombreImagen;
+    
+        }else{
+            unset($imagen['imagen']);
+        }
+
+        $img->id_avance=$request->id_avance;
+        $img->ip=$request->ip; 
+        $img->country=$request->country; 
+        $img->countrycode=$request->countrycode; 
+        $img->regioncode=$request->regioncode; 
+        $img->regionname=$request->regionname; 
+        $img->cityname=$request->cityname;
+        $img->zipcode=$request->zipcode; 
+        $img->postalcode=$request->postalcode; 
+        $img->latitude=$request->latitude; 
+        $img->longitude=$request->longitude; 
+        $img->descripcion=$request->descripcion;
+
+
+        $img->save();
+
+        return "Modificado";
+
+
+    }
+
+    public function eliminarimagen(imgAvance $imag){
+        $imag->delete();
+        
+        return "Eliminado";
+    }
+
    
 }
