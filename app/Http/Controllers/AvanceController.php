@@ -4,14 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Avance;
 use App\Models\Concepto;
+use App\Models\Contrato;
 use App\Models\Dato;
 use App\Models\imgAvance;
 use App\Models\ImagenesContrato;
 use App\Models\imgConceptos;
+// use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Return_;
+
+use Barryvdh\DomPDF\Facade as PDF;
+use Dompdf\Dompdf;
+use Dompdf\FontMetrics;
 use Stevebauman\Location\Facades\Location;
+
 
 class AvanceController extends Controller
 {
@@ -176,10 +184,6 @@ class AvanceController extends Controller
     $al=$avance->altura;
     $es=$avance->espesor;
     $pie=$avance->pieza;
-
-  
-
-   
 
 
         return view('avances.editaravance',compact('l','ap','an','vt','are','al','es','pie','avance','dato'));
@@ -445,16 +449,12 @@ class AvanceController extends Controller
        
 
         $avance=Avance::find($id);
+        $concepto=Concepto::where('id','=',$avance->id_concepto)->first();
 
-        
-    
-        // return $avance;
 
         $l=$avance->localizacion;
         //este promedio total 
         $an=$avance->anchoM;
-
-      
         $al=$avance->altura;
         // Ancho Total
         $ap=$avance->anchoP;
@@ -464,17 +464,12 @@ class AvanceController extends Controller
         $es=$avance->espesor;
         $are=$avance->area;
 
-       
-        // return $vtt;
+ 
 
         //avance
 
         $datosG=Dato::where('id_avance','=',$avance->id)
         ->where('hombro_izquierdo1','=',null)->where('hombro_izquierdo2','=',null)->get();
-
-        
-        
-        // return $datosG;
 
         $datosD=Dato::where('id_avance','=',$avance->id)
         ->where('hombro_derecho1','=',null)->where('hombro_derecho2','=',null)->whereNotNull('hombro_izquierdo1')
@@ -493,7 +488,7 @@ class AvanceController extends Controller
 
         // return $l;
 
-        return view('avances.tablaavance',compact('l','an','al','ap','vtt','are','pie','es','avance','datosG','datosD'));
+        return view('avances.tablaavance',compact('l','an','al','ap','vtt','are','pie','es','avance','datosG','datosD','concepto'));
     }
 
 
@@ -536,6 +531,11 @@ class AvanceController extends Controller
     public function registrarAvance($id,Request $request){
 
         $avance=Avance::find($id);
+
+
+        // $hd1=$request->hombro_derecho1;
+        // $hd1 = str_replace(',', '', $hd1);
+        // return $hd1;
 
         
         $dato= new Dato();
@@ -625,6 +625,329 @@ class AvanceController extends Controller
 
 
     }
+
+    public function createPDF($id)
+    {
+
+
+            
+    $avancef=Avance::find($id);
+
+
+    //concepto padre
+    $conceptop=Concepto::select('id_codigo')->where('id','=',$avancef->id_concepto)->first();
+
+    $conceptosimg=[];
+    $conceptosimg=imgConceptos::where('id_concepto','=',$avancef->id_concepto)->get();
+    $imgpn=imgConceptos::where('id_concepto','=',$avancef->id_concepto)->count();
+ 
+ 
+ 
+         if($imgpn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $conceptosimg[0]=$img;
+             $conceptosimg[1]=$conceptosimg[0];
+             $conceptosimg[2]=$conceptosimg[0];
+
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgpn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+             $conceptosimg[1]=$img;
+             $conceptosimg[2]=$img;
+
+
+         }else if($imgpn==2){
+          
+            $img = new ImagenesContrato();
+            $img->imagen='sinimg.png';
+            $conceptosimg[2]=$img;
+         }
+         
+    
+    $conceptopp=Concepto::where('id','=',$conceptop->id_codigo)->first();
+    $conceptoppp=Concepto::where('id','=',$conceptopp->id_codigo)->first();
+    $imgc=imgConceptos::where('id_concepto','=',$conceptoppp->id)
+    ->where('descripcion','=','croquis')->first();
+
+
+   
+    
+
+    if($avancef->inicio==null || $avancef->fin==null){
+        $avancef->inicio='sin fecha';
+        $avancef->fin='sin fecha';
+
+     
+    }
+
+  
+
+        $l=$avancef->localizacion;$an=$avancef->anchoM;$al=$avancef->altura;$ap=$avancef->anchoP;
+        $vtt=$avancef->volumenT;$pie=$avancef->pieza;$es=$avancef->espesor;$are=$avancef->area;
+
+        $datosG=Dato::where('id_avance','=',$avancef->id)
+        ->where('hombro_izquierdo1','=',null)->where('hombro_izquierdo2','=',null)->get();
+
+        $datosD=Dato::where('id_avance','=',$avancef->id)
+        ->where('hombro_derecho1','=',null)->where('hombro_derecho2','=',null)->whereNotNull('hombro_izquierdo1')
+        ->whereNotNull('hombro_izquierdo2')->get();
+
+        $concepto=Concepto::where('id','=',$avancef->id_concepto)->first();
+        //contrato
+        $idcontrato=$concepto->id_contrato;
+
+
+        //img del contrato
+        $imgco=[];
+        $imgco=ImagenesContrato::where('id_contrato','=',$idcontrato)->get();
+
+        
+         $imgn=ImagenesContrato::where('id_contrato','=',$idcontrato)->count();
+ 
+ 
+ 
+         if($imgn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[0]=$img;
+             $imgco[1]=$imgco[0];
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[1]=$img;
+         }
+         
+
+    
+
+   
+
+
+        $avance=DB::table('contratos')
+        ->select('conceptos.concepto as nom_concepto','conceptos.id as idc', 'conceptos.codigo','clientes.nombre as nombre_cliente',
+        'contratos.nombre_obra as nom_obra', 'contratos.ubicacion','contratos.importe as conimporte',
+        'contratos.contrato as nom_contrato','empresas.nombre as nom_empresa')
+        ->join('conceptos', 'contratos.id','=','conceptos.id_contrato')
+        ->join('clientes', 'contratos.id_cliente','=','clientes.id')
+        ->join('empresas', 'contratos.id_empresa','=','empresas.id')
+        ->where('conceptos.id','=',$concepto->id)->first();
+
+
+        $unidad=DB::table('unidad')->select('unidad.nombre as unidad_nombre')
+        ->join('conceptos', 'unidad.id','=','conceptos.id_unidad')
+        ->where('conceptos.id','=',$concepto->id)->first();
+
+
+        $firmantes=DB::table('contratos')
+        ->join('firmantes','contratos.id','=','firmantes.id_contrato')
+        ->join('empleado_cargos','empleado_cargos.id','=','firmantes.id_empleado_cargo')
+        ->join('empleados','empleados.id','=','empleado_cargos.id_empleado')
+        ->join('cargos','cargos.id','=','empleado_cargos.id_cargo')
+        ->select('firmantes.id as id', 'empleados.nombre as nombre','empleados.apellido_paterno as paterno'
+        ,'empleados.apellido_materno as materno','contratos.contrato','cargos.nombre_cargo as cargo')
+        ->where('contratos.id','=',$idcontrato)
+        ->get();
+
+
+ 
+
+
+    
+    // return $avance->id_concepto;
+
+    
+
+    //concepto
+    // $concepto=Concepto::where('id','=',$avance->id_concepto)->first();  
+
+
+    
+    $pdf=PDF::loadView('avances.pdf',['avance'=>$avance,'concepto'=>$concepto,'l'=>$l,'an'=>$an,
+                        'al'=>$al,'ap'=>$ap,'vtt'=>$vtt,'pie'=>$pie,'es'=>$es,'are'=>$are,
+                        'datosG'=>$datosG,'datosD'=>$datosD,'imgco'=>$imgco,'avance'=>$avance,
+                        'unidad'=>$unidad,'avancef'=>$avancef,'imgc'=>$imgc,'firmantes'=>$firmantes,
+                        'conceptosimg'=>$conceptosimg]);
+                      
+    // return $pdf->download('avances.pdf');
+    
+    $pdf->setPaper('A4', 'landscape');
+
+
+ 
+
+ 
+
+ 
+    return $pdf->stream();
+
+
+    //    return view('avances.pdf',compact('concepto'));
+    }
+
+
+    public function create2PDF($id){
+
+        $avancef=Avance::find($id);
+
+        $conceptop=Concepto::select('id_codigo')->where('id','=',$avancef->id_concepto)->first();
+
+        $conceptosimg=[];
+        $conceptosimg=imgConceptos::where('id_concepto','=',$avancef->id_concepto)->get();
+        $imgpn=imgConceptos::where('id_concepto','=',$avancef->id_concepto)->count();
+ 
+ 
+ 
+         if($imgpn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $conceptosimg[0]=$img;
+             $conceptosimg[1]=$conceptosimg[0];
+             $conceptosimg[2]=$conceptosimg[0];
+
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgpn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+             $conceptosimg[1]=$img;
+             $conceptosimg[2]=$img;
+
+
+         }else if($imgpn==2){
+          
+            $img = new ImagenesContrato();
+            $img->imagen='sinimg.png';
+            $conceptosimg[2]=$img;
+         }
+         
+    
+    $conceptopp=Concepto::where('id','=',$conceptop->id_codigo)->first();
+    $conceptoppp=Concepto::where('id','=',$conceptopp->id_codigo)->first();
+    $imgc=imgConceptos::where('id_concepto','=',$conceptoppp->id)
+    ->where('descripcion','=','croquis')->first();
+
+
+   
+    
+
+    if($avancef->inicio==null || $avancef->fin==null){
+        $avancef->inicio='sin fecha';
+        $avancef->fin='sin fecha';
+
+     
+    }
+
+  
+
+       
+        $concepto=Concepto::where('id','=',$avancef->id_concepto)->first();
+        //contrato
+        $idcontrato=$concepto->id_contrato;
+
+
+        //img del contrato
+        $imgco=[];
+        $imgco=ImagenesContrato::where('id_contrato','=',$idcontrato)->get();
+
+        
+         $imgn=ImagenesContrato::where('id_contrato','=',$idcontrato)->count();
+ 
+ 
+ 
+         if($imgn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[0]=$img;
+             $imgco[1]=$imgco[0];
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[1]=$img;
+         }
+         
+
+    
+
+   
+
+
+        $avance=DB::table('contratos')
+        ->select('conceptos.concepto as nom_concepto','conceptos.id as idc', 'conceptos.codigo','clientes.nombre as nombre_cliente',
+        'contratos.nombre_obra as nom_obra', 'contratos.ubicacion','contratos.importe as conimporte',
+        'contratos.contrato as nom_contrato','empresas.nombre as nom_empresa')
+        ->join('conceptos', 'contratos.id','=','conceptos.id_contrato')
+        ->join('clientes', 'contratos.id_cliente','=','clientes.id')
+        ->join('empresas', 'contratos.id_empresa','=','empresas.id')
+        ->where('conceptos.id','=',$concepto->id)->first();
+
+
+        $unidad=DB::table('unidad')->select('unidad.nombre as unidad_nombre')
+        ->join('conceptos', 'unidad.id','=','conceptos.id_unidad')
+        ->where('conceptos.id','=',$concepto->id)->first();
+
+
+        $firmantes=DB::table('contratos')
+        ->join('firmantes','contratos.id','=','firmantes.id_contrato')
+        ->join('empleado_cargos','empleado_cargos.id','=','firmantes.id_empleado_cargo')
+        ->join('empleados','empleados.id','=','empleado_cargos.id_empleado')
+        ->join('cargos','cargos.id','=','empleado_cargos.id_cargo')
+        ->select('firmantes.id as id', 'empleados.nombre as nombre','empleados.apellido_paterno as paterno'
+        ,'empleados.apellido_materno as materno','contratos.contrato','cargos.nombre_cargo as cargo')
+        ->where('contratos.id','=',$idcontrato)
+        ->get();
+
+
+ 
+
+
+
+               
+        $pdf=PDF::loadView('avances.pdf2',['imgco'=>$imgco,'avance'=>$avance,'unidad'=>$unidad,
+                            'avancef'=>$avancef,'conceptosimg'=>$conceptosimg,'firmantes'=>$firmantes]);
+  
+// return $pdf->download('avances.pdf');
+
+
+     
+
+            return $pdf->stream();
+
+       
+
+    }
+
+
+
+
 
     public function agregarimagenubi($id){
 
@@ -726,6 +1049,7 @@ class AvanceController extends Controller
 
     } 
 
+ HEAD
     public function editarimagen(imgAvance $imagen){
 
         $ip = request()->ip(); 
@@ -789,6 +1113,7 @@ class AvanceController extends Controller
         
         return "Eliminado";
     }
+
 
    
 }

@@ -29,22 +29,25 @@
     </div>
     <div class="row clearfix p-2">
         <div class="col-lg-12 col-md-12 col-sm-12">
+           
             <div class="card">
                 <div class="header text-center">
                     <h2>Descripcion del concepto </h2>
-               
-    
-                    <ul class="header-dropdown">
-                        <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="zmdi zmdi-more-vert"></i></a>
-                            <ul class="dropdown-menu pull-right">
-                                <li><a href="javascript:void(0);" class=" waves-effect waves-block">Action</a></li>
-                                <li><a href="javascript:void(0);" class=" waves-effect waves-block">Another action</a></li>
-                                <li><a href="javascript:void(0);" class=" waves-effect waves-block">Something else here</a></li>
-                            </ul>
-                        </li>
-                    </ul>
                 </div>
                 <div class="body">
+                    @if ($errors->any())
+                    <div class="col-md-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>!Revise los campos¡</strong>
+                                @foreach ($errors->all() as $error)
+                                    <span >{{ $error }}</span>
+                                @endforeach
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                    </div>
+                @endif
                     <form action="{{route('conceptosec.store')}}" method="POST">
                     @csrf
                     <div class="row clearfix m-auto">
@@ -58,7 +61,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control text-center" name="codigo"  placeholder="Codigo del concepto">
+                                    <input type="text"   class="form-control text-center" name="codigo"  value="{{old('codigo')}}" placeholder="Codigo del concepto">
                                 </div>
                             </div>
                         </div>
@@ -66,7 +69,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea rows="4" class="form-control no-resize" name="concepto" placeholder="Descripcion"></textarea>
+                                    <textarea style="height: 100px" class="form-control no-resize" name="concepto" placeholder="Descripcion">{{old('concepto')}}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +88,7 @@
                             <div class="input-group icon  mt-5">
 
                                 <div class="form-line">
-                                    <input  min="0" step="0.01" type="number" step="any" name="cantidad" class="form-control money-dollar" placeholder="Cantidad">
+                                    <input  min="0" step="0.01" type="number" step="any" name="cantidad"  value="{{old('punitario')}}"class="form-control money-dollar" placeholder="Cantidad">
                                 </div>
                             </div>
                         </div>
@@ -94,7 +97,7 @@
                             <div class="input-group icon  mt-5">
                                 <span class="input-group-addon"> <i class="material-icons">attach_money</i> </span>
                                 <div class="form-line">
-                                    <input  min="0" step="0.01" type="number" step="any" name="punitario" placeholder="Precio Unitario Ex: 99.99 $" class="form-control money-dollar" placeholder="Cantidad Ex: 99.99 $">
+                                    <input  min="0" step="0.01" type="number" step="any" name="punitario"  value="{{old('punitario')}}" placeholder="Precio Unitario Ex: 99.99 $" class="form-control money-dollar" placeholder="Cantidad Ex: 99.99 $">
                                 </div>
                             </div>
                         </div>
@@ -106,21 +109,21 @@
                         <div class="col-lg-6 col-md-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="precio_letra" placeholder="Precio con letra">
+                                    <input type="text" class="form-control" name="precio_letra" value="{{old('precio_letra')}}" placeholder="Precio con letra">
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="importe" placeholder="Importe">
+                                    <input type="text" class="form-control" name="importe" value="{{old('importe')}}" placeholder="Importe">
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2 col-md-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="porcentaje" placeholder="porcentaje">
+                                    <input type="text" class="form-control" name="porcentaje" value="{{old('porcentaje')}}" placeholder="porcentaje">
                                 </div>
                             </div>
                         </div>

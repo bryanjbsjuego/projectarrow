@@ -38,7 +38,9 @@
                     <a href="{{route('conceptosec.show',$p)}}" class="btn btn-raised btn-light  " ><i class="material-icons">arrow_back</i></a>
                    
                     <h2 class="m-auto">Información</h2>
-                   
+                  
+                   <a class="btn btn-sm btn-raised btn-primary" href="{{ route('concepto.createPDF',$avancef->id) }}">Imprimir Reporte Concepto<i class="material-icons" style=" margin-bottom: 8px;">file_download</i> </a>
+                    
 
                 </div>
                 

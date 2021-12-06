@@ -16,9 +16,9 @@
                             @if ($errors->any())
                                 <div class="col-md-12">
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <strong>!Revise los campos¡</strong>
+                                        <strong>!Revise los campos¡</strong><br>
                                             @foreach ($errors->all() as $error)
-                                                <span >{{ $error }}</span>
+                                            <br><span >{{ $error }}</span>
                                             @endforeach
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>

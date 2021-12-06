@@ -32,8 +32,7 @@
                     <h2 class="text-center">Datos del avance</h2>
                     <br>
                     <a href="{{route('Avance.show',$avance->id_concepto)}}" class="btn btn-raised btn-success m-auto" ><i class="material-icons">arrow_back</i></a>
-                    <a class="btn btn-sm btn-raised btn-primary" href="{{ route('avence.createPDF',$avance->id) }}">Imprimir Reporte<i class="material-icons" style=" margin-bottom: 8px;">file_download</i> </a>
-                   
+                    
                     {{-- en el caso de que este amrcado la longitud --}}
                     @if ($l==1)
                     <a href="{{route('registrar.avance',$avance->id)}}"  class="m-auto btn btn-raised btn-warning m-auto">Hombro Derecho</a>   
@@ -613,27 +612,14 @@
                                 @endif
 
                                  {{-- Total cuando se tiene el ancho promedio modificado--}}
-                                 @if ( $l!=1 && $ap!=1 &&  $an==1 && $are!=1 && $vtt!=1 && $pie!=1 && $es!=1)   
+                                 @if ( $l!=1 && $ap==1 &&  $an==1 && $are!=1 && $vtt!=1 && $pie!=1 && $es!=1)   
                                  <tr>
     
                                     <td class="text-center" colspan="4"><strong>Total Estimado: </strong></td>
                                     <td class="bg-info text-white text-center" ><?php echo number_format( $total_estimado3*10, 2, '.', ',');  ?></td>
                               
                                  </tr>
-                                  <tr>
-                                    <td class="text-center" colspan="4"><strong>Volumen Contratado: </strong></td>
-                                    <td class="bg-info text-white text-center" >{{$concepto->cantidad}}</td>
-                                </tr>
-                                    <tr>
-                                      <td class="text-center" colspan="4"><strong>Volumen Excedente: </strong></td>
-                                      <td class="bg-info text-white text-center" ><?php if($total_estimado3*10>$concepto->cantidad){ echo number_format($total_estimado3-$concepto->cantidad,2,'.','.');}else{echo 0;}  ?></td>
-                                  </tr>
-                                  <tr>
-                                    <td class="text-center" colspan="4"><strong>Volumen Normal por cobrar en esta estimacion: </strong></td>
-                                    <td class="bg-info text-white text-center" ><?php if($total_estimado3*10>$concepto->cantidad){echo number_format($concepto->cantidad,2,'.','.');}else{echo number_format( $total_estimado3*10, 2, '.', ','); }?></td>
-                                </tr>
                                  @endif
-
 
 
                                       {{-- El total cuando se tiene longitud ancho promedio area --}}
@@ -772,22 +758,11 @@
                                           <td class="bg-info text-white text-center" ><?php echo number_format( $totalp, 2, '.', ',');  ?></td>
                                     
                                         </tr>
-                                          <tr>
-                                            <td class="text-center" colspan="7"><strong>Volumen Contratado: </strong></td>
-                                            <td class="bg-info text-white text-center" >{{$concepto->cantidad}}</td>
-                                        </tr>
-                                            <tr>
-                                              <td class="text-center" colspan="7"><strong>Volumen Excedente: </strong></td>
-                                              <td class="bg-info text-white text-center" ><?php if($totalp>$concepto->cantidad){ echo number_format($totalp-$concepto->cantidad,2,'.','.');}else{echo 0;}  ?></td>
-                                          </tr>
-                                          <tr>
-                                            <td class="text-center" colspan="7"><strong>Volumen Normal por cobrar en esta estimacion: </strong></td>
-                                            <td class="bg-info text-white text-center" ><?php if($totalp>$concepto->cantidad){echo number_format($concepto->cantidad,2,'.','.');}else{echo number_format( $totalp, 2, '.', ','); }?></td>
-                                        </tr>
-
                                         @endif
 
+                                       
 
+                                        
 
                        
                             </tbody>

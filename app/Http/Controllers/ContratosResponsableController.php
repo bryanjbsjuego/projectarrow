@@ -52,8 +52,8 @@ class ContratosResponsableController extends Controller
     }else if($rol->name=='Asistente de obra'){
         
         $contratos=Contrato::where('id_asistente','=',$id)->get();
-        return $contratos;
-
+       
+        return view('contratosR.contratos',compact('contratos'));
 
     }
 

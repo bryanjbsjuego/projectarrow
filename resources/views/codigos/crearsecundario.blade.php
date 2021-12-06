@@ -20,6 +20,20 @@
 
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row clearfix">
+                        @if ($errors->any())
+                            <div class="col-md-12">
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>!Revise los campos¡</strong>
+                                        @foreach ($errors->all() as $error)
+                                            <span >{{ $error }}</span>
+                                        @endforeach
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                            </div>
+                        @endif
                     <div class="card mt-4">
                         <div class="header text-center mt-3">
                             <h2 class="mt-4">Codigo principal de la obra</h2>
@@ -48,7 +62,7 @@
                                 <div class="col-md-10 col-sm-12 p-2 m-4">       
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="codigo" placeholder="codigo">
+                                            <input type="text" class="form-control" name="codigo" placeholder="Codigo Ej:">
                                         </div>
                                     </div>
                                 </div>

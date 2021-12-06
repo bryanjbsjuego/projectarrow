@@ -11,10 +11,12 @@ use App\Models\Cliente;
 use App\Models\Contrato;
 use App\Models\Fianza;
 use App\Models\ImagenesContrato;
+// use Barryvdh\DomPDF\PDF;
 // use App\Models\ImagenesContrato;
 use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 use PhpParser\Node\Stmt\Return_;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class ContratosController extends Controller
 {
@@ -79,6 +81,7 @@ class ContratosController extends Controller
         ->where('users.id_tenant',$idt->id_tenant)
         ->whereIn('role_id', [$idr->id])
         ->where('empresas.id','=',$id_empresa->empresa)
+        ->where('estatus','=',0)
         ->select('users.*')
         ->get();
 
@@ -91,6 +94,7 @@ class ContratosController extends Controller
         ->where('users.id_tenant',$idt->id_tenant)
         ->whereIn('role_id', [$ida->id])
         ->where('empresas.id','=',$id_empresa->empresa)
+        ->where('estatus','=',0)
         ->select('users.*')
         ->get();
 
@@ -138,7 +142,22 @@ class ContratosController extends Controller
             'id_responsable' => 'required',
             'id_asistente' => 'required'
 
-        ]);
+        ],
+        [
+            'contrato.required' => 'Se requiere un nombre de contrato',
+            'nombre_obra.required' => 'Ingresa un nombre de la obra',
+            'descripcion.required' => 'Ingrese una descripcion de la obra',
+            'ubicacion.required' => 'Ingresa una ubicacion',
+            'fecha_inicio.required' => 'Ingresa una fecha de inicio',
+            'fecha_alta.required' => 'Se requiere una fecha de alta',
+            'fecha_termino.required' => 'Ingresa una fecha de termino',
+            'plazo_dias.required' => 'Defina un plazo de dias',
+            'importe.required' => 'Ingrese un Importe',
+            'amortizacion.required' => 'Ingresa una amortización',
+            
+
+        ]
+    );
 
         $data=$request->only([
             'contrato',
@@ -337,7 +356,18 @@ class ContratosController extends Controller
         [
             'id_cliente.required' => 'Debe elegir un cliente',
             'id_responsable' => 'required',
-            'id_asistente' => 'required'
+            'id_asistente' => 'required',
+            'contrato.required' => 'Se requiere un nombre de contrato',
+            'nombre_obra.required' => 'Ingresa un nombre de la obra',
+            'descripcion.required' => 'Ingrese una descripcion de la obra',
+            'ubicacion.required' => 'Ingresa una ubicacion',
+            'fecha_inicio.required' => 'Ingresa una fecha de inicio',
+            'fecha_alta.required' => 'Se requiere una fecha de alta',
+            'fecha_termino.required' => 'Ingresa una fecha de termino',
+            'plazo_dias.required' => 'Defina un plazo de dias',
+            'importe.required' => 'Ingrese un Importe',
+            'amortizacion.required' => 'Ingresa una amortización',
+            
 
         ]
     );
@@ -512,6 +542,79 @@ class ContratosController extends Controller
     public function eliminarimagen(ImagenesContrato $imag){
         $imag->delete();
         return redirect()->route('contratos.index');
+    }
+
+
+    public function createPDF($id){
+
+        $contrato=Contrato::find($id);
+
+        $imgco=[];
+        $imgco=ImagenesContrato::where('id_contrato','=',$contrato->id)->get();
+
+        
+         $imgn=ImagenesContrato::where('id_contrato','=',$contrato->id)->count();
+ 
+ 
+ 
+         if($imgn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[0]=$img;
+             $imgco[1]=$imgco[0];
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[1]=$img;
+         }
+         
+        
+       
+
+         $contrato=DB::table('contratos')
+         ->select('clientes.nombre as nombre_cliente',
+         'contratos.nombre_obra as nom_obra', 'contratos.ubicacion','contratos.importe as conimporte',
+         'contratos.contrato as nom_contrato','empresas.nombre as nom_empresa','contratos.*')
+         ->join('clientes', 'contratos.id_cliente','=','clientes.id')
+         ->join('empresas', 'contratos.id_empresa','=','empresas.id')
+         ->where('contratos.id','=',$contrato->id)
+         ->first();
+
+         $firmantes=DB::table('contratos')
+         ->join('firmantes','contratos.id','=','firmantes.id_contrato')
+         ->join('empleado_cargos','empleado_cargos.id','=','firmantes.id_empleado_cargo')
+         ->join('empleados','empleados.id','=','empleado_cargos.id_empleado')
+         ->join('cargos','cargos.id','=','empleado_cargos.id_cargo')
+         ->select('firmantes.id as id', 'empleados.nombre as nombre','empleados.apellido_paterno as paterno'
+         ,'empleados.apellido_materno as materno','contratos.contrato','cargos.nombre_cargo as cargo')
+         ->where('contratos.id','=',$contrato->id)
+         ->get();
+ 
+
+     
+        
+
+        
+        
+        $pdf=PDF::loadView('contratos.FinancieroPDF',['imgco'=>$imgco,'contrato'=>$contrato,
+                           'firmantes'=>$firmantes]);
+      
+// return $pdf->download('avances.pdf');
+
+$pdf->setPaper('A4', 'landscape');
+
+    return $pdf->stream();
+
+
+
     }
 
 
