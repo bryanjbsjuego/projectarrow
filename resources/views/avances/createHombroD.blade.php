@@ -53,7 +53,9 @@
                                                 <div class="form-group">
                                                     <b>Hombro derecho 1</b>
                                                     <div class="form-line">
-                                                        <input type="text" class="form-control"  name="hombro_derecho1" placeholder="Hombro Derecho 1">
+                                                        <input type="number" min="0" step="0.01" step="any" class="form-control"  name="hombro_derecho1" placeholder="Hombro Derecho 1">
+                                                        {{-- <input  min="0" step="0.01" step="any"  value="{{old('importe')}}" type="number" name="importe" class="form-control" placeholder="$ Importe"> --}}
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,7 +64,7 @@
                                                 <div class="form-group">
                                                     <b>Hombro derecho 2</b>
                                                     <div class="form-line">
-                                                        <input type="text" class="form-control"  name="hombro_derecho2" placeholder="Hombro Derecho 2">
+                                                        <input type="number" min="0" step="0.01" step="any" class="form-control"  name="hombro_derecho2" placeholder="Hombro Derecho 2">
                                                     </div>
                                                 </div>
                                             </div>
@@ -79,7 +81,7 @@
                                                 <div class="form-group">
                                                     <b>Ancho 1</b>
                                                     <div class="form-line">
-                                                        <input type="text" class="form-control"  name="ancho1" placeholder="ancho1">
+                                                        <input  type="number" min="0" step="0.01" step="any"  class="form-control"  name="ancho1" placeholder="ancho1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -88,7 +90,7 @@
                                                 <div class="form-group">
                                                     <b>Ancho 2</b>
                                                     <div class="form-line">
-                                                        <input type="text" class="form-control"  name="ancho2" placeholder="ancho2">
+                                                        <input  type="number" min="0" step="0.01" step="any" class="form-control"  name="ancho2" placeholder="ancho2">
                                                     </div>
                                                 </div>
                                             </div>
@@ -104,7 +106,7 @@
                                                 <div class="form-group">
                                                     <b>Altura</b>
                                                     <div class="form-line">
-                                                        <input type="text" class="form-control"  name="altura" placeholder="altura">
+                                                        <input  type="number" min="0" step="0.01" step="any" class="form-control"  name="altura" placeholder="altura">
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,7 +118,7 @@
                                                 <div class="form-group">
                                                     <b>Ancho </b>
                                                     <div class="form-line">
-                                                        <input type="text" class="form-control"  name="anchot" placeholder="Ancho ">
+                                                        <input type="number" min="0" step="0.01" step="any" class="form-control"  name="anchot" placeholder="Ancho ">
                                                     </div>
                                                 </div>
                                             </div>
@@ -144,7 +146,7 @@
                                                     <div class="form-group">
                                                         <b>Espesor </b>
                                                         <div class="form-line">
-                                                            <input type="text" class="form-control"  name="espesor" placeholder="Ancho ">
+                                                            <input type="number" min="0" step="0.01" step="any" class="form-control"  name="espesor" placeholder="Ancho ">
                                                         </div>
                                                     </div>
                                                 </div>

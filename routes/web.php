@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function (){
     
     Route::delete('contratos/{imag}/eliminarimagen',[ContratosController::class,'eliminarimagen'])->name('contratos.eliminarimagen');
 
+    Route::get('operativo/{id}/activar',[OperativoController::class,'activar'])->name('operativo.activar');
 
 
     Route::get('contratobajas',[ContratosController::class,'eliminadas'])->name('contratos.baja');
@@ -130,6 +131,8 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('editarHombro/{id}/concepto',[AvanceController::class,'editarIz'])->name('editar.izquierdo');
 
+    Route::get('/avance/{id}/pdf',[AvanceController::class,'createPDF'])->name('avence.createPDF');
+    Route::get('/concepto/{id}/pdf',[AvanceController::class,'create2PDF'])->name('concepto.createPDF');
     Route::resource('asignarcargo',AsignarCargoController::class);
 
     Route::resource('firmantes',FirmanteController::class);
@@ -144,7 +147,7 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::delete('conceptosec/{imag}/eliminarimagen',[ConceptoController::class,'eliminarimagen'])->name('conceptosec.eliminarimagen');
 
-
+    Route::get('financiero/{id}/pdf',[ContratosController::class,'createPDF'])->name('finaciero.createPDF');
     
 } );
 

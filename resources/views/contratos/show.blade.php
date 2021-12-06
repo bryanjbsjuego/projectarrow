@@ -140,6 +140,9 @@
                     <br>
                     <div class="row">
 
+                  
+                    
+
                         @if ($contratoUnion->estatus !=1)
                         <div class="col-sm-12   d-flex ">
 
@@ -157,12 +160,22 @@
                               </form>
                         </div>
                         @else
-
+                        
+                     
                         <a href="{{route('contratos.activar',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-info m-auto" >Activar Contrato</a>
                         @endif
 
+                  
 
                     </div>
+
+                    <div class="row">
+                        <div class="col-12  text-center mt-4">
+                            <a class="btn btn-sm btn-raised btn-primary m-auto mt-5"  href="{{route('finaciero.createPDF',$contratoUnion->contrato_id)}}">Reporte Finaciero <i class="material-icons" style=" margin-bottom: 8px;">file_download</i> </a>
+                        </div>
+
+                    </div>
+                    
                     <br><br>
                     <div class="container">
                         <div class="row">

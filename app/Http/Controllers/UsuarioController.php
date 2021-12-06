@@ -24,9 +24,27 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+        
         // $usuarios=User::paginate(5);
         $id=Auth::id();
         $usuarios=User::where('users.id_tenant',$id)->paginate(5);
+
+        $id_responsable=Role::select('id')->where('name','=','Responsable de empresa')->first();
+
+        
+        $usuarios=DB::table('users')
+        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->where('users.id_tenant',$id)
+        ->whereIn('role_id', [$id_responsable->id])
+        ->select('users.*','roles.name as rol')
+        ->paginate(5);
+
+    //    return $usuarios;
+
+
+
+    
 
         
         return view('usuarios.index',compact('usuarios'));
