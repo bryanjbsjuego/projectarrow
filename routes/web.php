@@ -138,6 +138,12 @@ Route::group(['middleware' => ['auth']], function (){
     Route::get('avances/{id}/imagen',[AvanceController::class,'agregarimagenubi'])->name('avances.agregarimagenubi');
 
     Route::post('avances/guardarimagen',[AvanceController::class,'guardarimagen'])->name('avances.guardarimagen');
+
+    Route::get('avances/{imagen}/editarimagen',[AvanceController::class,'editarimagen'])->name('avances.editarimagen');
+    
+    Route::put('avances/{img}/actualizarimagen',[AvanceController::class,'actualizarimagen'])->name('avances.actualizarimagen');
+
+    Route::delete('avances/{imag}/eliminarimagen',[AvanceController::class,'eliminarimagen'])->name('avances.eliminarimagen');
     
 
     Route::resource('asignarcargo',AsignarCargoController::class);
