@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cargo;
+use App\Models\EmpleadoCargo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -120,6 +121,19 @@ class CargoController extends Controller
      */
     public function destroy($id)
     {
-        //
+       
+
+        $cargo=EmpleadoCargo::where('id_cargo','=',$id)->count();
+
+        if($cargo>0){
+            $mensaje_error="No se puede eliminar el cargo, existen empleados asociados a el";
+            return redirect()->route('cargos.index')->with(compact('mensaje_error'));
+        }else{
+            $cargo=Cargo::where('id','=',$id)->first();
+            $cargo->delete();
+
+            $mensaje="cargo eliminado exitosamente";
+            return redirect()->route('cargos.index')->with(compact('mensaje'));
+        }
     }
 }

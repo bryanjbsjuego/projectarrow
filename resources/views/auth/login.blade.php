@@ -45,18 +45,18 @@
                 </div>
                 <div class="">
                     <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-pink">
-                    <label for="rememberme">Remember Me</label>
+                    <label for="rememberme">Recordar</label>
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">
-                        {{ __('Login') }}
+                        {{ __('Iniciar sesión') }}
                     </button>
 
                     <a href="{{route('register') }}" class="btn btn-raised waves-effect" >Registrate</a>
 
                     @if (Route::has('password.request'))
                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
+                        {{ __('¿Olvidaste tu contraseña?') }}
                     </a>
                 @endif
 

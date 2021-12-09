@@ -12,8 +12,25 @@
                 <a href="{{ route('cargos.create') }}" class="btn btn-raised btn-success">Agregar Cargo</a>
             </div>
         </div>
+        <div class="header">
+            @if (session('mensaje'))
+            <div class="alert alert-success" role="alert">
+              {{session('mensaje')}}
+            </div>
+            @endif
+
+            @if (session('mensaje_error'))
+            <div class="alert alert-danger" role="alert">
+              {{session('mensaje_error')}}
+            </div>
+            @endif
+            <div id="error_fecha" class="alert alert-danger" style="display: none">
+                <strong>Alerta!</strong> Porfavor seleccione una fecha valida en inicio y termino
+            </div>
+        </div>
 
         <div class="row clearfix">
+            
             @foreach ($cargos as $cargo)
             <div class="col-lg-4 col-md-6 col-sm-12">
                

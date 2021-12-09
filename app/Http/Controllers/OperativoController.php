@@ -342,6 +342,8 @@ class OperativoController extends Controller
      */
     public function update(Request $request, $id){
 
+      
+
         $usuario=User::find($id);
 
       
@@ -372,6 +374,7 @@ class OperativoController extends Controller
             $usuario->password=bcrypt($request->input('password'));
          }
 
+        $usuario->name=$request->name; 
         $usuario->email=$request->email;
         $usuario->confirmed=true;
                

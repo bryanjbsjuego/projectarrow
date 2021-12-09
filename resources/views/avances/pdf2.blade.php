@@ -159,7 +159,7 @@
                 <div style="width: 25%; float: left; margin-left: 15px; text-align: center" >
                     <p>Cargo: <strong>{{$firmante->cargo}}<strong></p><br>
                     <hr style="height: 2px; width: 100%; background-color: black">
-                    <p>Nombre: <span style="text-transform: uppercase">{{$firmante->nombre}}</span></p>
+                    <p>Nombre: <span style="text-transform: uppercase">{{$firmante->nombre}} {{$firmante->paterno}}</span></p>
     
                 </div>
                 @endforeach
