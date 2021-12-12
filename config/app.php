@@ -180,6 +180,8 @@ return [
         //Obtener ubicación
         Stevebauman\Location\LocationServiceProvider::class,
         GoogleMaps\ServiceProvider\GoogleMapsServiceProvider::class,
+        //JWT
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
