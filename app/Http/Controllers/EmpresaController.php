@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Afianzadora;
 use App\Models\Empleado;
 use Illuminate\Http\Request;
 use App\Models\Empresa;
@@ -131,16 +132,41 @@ class EmpresaController extends Controller
 
         $existen=Empleado::where('id_empresa','=', $empresa->id)->select(DB::raw('count(*) as empleados'))
         ->first();
+        $existen2=User::where('empresa','=',$empresa->id)->count();
+        $existen3=Afianzadora::where('id_empresa','=',$empresa->id)->count();
 
-        if($existen->empleados<=0){
-       
-             $empresa->delete();
+        if($existen2>0){
+            $mensaje_error='No puedes eliminar '.$empresa->nombre. ' cuenta con un responsable de empresa';
+            return redirect()->route('empresas.index')->with(compact('mensaje_error'));
+        }else{
+            $empresa->delete();
              $mensaje='Empresa: '.$empresa->nombre." se elimino correctamente";
             return redirect()->route('empresas.index')->with(compact('mensaje'));
-        }else{
-           $mensaje_error='No puedes eliminar '.$empresa->nombre. ' cuenta con empleados Activos';
-           return redirect()->route('empresas.index')->with(compact('mensaje_error'));
         }
 
-    }
+      
+
+    } 
+
+
+
+    //     if($existen->empleados<=0 || $existen2<=0){
+
+    //         if($existen3<=0){
+    //             $empresa->delete();
+    //             $mensaje='Empresa: '.$empresa->nombre." se elimino correctamente";
+    //            return redirect()->route('empresas.index')->with(compact('mensaje'));
+    //         }
+       
+             
+    //         else{ 
+    //             $mensaje_error='No puedes eliminar '.$empresa->nombre. ' cuenta con fianzas activas';
+    //             return redirect()->route('empresas.index')->with(compact('mensaje_error'));
+    //         }
+    //     }else{
+    //        $mensaje_error='No puedes eliminar '.$empresa->nombre. ' cuenta con empleados Activos';
+    //        return redirect()->route('empresas.index')->with(compact('mensaje_error'));
+    //     }
+
+    // }
 }

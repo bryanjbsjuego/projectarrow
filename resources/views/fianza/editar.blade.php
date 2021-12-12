@@ -2,7 +2,7 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-            {{-- <h2>Agregar Fianza contrato: {{$contrato->contrato}}</h2> --}}
+            <h2>Editar fianza</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
         </div>
         <div class="row clearfix">

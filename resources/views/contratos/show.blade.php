@@ -177,13 +177,13 @@
                     </div>
                     
                     <br><br>
-                    <div class="container">
-                        <div class="row">
+                    <div class="container ">
+                        <div class="row d-flex justify-content-aroud">
+
                         @foreach($imagenes as $imagen )
-                        
-                            <div class="col-4">
+                            <div class="col-2  ">
                                 <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140px" height="100px" alt="velonic"></h3>
-                                <p><strong>Descripción: <strong> {{ $imagen->descripcion }}</p>
+                                <p><strong>Descripción: </strong> {{ $imagen->descripcion }}</p>
                                     <a href="{{route('contratos.editarimagen',$imagen->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
 
                                 <form action="{{route('contratos.eliminarimagen',$imagen->id)}}" class=""  method="post">
@@ -191,10 +191,11 @@
                                     @method('DELETE')
                                     <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
                                 </form>
+                                
                             </div>
-                       
+                            @endforeach
 
-                        @endforeach
+                     
                     </div>
 
 

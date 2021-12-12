@@ -6,7 +6,7 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Usuariosss</h2>
+            <h2>Usuarios</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
             <div>
                 <a href="{{route('operativos.create')}}" class="btn btn-raised btn-success">Agregar usuario</a>

@@ -25,7 +25,7 @@
 @section('contenido')
     <div class="container-fluid">
         <div class="block-header">
-            <h2>Editar imagen de contrato</h2>
+            <h2>Editar imagen de tarea</h2>
             <small class="text-muted"> ARROW</small>
         </div>
         <div class="row clearfix">

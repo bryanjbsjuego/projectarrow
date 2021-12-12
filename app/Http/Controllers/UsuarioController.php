@@ -42,8 +42,7 @@ class UsuarioController extends Controller
 
     //    return $usuarios;
 
-
-
+        
     
 
         
