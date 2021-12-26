@@ -11,59 +11,239 @@
                use App\Models\User;
                use Illuminate\Support\Facades\DB;
                use Illuminate\Support\Facades\Auth;
+               use Spatie\Permission\Models\Role;
+
                     $id=Auth::id();
                     $validacion=User::select('confirmed')->where('id','=',$id)->first();
 
-                $cant_usuarios=User::count();
 
-                use App\Models\Empresa;
-                    $cant_empresas=Empresa::count();
+                    $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                    ->join('roles','roles.id','=','model_has_roles.role_id')
+                    ->select('roles.name')
+                    ->where('users.id','=',$id)->first();
 
-                use Spatie\Permission\Models\Role;
-                        $cant_roles=Role::count();
+                $cant_usuarios=DB::table('users')
+                ->select(DB::raw('count(*) as cantidad_usuarios'))
+                ->where('id_tenant','=',$id)
+                ->first();
+
+                
+                //checar mañana
+                // $cant_usuarios_operativos=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+                //     ->join('roles','roles.id','=','model_has_roles.role_id')
+                //     ->select(DB::raw('count(users.id) as cantidad_usuarios_operativos'))
+                //     ->whereIn('roles.name','=',"Responsable de obra")
+                //     ->where('users.id','=',$id)->count();
+
+                $id_roltenant=Role::select('id')->where('name','=','Tenant')->first();
+                $id_responsable=Role::select('id')->where('name','=','Responsable de empresa')->first();
+
+               // $id=User::select('id_tenant','empresa')->where('id','=',$id)->first();
+
+               $empresa=DB::table('users')->select('empresa')->where('id','=',$id)->first();
+            
+               $usuario=DB::table('users')->select('id_tenant')->where('id','=',$id)
+                ->first();
+
+            
+                $cant_usuarios_operativos=DB::table('users')
+                ->join('empresas', 'users.empresa', '=', 'empresas.id')
+                ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+                ->join('roles','roles.id','=','model_has_roles.role_id')
+                ->where('users.id_tenant',$usuario->id_tenant)
+                ->whereNotIn('role_id', [$id_roltenant->id, $id_responsable->id,])
+                ->where('empresas.id','=',$empresa->empresa)
+                ->count();
+
+
+           
+
+                $afianzadoras=DB::table('afianzadoras')
+                ->select(DB::raw('count(*) as cantidad_afianzadoras'))
+                ->where('id_empresa','=',$empresa->empresa)
+                ->first();
+
+                
+
+                $clientes=DB::table('clientes')
+                ->select(DB::raw('count(*) as cantidad_clientes'))
+                ->where('id_tenant','=',$usuario->id_tenant)->first();
+
+                $contratos=DB::table('contratos')
+                ->select(DB::raw('count(*) as cantidad_contratos'))
+                ->where('id_empresa','=',$empresa->empresa)->first();
+
+                $cargos=DB::table('cargos')
+                ->select(DB::raw('count(*) as cantidad_cargos'))
+                ->where('id_empresa','=',$empresa->empresa)->first();
+
+                $unidades=DB::table('unidad')
+                ->select(DB::raw('count(*) as cantidad_unidades'))
+                ->where('id_empresa','=',$empresa->empresa)->first();
+
+                $contratos_asignados=DB::table('contratos')
+                ->select(DB::raw('count(*) as cantidad_asignados'))
+                ->where('id_responsable','=',$id)->first();
+
+                $contratos_asignados_asistente=DB::table('contratos')
+                ->select(DB::raw('count(*) as cantidad_asistentes'))
+                ->where('id_asistente','=',$id)->first();
+
+                $cant_empresas=DB::table('empresas')
+                ->select(DB::raw('count(*) as cantidad_empresas'))
+                ->where('id_tenant','=',$id)->first();
+
+                
+
           @endphp  
         </div>
         @if($validacion->confirmed==1)
         <div class="row clearfix">
+            @if($rol->name=="Tenant")
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card">
                     <div class="body">
                         
-                        <h3>Usuarios:  <strong>{{$cant_usuarios }}</strong></h3>
+                        <h3> <i class="zmdi zmdi-account"></i> Usuarios:  <strong>{{$cant_usuarios->cantidad_usuarios }}</strong></h3>
+                    </div>
                         
                         
-                        <span class="text-small">4% higher than last month</span> </div>
+                        
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card">
                     <div class="body">
                         
-                        <h3>Empresas:  <strong>{{$cant_empresas }}</strong></h3>
+                        <h3><i class="material-icons">business</i> Empresas:  <strong>{{$cant_empresas->cantidad_empresas }}</strong></h3>
                         
                         
-                        <span class="text-small">4% higher than last month</span> </div>
+                    </div>
+                </div>
+            </div>
+
+            @elseif($rol->name=="Responsable de empresa")
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3><i class="zmdi zmdi-account"></i> Operativos:  <strong>{{$cant_usuarios_operativos}}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3><i class="material-icons">next_week</i> Afianzadoras:  <strong>{{$afianzadoras->cantidad_afianzadoras }}</strong></h3>
+                    </div>
+                        
+                        
+                        
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card">
                     <div class="body">
                         
-                        <h3>Roles:  <strong>{{$cant_roles }}</strong></h3>
-                        <span class="text-small">15% higher than last month</span> </div>
+                        <h3><i class="material-icons">supervisor_account</i> Clientes:  <strong>{{$clientes->cantidad_clientes }}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3><i class="material-icons">assignment</i> Contratos:  <strong>{{$contratos->cantidad_contratos }}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3> <i class="material-icons">business_center</i> Cargos:  <strong>{{$cargos->cantidad_cargos }}</strong></h3>
+                    </div>
+                        
+                        
+                        
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="card">
                     <div class="body">
-                        <h3>Afianzadoras</h3>
-                        <p class="text-muted">Total Feedbacks</p>
-                        <div class="progressbar-xs progress-rounded progress-striped progress ng-isolate-scope" value="68" type="info">
-                            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="68" aria-valuemin="0" aria-valuemax="100" style="width: 68%;"></div>
-                        </div>
-                        <span class="text-small">10% higher than last month</span> </div>
+                        
+                        <h3><i class="material-icons">format_shapes</i> Unidades:  <strong>{{$unidades->cantidad_unidades }}</strong></h3>
+                    </div>
+                        
+                        
+                        
                 </div>
             </div>
+            @elseif($rol->name=="Responsable de obra")
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3><i class="material-icons">assignment</i> Contratos asignados:  <strong>{{$contratos_asignados->cantidad_asignados }}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3><i class="material-icons">format_shapes</i> Unidades:  <strong>{{$unidades->cantidad_unidades }}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+            @elseif($rol->name=="Asistente de obra")
+            <div class="col-lg-5 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3> <i class="material-icons">assignment</i> Contratos asignados:  <strong>{{$contratos_asignados_asistente->cantidad_asistentes }}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="body">
+                        
+                        <h3><i class="material-icons">format_shapes</i> Unidades:  <strong>{{$unidades->cantidad_unidades }}</strong></h3>
+                    </div>
+                        
+                        
+                        
+                </div>
+            </div>
+            @endif
+            
+            
+            
+            
         </div>
         @elseif($validacion->confirmed==0)
         <div class="row clearfix">

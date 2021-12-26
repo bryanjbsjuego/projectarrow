@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -16,9 +17,24 @@ class UserController extends Controller
         // ->select('roles.name')
         // ->where('users.id','=',$id)->first();
         
-        $user=Auth::guard('api')->user(); 
+        return Auth::guard('api')->user(); 
 
        
+
+    }
+
+    public function update(Request $request){
+
+        $usuario= new User;
+        
+        $user=Auth::guard('api')->user(); 
+
+        $id=$user->id;
+        
+        $usuario->name=$request->name;    
+
+        $usuario->where("id","=",$id)->update($request->all());
+
 
     }
 }

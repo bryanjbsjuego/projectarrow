@@ -13,12 +13,12 @@ use Illuminate\Support\Facades\DB;
 class RolController extends Controller
 {
 
-    // function __construct(){
-    //     $this->middleware('permission:ver-rol|crear-rol|editar-rol|borrar-rol', ['only' => ['index']] );
-    //     $this->middleware('permission:crear-rol' , ['only' => ['create','store']] );
-    //     $this->middleware('permission:editar-rol' , ['only' => ['edit','update']] );
-    //     $this->middleware('permission:borrar-rol' , ['only' => ['destroy']] );
-    // }
+    function __construct(){
+        $this->middleware('permission:ver-rol|crear-rol|editar-rol|borrar-rol', ['only' => ['index']] );
+        $this->middleware('permission:crear-rol' , ['only' => ['create','store']] );
+        $this->middleware('permission:editar-rol' , ['only' => ['edit','update']] );
+        $this->middleware('permission:borrar-rol' , ['only' => ['destroy']] );
+    }
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +49,18 @@ class RolController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, ['name' => 'required', 'permission' => 'required']);
+        $this->validate($request, 
+            [
+            'name' => 'required|max:25|regex:/^[\pL\s\-]+$/u', 
+            'permission' => 'required'
+            ],
+            [
+                'name.required' => 'Campo nombre obligatorio.',
+                'name.regex' => 'Campo nombre solo acepta letras.',
+                'name.max' => 'Campo nombre debe tener máximo 25 caracteres.',
+                'permission.required' => 'Debe seleccionar algún permiso.'
+            ]
+        );
         $role=Role::create(['name'=>$request->input('name')]);
         $role->syncPermissions($request->input('permission'));
 
@@ -96,7 +107,18 @@ class RolController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, ['name' => 'required', 'permission' => 'required']);
+        $this->validate($request, 
+            [
+            'name' => 'required|max:25|regex:/^[\pL\s\-]+$/u', 
+            'permission' => 'required'
+            ],
+            [
+                'name.required' => 'Campo nombre obligatorio.',
+                'name.regex' => 'Campo nombre solo acepta letras.',
+                'name.max' => 'Campo nombre debe tener máximo 25 caracteres.',
+                'permission.required' => 'Debe seleccionar algún permiso.'
+            ]
+        );
         $role=Role::find($id);
         $role->name=$request->input('name');
         $role->save();

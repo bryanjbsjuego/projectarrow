@@ -61,8 +61,8 @@
                              
                                 
                          
-                                
-                                <a href="" class="btn btn-raised g-bg-blush2">Lista de conceptos Obra</a>
+                                {{-- Boton lista de conceptos --}}
+                                {{-- <a href="" class="btn btn-raised g-bg-blush2">Lista de conceptos Obra</a> --}}
                                 <a href="{{route('conceptos.nuevo',$codigo->id)}}" class="btn btn-raised g-bg-blush2">Nuevo Concepto</a>
 
                            

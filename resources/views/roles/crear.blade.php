@@ -32,7 +32,7 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="name" name="name" placeholder="Nombre" >
+                                            <input type="text" class="form-control"  id="name"  value="{{ old('name') }}" name="name" placeholder="Nombre" >
                                         </div>
                                     </div>
                                 </div>

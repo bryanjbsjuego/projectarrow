@@ -55,12 +55,27 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|regex:/^[\pL\s\-]+$/u',
             'ubicacion' => 'required',
-            'rfc' => 'required',
-            'imms' => 'required',
-            'ccem' => 'required'
-        ]);
+            'rfc' => 'required|min:12|max:13',
+            'imms' => 'required|min:10|max:11',
+            'ccem' => 'required|max:35'
+            ],
+            [
+                'nombre.required' => 'Campo nombre obligatorio.',
+                'nombre.regex' => 'Campo nombre solo acepta letras.',
+                'ubicacion.required' => 'Campo ubicación obligatorio.',
+                'rfc.required' => 'Campo RFC obligatorio.',
+                'rfc.min' => 'Campo RFC debe tener 13 caracteres.',
+                'rfc.max' => 'Campo RFC debe tener máximo  13 caracteres.',
+                'imms.required' => 'Campo IMMS obligatorio.',
+                'imms.min' => 'Campo IMMS debe tener 11 caracteres.',
+                'imms.max' => 'Campo IMMS debe tener máximo  11 caracteres.',
+                'ccem.required' => 'Campo CCEM obligatorio.',
+                'ccem.max' => 'Campo CCEM debe tener máximo 35 caracteres.',
+
+            ]
+        );
                 
         $data=$request->only([
             'nombre',
@@ -108,12 +123,27 @@ class EmpresaController extends Controller
     public function update(Request $request, Empresa $empresa)
     {
         request()->validate([
-            'nombre' => 'required',
+            'nombre' => 'required|regex:/^[\pL\s\-]+$/u',
             'ubicacion' => 'required',
-            'rfc' => 'required',
-            'imms' => 'required',
-            'ccem' => 'required'
-        ]);
+            'rfc' => 'required|min:12|max:13',
+            'imms' => 'required|min:10|max:11',
+            'ccem' => 'required|max:35'
+        ],
+        [
+            'nombre.required' => 'Campo nombre obligatorio.',
+            'nombre.regex' => 'Campo nombre solo acepta letras.',
+            'ubicacion.required' => 'Campo ubicación obligatorio.',
+            'rfc.required' => 'Campo RFC obligatorio.',
+            'rfc.min' => 'Campo RFC debe tener 13 caracteres.',
+            'rfc.max' => 'Campo RFC debe tener máximo  13 caracteres.',
+            'imms.required' => 'Campo IMMS obligatorio.',
+            'imms.min' => 'Campo IMMS debe tener 11 caracteres.',
+            'imms.max' => 'Campo IMMS debe tener máximo  11 caracteres.',
+            'ccem.required' => 'Campo CCEM obligatorio.',
+            'ccem.max' => 'Campo CCEM debe tener máximo 35 caracteres.',
+
+        ]
+    );
         
         $empresa->update($request->all());
         return redirect()->route('empresas.index');

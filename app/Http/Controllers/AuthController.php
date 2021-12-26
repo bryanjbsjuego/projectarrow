@@ -31,21 +31,33 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        else if(Auth::guard('api')->attempt($credentials)){
+        $token = auth()->attempt($credentials);
+        
+        if(Auth::guard('api')->attempt($credentials)){
             $id=Auth::id();
             $user=Auth::guard('api')->user();
             $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
                     ->join('roles','roles.id','=','model_has_roles.role_id')
                     ->select('roles.name')
                     ->where('users.id','=',$id)->first();
-            $jwt= $this->respondWithToken($token);
+            $definerol="";
+
+            if($rol->name=="Responsable de obra"){
+                $definerol="Responsable de obra";
+            }else if($rol->name=="Asistente de obra"){
+                $definerol="Asistente de obra";
+            }
+           
+            $jwt=$token; 
+             
             $success=true;
 
-            return compact('success','user','rol','jwt');
+            return compact('success','user','definerol','jwt');
 
+        }else{
+            $success=false;
+            $message="Invalid credentials";
+            return compact('success','message');
         }
         
     }

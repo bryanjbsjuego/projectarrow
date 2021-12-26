@@ -101,8 +101,9 @@
 
                         <br><br>
                         <p>Imagenes de avances</p>
+                        
                         @foreach ($imagenesavances as $imgavance )
-                        <img class="img-fluid" src="{{asset('img/usuarios/'. $imgavance->imagen)}}" alt="cargando"  width="200px" height="250px" >
+                        <img class="img-fluid" src="{{asset('img/usuarios/'.$imgavance->imagen)}}" alt="cargando"  width="200px" height="250px" >
                         <p> <strong>Ubicación de la foto tomada</strong> <br>
                             <span>País:  {{$imgavance->country}}</span><br>
                             <span>Código de la región:  {{$imgavance->regioncode}}</span><br>
