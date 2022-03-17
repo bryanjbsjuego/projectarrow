@@ -31,10 +31,13 @@ class AuthController extends Controller
     {
         $credentials = request(['email', 'password']);
 
-        $token = auth()->attempt($credentials);
+        //$token= auth()->attempt($credentials);
         
-        if(Auth::guard('api')->attempt($credentials)){
-            $id=Auth::id();
+        $jwt=Auth::guard('api')->attempt($credentials);
+
+        if($jwt){
+            //$id=Auth::id();
+            $id=Auth::guard('api')->id();
             $user=Auth::guard('api')->user();
             $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
                     ->join('roles','roles.id','=','model_has_roles.role_id')
@@ -48,7 +51,7 @@ class AuthController extends Controller
                 $definerol="Asistente de obra";
             }
            
-            $jwt=$token; 
+           // $jwt=$token; 
              
             $success=true;
 

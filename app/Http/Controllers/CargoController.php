@@ -15,6 +15,15 @@ class CargoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+    function __construct(){
+        $this->middleware('permission:ver-cargo|crear-cargo|editar-cargo|borrar-cargo', ['only' => ['index']] );
+        $this->middleware('permission:crear-cargo' , ['only' => ['create','store']] );
+        $this->middleware('permission:editar-cargo' , ['only' => ['edit','update']] );
+        $this->middleware('permission:borrar-cargo' , ['only' => ['destroy']] );
+    }
+
     public function index()
     {
         $id=Auth::id();

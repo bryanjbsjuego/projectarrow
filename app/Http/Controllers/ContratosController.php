@@ -604,7 +604,7 @@ class ContratosController extends Controller
 
         
         
-        $pdf=PDF::loadView('contratos.FinancieroPDF',['imgco'=>$imgco,'contrato'=>$contrato,
+        $pdf=PDF::loadView('contratos.financieroPDF',['imgco'=>$imgco,'contrato'=>$contrato,
                            'firmantes'=>$firmantes]);
       
 // return $pdf->download('avances.pdf');

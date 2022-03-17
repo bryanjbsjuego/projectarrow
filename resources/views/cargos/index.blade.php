@@ -8,8 +8,11 @@
         <div class="block-header">
             <h2>Cargos</h2>
             <small class="text-muted">Bienvenido a la aplicación ARROW</small>
+           
             <div>
+                @can('crear-cargo') 
                 <a href="{{ route('cargos.create') }}" class="btn btn-raised btn-success">Agregar Cargo</a>
+                @endcan
             </div>
         </div>
         <div class="header">
@@ -25,7 +28,7 @@
             </div>
             @endif
             <div id="error_fecha" class="alert alert-danger" style="display: none">
-                <strong>Alerta!</strong> Porfavor seleccione una fecha valida en inicio y termino
+                <strong>Alerta!</strong> Por favor seleccione una fecha valida en inicio y termino
             </div>
         </div>
 
@@ -42,13 +45,17 @@
                             <div class="col-lg-8 col-md-12 m-b-0">
                             <div class=" d-flex justify-content-between">
                                 <h5 class=""> Nombre: {{$cargo->nombre_cargo}}  </h5>
+                                @can('editar-cargo') 
                                 <a href="{{route('cargos.edit', $cargo->id )}}" class="edit"><i class="zmdi zmdi-edit text-warning"></i></a>
+                                @endcan
                                   
+                                @can('borrar-cargo')
                                    
                                     {!! Form::open(['method' => 'DELETE','route' => ['cargos.destroy', $cargo->id], 'style'=>'display:inline']) !!}
                                     {{-- {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] ) }} --}}
                                     <button type="submit" style="cursor: pointer; background: transparent; border:0px;"><i class="material-icons text-danger">delete</i></button>
                                     {!! Form::close() !!}
+                                @endcan
 
                                    
                             </div>
