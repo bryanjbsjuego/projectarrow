@@ -17,7 +17,6 @@ class ContratosResponsableController extends Controller
 
     $user=Auth::guard('api')->user();
 
-    // // return $id;
 
     
     $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')

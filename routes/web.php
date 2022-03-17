@@ -161,6 +161,8 @@ Route::group(['middleware' => ['auth']], function (){
     Route::delete('conceptosec/{imag}/eliminarimagen',[ConceptoController::class,'eliminarimagen'])->name('conceptosec.eliminarimagen');
 
     Route::get('financiero/{id}/pdf',[ContratosController::class,'createPDF'])->name('finaciero.createPDF');
+
+    Route::get('/avancespdf/{id}/pdf',[AvanceController::class,'createPDFAvance'])->name('avancespdf.createPDFAvance');
     
 } );
 

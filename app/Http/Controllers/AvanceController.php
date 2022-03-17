@@ -140,6 +140,8 @@ class AvanceController extends Controller
          ->where('img_avances.id_avance','=', $avancef->id)
          ->get();
 
+         
+
         //  $json=DB::table('avances')
         //  ->join('img_avances','avances.id','=','img_avances.id_avance')
         //  ->select('img_avances.*')
@@ -946,17 +948,36 @@ class AvanceController extends Controller
 
     }
 
+    public function getIp(){
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
+            if (array_key_exists($key, $_SERVER) === true){
+                foreach (explode(',', $_SERVER[$key]) as $ip){
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
+                        return $ip;
+                    }
+                }
+            }
+        }
+    }
+
 
 
 
 
     public function agregarimagenubi($id){
 
-        //$ip='192.168.1.70';
-        $ip = request()->ip(); 
-        $data = Location::get('https://'.$ip);
+        //$ip='189.234.201.64';
+        //$ip = request()->ip(); 
+
+        //return $ip;
         
-        // dd($data);
+        $ip=$this->getIp();
+
+        $data = Location::get($ip);
+        
+        
+        //dd($data);
         //$data = Location::get($ip);
 
         //dd($locationData);
@@ -1132,6 +1153,147 @@ class AvanceController extends Controller
 
 
          return redirect()->route('Avance.show',$avance->id_concepto);
+    }
+
+    public function createPDFAvance($id){
+
+        $avancef=Avance::find($id);
+
+       
+        //concepto padre
+    $conceptop=Concepto::select('id_codigo')->where('id','=',$avancef->id_concepto)->first();
+
+    $conceptosimg=[];
+    $conceptosimg=imgConceptos::where('id_concepto','=',$avancef->id_concepto)->get();
+    $imgpn=imgConceptos::where('id_concepto','=',$avancef->id_concepto)->count();
+ 
+ 
+         if($imgpn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $conceptosimg[0]=$img;
+             $conceptosimg[1]=$conceptosimg[0];
+             $conceptosimg[2]=$conceptosimg[0];
+
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgpn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+             $conceptosimg[1]=$img;
+             $conceptosimg[2]=$img;
+
+
+         }else if($imgpn==2){
+          
+            $img = new ImagenesContrato();
+            $img->imagen='sinimg.png';
+            $conceptosimg[2]=$img;
+         }
+         
+    
+    $conceptopp=Concepto::where('id','=',$conceptop->id_codigo)->first();
+    $conceptoppp=Concepto::where('id','=',$conceptopp->id_codigo)->first();
+    
+
+
+
+
+  
+
+        
+
+        $concepto=Concepto::where('id','=',$avancef->id_concepto)->first();
+        //contrato
+        $idcontrato=$concepto->id_contrato;
+
+
+       // img del contrato
+        $imgco=[];
+        $imgco=ImagenesContrato::where('id_contrato','=',$idcontrato)->get();
+
+        
+         $imgn=ImagenesContrato::where('id_contrato','=',$idcontrato)->count();
+ 
+ 
+ 
+         if($imgn==0){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[0]=$img;
+             $imgco[1]=$imgco[0];
+ 
+             // return $imgco;
+ 
+ 
+         }else if($imgn==1){
+ 
+             $img = new ImagenesContrato();
+             $img->imagen='sinimg.png';
+ 
+             $imgco[1]=$img;
+         }
+         
+
+        $avance=DB::table('contratos')
+        ->select('conceptos.concepto as nom_concepto','conceptos.id as idc', 'conceptos.codigo','clientes.nombre as nombre_cliente',
+        'contratos.nombre_obra as nom_obra', 'contratos.ubicacion','contratos.importe as conimporte',
+        'contratos.contrato as nom_contrato','empresas.nombre as nom_empresa')
+        ->join('conceptos', 'contratos.id','=','conceptos.id_contrato')
+        ->join('clientes', 'contratos.id_cliente','=','clientes.id')
+        ->join('empresas', 'contratos.id_empresa','=','empresas.id')
+        ->where('conceptos.id','=',$concepto->id)->first();
+
+
+        $unidad=DB::table('unidad')->select('unidad.nombre as unidad_nombre')
+        ->join('conceptos', 'unidad.id','=','conceptos.id_unidad')
+        ->where('conceptos.id','=',$concepto->id)->first();
+
+
+        $firmantes=DB::table('contratos')
+        ->join('firmantes','contratos.id','=','firmantes.id_contrato')
+        ->join('empleado_cargos','empleado_cargos.id','=','firmantes.id_empleado_cargo')
+        ->join('empleados','empleados.id','=','empleado_cargos.id_empleado')
+        ->join('cargos','cargos.id','=','empleado_cargos.id_cargo')
+        ->select('firmantes.id as id', 'empleados.nombre as nombre','empleados.apellido_paterno as paterno'
+        ,'empleados.apellido_materno as materno','contratos.contrato','cargos.nombre_cargo as cargo')
+        ->where('contratos.id','=',$idcontrato)
+        ->get();
+
+        $imagenesavances=DB::table('avances')
+         ->join('img_avances','avances.id','=','img_avances.id_avance')
+         ->select('img_avances.*')
+         ->where('img_avances.id_avance','=', $avancef->id)
+         ->get();
+
+
+     
+    $pdf=PDF::loadView('avances.avancepdf',['avance'=>$avance,'concepto'=>$concepto,'avance'=>$avance,
+                        'unidad'=>$unidad,'avancef'=>$avancef,'firmantes'=>$firmantes,'imgco'=>$imgco,
+                        'conceptosimg'=>$conceptosimg, 'imagenesavances'=> $imagenesavances]);
+                      
+    // return $pdf->download('avances.pdf');
+    
+    //$pdf->setPaper('A4', 'landscape');
+
+
+ 
+
+ 
+
+ 
+    return $pdf->stream();
+
+
+        
+
     }
 
 

@@ -221,8 +221,12 @@
                 <li><a href="/empleados"><i class="material-icons">build</i><span>Empleados</span> </a></li>
                 <li><a href="/contratos"> <i class="material-icons">assignment</i><span>Contratos</span> </a></li>
                {{-- <li><a  href="/contratosR"> <i class="material-icons">assignment</i><span>Contratos-Asignados</span> </a></li> --}}
+
+         
                
             <li><a  href="/unidades"> <i class="material-icons">format_shapes</i> <span class="icon-name">Unidades</span> </a></li>
+
+               
            
                <li><a  href="/cargos"> <i class="material-icons">business_center</i> <span class="icon-name">Cargos</span> </a></li>
                 <li><a  href="/asignarcargo"> <i class="material-icons">assignment_ind</i><span>Asignar cargo</span> </a></li>

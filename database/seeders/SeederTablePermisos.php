@@ -29,11 +29,68 @@ class SeederTablePermisos extends Seeder
             'editar-empresa',
             'borrar-empresa',
 
-             //Operaciones para tabla empresas
+             //Operaciones para tabla afianzadoras
              'ver-afianzadora',
              'crear-afianzadora',
              'editar-afianzadora',
              'borrar-afianzadora',
+
+
+             //Operaciones para tabla clientes
+             'ver-cliente',
+             'crear-cliente',
+             'editar-cliente',
+             'borrar-cliente',
+
+             //Operaciones para tabla empleados
+             'ver-empleado',
+             'crear-empleado',
+             'editar-empleado',
+             'borrar-empleado',
+
+              //Operaciones para tabla contratos
+              'ver-contrato',
+              'crear-contrato',
+              'editar-contrato',
+              'borrar-contrato',
+
+              //Operaciones para tabla firmantes
+                'ver-firmante',
+                'crear-firmante',
+                'editar-firmante',
+                'borrar-firmante',
+
+                //Operaciones para tabla cargos
+                'ver-cargo',
+                'crear-cargo',
+                'editar-cargo',
+                'borrar-cargo',
+
+                //Operaciones para tabla cargos
+                'ver-unidad',
+                'crear-unidad',
+                'editar-unidad',
+                'borrar-unidad',
+
+                //Operaciones para tabla conceptos
+                'ver-concepto',
+                'crear-concepto',
+                'editar-concepto',
+                'borrar-concepto',
+
+                 //Operaciones para tabla usuarios
+                 'ver-usuario',
+                 'crear-usuario',
+                 'editar-usuario',
+                 'borrar-usuario',
+
+                 //Operaciones para tabla operativos
+                 'ver-operativo',
+                 'crear-operativo',
+                 'editar-operativo',
+                 'borrar-operativo',
+
+
 
         ];
 

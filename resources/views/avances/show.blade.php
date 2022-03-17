@@ -97,7 +97,7 @@
 
                         <a href="{{route('ver.avance',$avancef->id)}}" class="btn btn-raised btn-warning m-auto">Ver el registro avance</a>                          
                         <a href="{{route('avances.agregarimagenubi',$avancef->id)}}" class="btn btn-raised btn-success m-auto"> Imagenes de avance</a>                          
-                        
+                        <a href="{{ route('avancespdf.createPDFAvance',$avancef->id) }}" class="btn btn-raised g-bg-blush2 mt-4"> Imprimir avance</a> 
 
                         <br><br>
                         <p>Imagenes de avances</p>

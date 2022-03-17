@@ -358,8 +358,13 @@ class UsuarioController extends Controller
            
              $usuario->id_tenant=$id_tenant;
              
+
              
              $idempresa=$request->input('empresa');
+
+             
+
+
              if($rol=='Responsable de empresa' && $request->input('empresa')==0){
                 $mensaje="¡ERROR!, por favor selecciona una empresa.";
                 return back()->withInput()->with(compact('mensaje'));
