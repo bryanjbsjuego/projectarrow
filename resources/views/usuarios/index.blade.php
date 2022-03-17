@@ -48,12 +48,14 @@
                                         <td>{{ $usuario->name}}</td>
                                         <td>{{ $usuario->email}}</td>
                                         <td>
-                                            @if(!empty($usuario->getRoleNames()))
+
+                                            {{$usuario->rol}}
+                                            {{-- @if(!empty($usuario->getRoleNames()))
                                                 @foreach ($usuario->getRoleNames() as $rolName)
                                                 <span>{{$rolName}}</span>
                                                     
                                                 @endforeach
-                                            @endif
+                                            @endif --}}
                                         </td>
                                         <td>
                                             <a class="btn btn-raised bg-amber btn-sm text-center " href="{{ route('usuarios.edit', $usuario->id) }}">

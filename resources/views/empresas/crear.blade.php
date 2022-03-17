@@ -32,35 +32,35 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="nombre" name="nombre" placeholder="Nombre" >
+                                            <input type="text" class="form-control"  id="nombre" name="nombre" placeholder="Nombre" value="{{ old('nombre') }}" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" ></textarea>
+                                            <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" >{{ old('ubicacion') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="rfc" name="rfc" placeholder="RFC" >
+                                            <input type="text" class="form-control"  id="rfc" name="rfc" placeholder="RFC"  value="{{ old('rfc') }}" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="imms" name="imms" placeholder="IMMS" >
+                                            <input type="text" class="form-control"  id="imms" name="imms" placeholder="IMMS"  value="{{ old('imms') }}" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control"  id="ccem" name="ccem" placeholder="CCEM" >
+                                            <input type="text" class="form-control"  id="ccem" name="ccem" placeholder="CCEM"  value="{{ old('ccem') }}" >
                                         </div>
                                     </div>
                                 </div>

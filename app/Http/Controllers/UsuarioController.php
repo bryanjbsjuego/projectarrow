@@ -24,9 +24,26 @@ class UsuarioController extends Controller
      */
     public function index()
     {
+        
         // $usuarios=User::paginate(5);
         $id=Auth::id();
         $usuarios=User::where('users.id_tenant',$id)->paginate(5);
+
+        $id_responsable=Role::select('id')->where('name','=','Responsable de empresa')->first();
+
+        
+        $usuarios=DB::table('users')
+        ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->where('users.id_tenant',$id)
+        ->whereIn('role_id', [$id_responsable->id])
+        ->select('users.*','roles.name as rol')
+        ->paginate(5);
+
+    //    return $usuarios;
+
+        
+    
 
         
         return view('usuarios.index',compact('usuarios'));
@@ -81,7 +98,7 @@ class UsuarioController extends Controller
 
 
         // $formulario=$request->all();
-        $rol =$request->input(['roles']);
+        $rol=$request->input('roles');
         $consulta=Role::select('id')->where('name','like',$rol)->first();
         $mensaje=[];
 
@@ -97,15 +114,29 @@ class UsuarioController extends Controller
         
             $this->validate($request,
             [
-                'name' => 'required',
+                'name' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
                 'email' => 'required|email|unique:users,email',
-                'password' => 'required|same:confirm-password',
-                'photo' => 'required',
+                'password' => 'required|same:confirm-password|min:8|max:15',
+                'photo' => 'required|image|mimes:jpeg,png|max:1024',
                 'roles' => 'required',
                 
             ],
             [
-                'name.required' => 'El campo nombre debe ser obligatorio'
+                'name.required' => 'Campo nombre debe ser obligatorio.',
+                'name.regex' => 'Campo nombre solo acepta letras.',
+                'name.max' => 'Campo nombre debe tener máximo 50 caracteres.',
+                'email.required' => 'Campo correo debe ser obligatorio.',
+                'email.email' => 'Ingrese un formato de correo correcto.',
+                'email.unique' => 'El correo ya está registrado',
+                'password.required' => 'Campo contraseña debe ser obligatorio.',
+                'password.min' => 'Campo contraseña debe tener mínimo 8 caracteres.',
+                'password.max' => 'Campo contraseña debe tener máximo 15 caracteres.',
+                'password.same' => 'Las contraseñas no coinciden',
+                'photo.required' => 'Campo foto deber ser obligatorio',
+                'photo.mimes' => 'Solo se aceptan fotos en formato: jpeg y png',
+                'photo.max' => 'El tamaño maximo de la foto es de 1024',
+
+
             ]
             
              );
@@ -274,19 +305,32 @@ class UsuarioController extends Controller
             $id_tenant=Auth::id();
         }
         
-            $this->validate($request,
-            [
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email,'.$usuario->id,
-                'password' => 'same:confirm-password',
-                'roles' => 'required',
-                
-            ],
-            [
-                'name.required' => 'El campo nombre debe ser obligatorio'
-            ]
+        $this->validate($request,
+        [
+            'name' => 'required|max:50|regex:/^[\pL\s\-]+$/u',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'same:confirm-password|max:15',
+            'photo' => 'required|image|mimes:jpeg,png|max:1024',
+            'roles' => 'required',
             
-             );
+        ],
+        [
+            'name.required' => 'Campo nombre debe ser obligatorio.',
+            'name.regex' => 'Campo nombre solo acepta letras.',
+            'name.max' => 'Campo nombre debe tener máximo 50 caracteres.',
+            'email.required' => 'Campo correo debe ser obligatorio.',
+            'email.email' => 'Ingrese un formato de correo correcto.',
+    
+            'password.max' => 'Campo contraseña debe tener máximo 15 caracteres.',
+            'password.same' => 'Las contraseñas no coinciden.',
+            'photo.image' => 'el archivo ingresado no es una foto.',
+            'photo.mimes' => 'Solo se aceptan fotos en formato: jpeg y png',
+            'photo.max' => 'El tamaño maximo de la foto es de 1024',
+
+
+        ]
+        
+         );
 
           
              $usuario->name=$request->name;

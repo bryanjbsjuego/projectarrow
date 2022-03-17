@@ -140,6 +140,9 @@
                     <br>
                     <div class="row">
 
+                  
+                    
+
                         @if ($contratoUnion->estatus !=1)
                         <div class="col-sm-12   d-flex ">
 
@@ -157,20 +160,30 @@
                               </form>
                         </div>
                         @else
-
+                        
+                     
                         <a href="{{route('contratos.activar',$contratoUnion->contrato_id)}}" class="btn btn-raised btn-info m-auto" >Activar Contrato</a>
                         @endif
 
+                  
 
                     </div>
+
+                    <div class="row">
+                        <div class="col-12  text-center mt-4">
+                            <a class="btn btn-sm btn-raised btn-primary m-auto mt-5"  href="{{route('finaciero.createPDF',$contratoUnion->contrato_id)}}">Reporte Finaciero <i class="material-icons" style=" margin-bottom: 8px;">file_download</i> </a>
+                        </div>
+
+                    </div>
+                    
                     <br><br>
-                    <div class="container">
-                        <div class="row">
+                    <div class="container ">
+                        <div class="row d-flex justify-content-aroud">
+
                         @foreach($imagenes as $imagen )
-                        
-                            <div class="col-4">
+                            <div class="col-2  ">
                                 <h3 class=""><img src="{{asset('img/usuarios/'.$imagen->imagen)}}" width="140px" height="100px" alt="velonic"></h3>
-                                <p><strong>Descripción: <strong> {{ $imagen->descripcion }}</p>
+                                <p><strong>Descripción: </strong> {{ $imagen->descripcion }}</p>
                                     <a href="{{route('contratos.editarimagen',$imagen->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
 
                                 <form action="{{route('contratos.eliminarimagen',$imagen->id)}}" class=""  method="post">
@@ -178,10 +191,11 @@
                                     @method('DELETE')
                                     <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
                                 </form>
+                                
                             </div>
-                       
+                            @endforeach
 
-                        @endforeach
+                     
                     </div>
 
 

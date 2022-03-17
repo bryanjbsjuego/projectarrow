@@ -48,10 +48,7 @@ class ConceptoController extends Controller
 
         $idcp=Concepto::where('id','=',$request->input('id_codigo'))->first();
 
-        // return $idcp->id_contrato;
-
-        // return $idcp->id_contrato;
-        // return $request->all();
+    
         $this->validate($request,
         [
             'id_codigo' => 'required',
@@ -64,7 +61,19 @@ class ConceptoController extends Controller
             'importe' => 'required',
             'porcentaje' => 'required'        
            
-        ]);
+        ],
+        [
+            'codigo.required'=>'el codigo debe ser obligatorio',
+            'concepto.required'=>'La descripcion del concepto es necesaria',
+            'cantidad.required'=>'Ingrese una cantidad',
+            'punitario.required'=>'Ingrese un precio unitario',
+            'importe.required'=>'Ingrese un importe',
+            'precio_letra.required' => 'Digite el precio letra',
+            'porcentaje.required'=>'Ingrese un porcentaje',
+            
+        ]
+
+    );
 
         $data=$request->only([
             'id_codigo',
@@ -179,6 +188,7 @@ class ConceptoController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $this->validate($request,
         [
             'id_codigo' => 'required',
@@ -191,6 +201,16 @@ class ConceptoController extends Controller
             'importe' => 'required',
             'porcentaje' => 'required'        
            
+        ],
+        [
+            'codigo.required'=>'el codigo debe ser obligatorio',
+            'concepto.required'=>'La descripcion del concepto es necesaria',
+            'cantidad.required'=>'Ingrese una cantidad',
+            'punitario.required'=>'Ingrese un precio unitario',
+            'importe.required'=>'Ingrese un importe',
+            'precio_letra.required' => 'Digite el precio letra',
+            'porcentaje.required'=>'Ingrese un porcentaje',
+            
         ]);
 
         $concepto=Concepto::find($id);
@@ -212,7 +232,12 @@ class ConceptoController extends Controller
         ->join('conceptos', 'unidad.id','=','conceptos.id_unidad')
         ->where('conceptos.id','=',$id)->first();
 
-        return view('conceptos.show',compact('concepto'));
+        $imagenes=DB::table('conceptos')
+        ->join('img_conceptos','conceptos.id','=','img_conceptos.id_concepto')
+        ->select('img_conceptos.*')
+        ->where('conceptos.id','=',$id)->get();
+
+        return view('conceptos.show',compact('concepto','imagenes'));
 
 
     }

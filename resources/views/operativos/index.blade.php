@@ -51,13 +51,23 @@
                                         <td>{{ $usuario->email}}</td>
                                         <td>{{ $usuario->rol}}</td>
 
-                                         <td>
-                                            <a class="btn btn-raised bg-amber btn-sm text-center " href="">
+                                         <td class="d-flex justify-content-around">
+                                 
+                                            @if ($usuario->estatus ==1)
+                                            <a class="btn btn-raised bg-info btn-sm text-center"  href="{{route('operativos.show',$usuario->id)}}"><i class="material-icons text-white">visibility</i></a>
+                                            <p ><span class="badge bg-red mt-4" style="font-size: 13px; margin:auto">Inactivo</span></p>
+                                            @else
+                                            <a class="btn btn-raised bg-amber btn-sm text-center " href="{{route('operativos.edit',$usuario->id)}}">
                                                 <i class="material-icons mb-1">create</i>
                                             </a>
+
+                                            <a class="btn btn-raised bg-info btn-sm text-center"  href="{{route('operativos.show',$usuario->id)}}"><i class="material-icons text-white">visibility</i></a>
                                             {!! Form::open(['method' => 'DELETE','route' => ['operativos.destroy', $usuario->id], 'style'=>'display:inline']) !!}
                                                 {{ Form::button('<i class="material-icons mb-1">delete_forever</i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-raised  btn-sm text-center'] )  }}
                                             {!! Form::close() !!}
+                                            @endif
+
+                                           
                                         </td>
 
 

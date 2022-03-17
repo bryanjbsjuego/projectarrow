@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrato;
 use App\Models\Empresa;
 use App\Models\User;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Dompdf\Adapter\PDFLib;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -234,7 +236,48 @@ class OperativoController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $usuario=User::find($id);
+
+
+       
+        $contratos=Contrato::where('id_responsable','=',$id)
+        ->orWhere('id_asistente','=',$usuario->id)->get();
+
+        $contratosI=[];
+        $contratosA=[];
+        foreach($contratos as $contrato){
+            if($contrato->estatus==1){
+               
+                $contratosI[]=$contrato;
+                
+            }else{
+                $contratosA[]=$contrato;
+            }
+        }
+
+      
+
+    
+
+  
+
+      
+
+
+     
+
+        $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->select('roles.name')
+        ->where('users.id','=',$id)->first();
+
+      
+        return  view('operativos.show',compact('usuario','rol','contratosA','contratosI'));
+
+
+
+
     }
 
     /**
@@ -245,7 +288,49 @@ class OperativoController extends Controller
      */
     public function edit($id)
     {
-        //
+
+        //id del usuario que inicia la sesion
+        $id2=Auth::id();
+
+        //el usuario a editar
+        $usuario=User::find($id);
+
+        $rolus=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->select('roles.name','roles.id')
+        ->where('users.id','=',$id)->first();
+
+
+
+      
+        $contrato=Contrato::where('id_responsable','=',$id)
+        ->orWhere('id_asistente','=',$usuario->id)->count();
+
+        
+
+
+        $empresa=DB::table('users')
+        ->join('empresas','users.empresa','=','empresas.id')
+        ->select('empresas.nombre','empresas.id')
+        ->where('users.id','=',$id2)
+        ->first();
+
+        $rol=DB::table('users')->join('model_has_roles','users.id','=','model_has_roles.model_id')
+        ->join('roles','roles.id','=','model_has_roles.role_id')
+        ->select('roles.name')
+        ->where('users.id','=',$id2)->first();
+
+        if($rol->name=='Tenant'){
+            $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de obra', 'Asistente de obra'])->get();
+        }else if($rol->name=='Responsable de empresa'){
+            $roles=Role::select('id','name')->whereNotIn('name',['Tenant','Responsable de empresa'])->get();
+        }
+
+
+
+        return view('operativos.editar',compact('usuario','roles','empresa','rolus','contrato'));
+
+
     }
 
     /**
@@ -255,9 +340,53 @@ class OperativoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id){
+
+      
+
+        $usuario=User::find($id);
+
+      
+        $this->validate($request,
+        [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$usuario->id,
+            'roles' => 'required',
+            'password' => 'same:confirm-password',
+
+            
+        ],
+        [
+            'name.required' => 'El campo nombre debe ser obligatorio',
+            'email.unique' => 'El email ingresado ya esta en uso'
+        ]
+        
+         );
+
+         $rol =$request->input(['roles']);
+        $consulta=Role::select('id')->where('name','like',$rol)->first();
+        //  return 
+        $contraseña=$request->input('password');
+
+        
+
+         if(!is_null($contraseña)){
+            $usuario->password=bcrypt($request->input('password'));
+         }
+
+        $usuario->name=$request->name; 
+        $usuario->email=$request->email;
+        $usuario->confirmed=true;
+               
+              
+        $usuario->save();
+        $mensaje="Usuario modificado exitosamente.";
+
+        DB::table('model_has_roles')->where('model_id',$usuario->id)->delete();
+        $usuario->assignRole($consulta->id);
+
+        return redirect()->route('operativos.index');
+    
     }
 
     /**
@@ -268,6 +397,35 @@ class OperativoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $contrato=Contrato::where('id_responsable','=',$id)
+        ->orWhere('id_asistente','=',$id)->get();
+                            
+        $nc=Contrato::where('id_responsable','=',$id)
+        ->orWhere('id_asistente','=',$id)->count();
+
+        if($nc>0){
+            $mensaje_error="Usuario operativo cuenta con contratos asignados no se puede eliminar";
+            return redirect()->route('operativos.index')->with(compact('mensaje_error'));
+        }else{
+           
+            $usuario=User::where('id','=',$id)->update(['estatus'=>1]);
+            return redirect()->route('operativos.index');
+                        
+        }
+
+       
+    }
+
+    public function activar( $id){
+
+        $usuario=User::find($id);
+      
+
+        $usuario->estatus=0;
+        $usuario->save();
+        return redirect()->route('operativos.index');
+
+
     }
 }

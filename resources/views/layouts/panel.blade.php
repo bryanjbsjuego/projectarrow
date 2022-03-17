@@ -119,85 +119,45 @@
 <!-- Top Bar -->
 <nav class="navbar clearHeader">
     <div class="col-12">
-        <div class="navbar-header"> <a href="javascript:void(0);" class="bars"></a> <a class="navbar-brand" href="index.html">Arrow</a> </div>
+        <div class="navbar-header"> <a href="javascript:void(0);" class="bars"></a> <a class="navbar-brand" href="/home">Arrow</a> </div>
         <ul class="nav navbar-nav navbar-right">
             <!-- Notifications -->
-            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-notifications"></i> <span class="label-count">7</span> </a>
+            <li class="dropdown"> <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="zmdi zmdi-account"></i>  </a>
                 <ul class="dropdown-menu">
-                    <li class="header">NOTIFICATIONS</li>
+                    <li class="header">Menú</li>
                     <li class="body">
                         <ul class="menu">
                             <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-light-green"><i class="zmdi zmdi-account-add"></i></div>
+                                <a href="{{route('perfil.show',$id=Auth::user()->id)}}">
+                                    <div class="icon-circle bg-light-green"><i class="zmdi zmdi-account"></i></div>
                                     <div class="menu-info">
-                                        <h4>12 new members joined</h4>
-                                        <p> <i class="material-icons">access_time</i> 14 mins ago </p>
+                                        <h4>Mi perfil</h4>
+                                       
                                     </div>
                                 </a>
                             </li>
+                        
+                           
                             <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-cyan"><i class="zmdi zmdi-shopping-cart-plus"></i></div>
+                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" >
+                                    <div class="icon-circle bg-red"><i class="zmdi zmdi-sign-in"></i></div>
                                     <div class="menu-info">
-                                        <h4>4 sales made</h4>
-                                        <p> <i class="material-icons">access_time</i> 22 mins ago </p>
+                                        <h4>Cerrar sesión</h4>
                                     </div>
                                 </a>
+                                <form action="{{ route('logout') }}" method="POST" style="display: none;" id="formLogout">
+                                    @csrf
+                                </form>
                             </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-red"><i class="zmdi zmdi-delete"></i></div>
-                                    <div class="menu-info">
-                                        <h4><b>Nancy Doe</b> deleted account</h4>
-                                        <p> <i class="material-icons">access_time</i> 3 hours ago </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-orange"><i class="zmdi zmdi-edit"></i></div>
-                                    <div class="menu-info">
-                                        <h4><b>Nancy</b> changed name</h4>
-                                        <p> <i class="material-icons">access_time</i> 2 hours ago </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-blue-grey"><i class="zmdi zmdi-comment-alt-text"></i></div>
-                                    <div class="menu-info">
-                                        <h4><b>John</b> commented your post</h4>
-                                        <p> <i class="material-icons">access_time</i> 4 hours ago </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-light-green"><i class="zmdi zmdi-refresh-alt"></i></div>
-                                    <div class="menu-info">
-                                        <h4><b>John</b> updated status</h4>
-                                        <p> <i class="material-icons">access_time</i> 3 hours ago </p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0);">
-                                    <div class="icon-circle bg-purple"><i class="zmdi zmdi-settings"></i></div>
-                                    <div class="menu-info">
-                                        <h4>Settings updated</h4>
-                                        <p> <i class="material-icons">access_time</i> Yesterday </p>
-                                    </div>
-                                </a>
-                            </li>
+                            
                         </ul>
                     </li>
-                    <li class="footer"> <a href="javascript:void(0);">View All Notifications</a> </li>
+                   
                 </ul>
             </li>
             <!-- #END# Notifications -->
 
-            <li><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="zmdi zmdi-settings"></i></a></li>
+            
         </ul>
     </div>
 </nav>
@@ -215,7 +175,11 @@
                 <ul>
 
                     <li><a data-placement="bottom" title="Go to Profile" href="{{route('perfil.show',$id=Auth::user()->id)}}"><i class="zmdi zmdi-account"></i></a></li>
-                    <li><a data-placement="bottom" title="Full Screen" href="sign-in.html" ><i class="zmdi zmdi-sign-in"></i></a></li>
+                    <li><a data-placement="bottom" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('formLogout').submit();"  ><i class="zmdi zmdi-sign-in"></i></a>
+                        <form action="{{ route('logout') }}" method="POST" style="display: none;" id="formLogout">
+                            @csrf
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -278,18 +242,11 @@
 
 
                 <li><a href="/contratosR"> <i class="material-icons">assignment</i><span>Contratos-Asignados</span> </a></li>
-
+                <li><a  href="/unidades"> <i class="material-icons">format_shapes</i> <span class="icon-name">Unidades</span> </a></li>
                 @endif
                 @endif
 
-                <li >
-                    <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('formLogout').submit();" >
-                      <i class="ni ni-button-power text-default "></i> Cerrar sesión
-                    </a>
-                    <form action="{{ route('logout') }}" method="POST" style="display: none;" id="formLogout">
-                    @csrf
-                    </form>
-                  </li>
+                
 
 
 
@@ -299,137 +256,7 @@
     </aside>
     <!-- #END# Left Sidebar -->
     <!-- Right Sidebar -->
-    <aside id="rightsidebar" class="right-sidebar">
-        <ul class="nav nav-tabs tab-nav-right" role="tablist">
-            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#skins">Temas</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#chat">Chat</a></li>
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#settings">Configuraciones</a></li>
-        </ul>
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane in active in active" id="skins">
-                <ul class="demo-choose-skin">
-                    <li data-theme="red"><div class="red"></div><span>Red</span> </li>
-                    <li data-theme="purple"><div class="purple"></div><span>Purple</span> </li>
-                    <li data-theme="blue"><div class="blue"></div><span>Blue</span> </li>
-                    <li data-theme="cyan"><div class="cyan"></div><span>Cyan</span> </li>
-                    <li data-theme="green"><div class="green"></div><span>Green</span> </li>
-                    <li data-theme="deep-orange"><div class="deep-orange"></div><span>Deep Orange</span> </li>
-                    <li data-theme="blue-grey"><div class="blue-grey"></div><span>Blue Grey</span> </li>
-                    <li data-theme="black"><div class="black"></div><span>Black</span> </li>
-                    <li data-theme="blush"  class="active"><div class="blush"></div><span>Blush</span> </li>
-                </ul>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="chat">
-                <div class="demo-settings">
-                    <div class="search">
-                        <div class="input-group">
-                            <div class="form-line">
-                                <input type="text" class="form-control" placeholder="Search..." required autofocus>
-                            </div>
-                        </div>
-                    </div>
-                    <h6>Recent</h6>
-                    <ul>
-                        <li class="online">
-                            <div class="media">
-                                <a  role="button" tabindex="0"> <img class="media-object " src="{{ asset('images/xs/avatar1.jpg')}}" alt=""> </a>
-                                <div class="media-body">
-                                    <span class="name">Claire Sassu</span> <span class="message">Can you share the...</span> <span class="badge badge-outline status"></span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="online">
-                            <div class="media"> <a  role="button" tabindex="0"> <img class="media-object " src="{{ asset('images/xs/avatar2.jpg')}}" alt=""> </a>
-                                <div class="media-body">
-                                    <span class="name">Maggie jackson</span> <span class="message">Can you share the...</span> <span class="badge badge-outline status"></span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="online">
-                            <div class="media"> <a  role="button" tabindex="0"> <img class="media-object " src="{{ asset('images/xs/avatar3.jpg')}}" alt=""> </a>
-                                <div class="media-body">
-                                    <span class="name">Joel King</span> <span class="message">Ready for the meeti...</span> <span class="badge badge-outline status"></span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <h6>Contacts</h6>
-                    <ul>
-                        <li class="offline">
-                            <div class="media"> <a  role="button" tabindex="0"> <img class="media-object " src="{{ asset('images/xs/avatar4.jpg')}}" alt=""> </a>
-                                <div class="media-body">
-                                    <span class="name">Joel King</span> <span class="badge badge-outline status"></span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="online">
-                            <div class="media"> <a  role="button" tabindex="0"> <img class="media-object " src="{{ asset('images/xs/avatar1.jpg')}}" alt=""> </a>
-                                <div class="media-body">
-                                    <span class="name">Joel King</span> <span class="badge badge-outline status"></span>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="offline">
-                            <div class="media"> <a class="pull-left " role="button" tabindex="0"> <img class="media-object " src="{{ asset('images/xs/avatar2.jpg')}}" alt=""> </a>
-                                <div class="media-body">
-                                    <span class="name">Joel King</span> <span class="badge badge-outline status"></span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div role="tabpanel" class="tab-pane" id="settings">
-                <div class="demo-settings">
-                    <p>GENERAL SETTINGS</p>
-                    <ul class="setting-list">
-                        <li>
-                            <span>Report Panel Usage</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked><span class="lever"></span></label>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Email Redirect</span>
-                            <div class="switch">
-                                <label><input type="checkbox"><span class="lever"></span></label>
-                            </div>
-                        </li>
-                    </ul>
-                    <p>SYSTEM SETTINGS</p>
-                    <ul class="setting-list">
-                        <li>
-                            <span>Notifications</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked><span class="lever"></span></label>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Auto Updates</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked><span class="lever"></span></label>
-                            </div>
-                        </li>
-                    </ul>
-                    <p>ACCOUNT SETTINGS</p>
-                    <ul class="setting-list">
-                        <li>
-                            <span>Offline</span>
-                            <div class="switch">
-                                <label><input type="checkbox"><span class="lever"></span></label>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Location Permission</span>
-                            <div class="switch">
-                                <label><input type="checkbox" checked><span class="lever"></span></label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </aside>
+    
     <!-- #END# Right Sidebar -->
 </section>
 <!--Side menu and right menu -->

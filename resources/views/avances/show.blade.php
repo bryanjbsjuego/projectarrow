@@ -38,7 +38,9 @@
                     <a href="{{route('conceptosec.show',$p)}}" class="btn btn-raised btn-light  " ><i class="material-icons">arrow_back</i></a>
                    
                     <h2 class="m-auto">Información</h2>
-                   
+                  
+                   <a class="btn btn-sm btn-raised btn-primary" href="{{ route('concepto.createPDF',$avancef->id) }}">Imprimir Reporte Concepto<i class="material-icons" style=" margin-bottom: 8px;">file_download</i> </a>
+                    
 
                 </div>
                 
@@ -99,18 +101,27 @@
 
                         <br><br>
                         <p>Imagenes de avances</p>
+                        
                         @foreach ($imagenesavances as $imgavance )
-                        <img class="img-fluid" src="{{asset('img/usuarios/'. $imgavance->imagen)}}" alt="cargando"  width="200px" height="250px" >
-                        <p>Ubicación de la foto tomada<br>
+                        <img class="img-fluid" src="{{asset('img/usuarios/'.$imgavance->imagen)}}" alt="cargando"  width="200px" height="250px" >
+                        <p> <strong>Ubicación de la foto tomada</strong> <br>
                             <span>País:  {{$imgavance->country}}</span><br>
                             <span>Código de la región:  {{$imgavance->regioncode}}</span><br>
-                            <span>Nombre de la ciudad:  {{$imgavance->cityname}}</span>
+                            <span>Nombre de la ciudad:  {{$imgavance->cityname}}</span><br>
+                            <span>Descripción:  {{$imgavance->descripcion}}</span>
                         </p>
+                        <a href="{{route('avances.editarimagen',$imgavance->id)}}" class="text-center btn btn-raised btn-sm btn-warning " >Editar</a>
+
+                        <form action="{{route('avances.eliminarimagen',$imgavance->id)}}" class=""  method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" style="cursor: pointer; background: transparent; border:0px;" class="btn btn-sm btn-raised btn-danger">Eliminar</button>
+                        </form>
                     
                         @endforeach
-                        <br><br>
+                        {{-- <br><br>
                         <p>Ubicaciones de las fotos</p>
-                        <div id="mapa"></div>
+                        <div id="mapa"></div> --}}
                     </div>
 
                     
@@ -258,6 +269,9 @@
 @endsection
 
 @section('scripts')
+{{-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnGmrbJMv3UVC2f2Cds1vFfbM49pNBaDg&callback=geoloc"
+type="text/javascript"></script>  --}}
+{{-- <script type="text/javascript" src="http://maps.google.com/maps/apis/js?sensor=true"></script> --}}
     <script src="{{ asset('bundles/datatablescripts.bundle.js')}}"></script>
     <script src="{{ asset('plugins/jquery-datatable/buttons/dataTables.buttons.min.js')}}"></script>
     <script src="{{ asset('plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js')}}"></script>
@@ -270,11 +284,12 @@
     <!-- Custom Js -->
     <script src="{{ asset('js/pages/tables/jquery-datatable.js')}}"></script>
 
-    {{-- <script src="https://maps.googleapis.com/maps/apis/js?key={{config('googlemap')['map_apikey']}}&callback=initMap" async defer></script> --}}
-    {{-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnGmrbJMv3UVC2f2Cds1vFfbM49pNBaDg&callback=initMap"
+    {{-- <script src="https://maps.googleapis.com/maps/apis/js?key={{config('googlemap')['map_apikey']}}&callback=mapainicio" async defer></script> --}}
+    {{-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnGmrbJMv3UVC2f2Cds1vFfbM49pNBaDg&callback=mapainicio"
 type="text/javascript"></script>  --}}
 
-<script async defer  src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script>
+{{-- <script async defer  src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initialize"></script> --}}
+
 
     {{-- <script>
         function initMap(){
@@ -330,46 +345,44 @@ type="text/javascript"></script>  --}}
 
     <script>
 
-    (function(){
-        if(!!navigator.geolocation){
+    // function mapainicio(){
+    //     if(!!navigator.geolocation){
 
-            let map;
-            var OpcionesMapa = {
-            zoom: 16,
-            mapTypeId: 'roadmap'
-            };
+    //         var map;
+    //         var OpcionesMapa = {
+    //         zoom: 16,
+    //         mapTypeId: 'roadmap'
+    //         };
 
-            map = new google.maps.Map(document.getElementById('mapa'), {
-              OpcionesMapa
-             });
+    //         map = new google.maps.Map(document.getElementById('mapa'), {
+    //           OpcionesMapa
+    //          });
 
            // map = new google.maps.Map(document.getElementById('mapa'), OpcionesMapa);
             
 
-            navigator.geolocation.getCurrentPosition(function(position){
-                var geolocate= new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            // navigator.geolocation.getCurrentPosition(function(position){
+            //     var geolocate= new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 
-                var infoVentana = new google.maps.InfoWindow({
-                    map: map,
-                    position: geolocate,
-                    content: '<h1>Está es tú ubicación con Geolocalización </h1>'+
-                    '<p>Latitud: '+position.coords.latitude+' </p>'+ 
-                    '<p>Longitud: '+position.coords.longitude+' </p>'
+            //     var infoVentana = new google.maps.InfoWindow({
+            //         map: map,
+            //         position: geolocate,
+            //         content: '<h1>Está es tú ubicación con Geolocalización </h1>'+
+            //         '<p>Latitud: '+position.coords.latitude+' </p>'+ 
+            //         '<p>Longitud: '+position.coords.longitude+' </p>'
                     
-                });
+            //     });
 
-                map.setCenter(geolocate);
-            });
+            //     map.setCenter(geolocate);
+            // });
 
 
-        }else{
-            document.getElementById("mapa").innerHTML="No se soporta geolocalización";
-        }
-    })();
+           
+           
 
 
         
-//   function initMap() {
+{{-- //   function initMap() {
     
  
 //     var map;
@@ -407,9 +420,11 @@ type="text/javascript"></script>  --}}
 //       }
 
       
-// window.onload = initMap;
+// window.onload = initMap; --}}
 
     
 
     </script>
+
+
 @endsection

@@ -7,12 +7,21 @@
 
 @section('contenido')
 <div class="container">
+
+    @if (session('notification')) 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+     
+        {{ session('notification') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    @endif 
+
+        
+    
     <div class="card-top">
-        @if (session('notification'))
-        <div class="alert alert-success">
-            {{ session('notification') }}
-        </div>
-    @endif
+        
     </div>
     <div class="card">
     
@@ -43,20 +52,17 @@
                         @enderror
                     </div>
                 </div>
-                <div class="">
-                    <input type="checkbox" name="rememberme" id="rememberme" class="filled-in chk-col-pink">
-                    <label for="rememberme">Remember Me</label>
-                </div>
+                
                 <div class="text-center">
                     <button type="submit" class="btn btn-raised waves-effect g-bg-blush2">
-                        {{ __('Login') }}
+                        {{ __('Iniciar sesión') }}
                     </button>
 
                     <a href="{{route('register') }}" class="btn btn-raised waves-effect" >Registrate</a>
 
                     @if (Route::has('password.request'))
                     <a class="btn btn-link" href="{{ route('password.request') }}">
-                        {{ __('Forgot Your Password?') }}
+                        {{ __('¿Olvidaste tu contraseña?') }}
                     </a>
                 @endif
 
@@ -68,5 +74,7 @@
         </div>
     </div>    
 </div>
+
+
     
 @endsection

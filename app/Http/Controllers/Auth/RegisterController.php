@@ -86,6 +86,7 @@ class RegisterController extends Controller
 
 
         
+        
 
         $user= User::create([
             'name' => $data['name'],
@@ -97,7 +98,7 @@ class RegisterController extends Controller
         
         $user->assignRole($roles->id);
 
-        return $user;
+       
 
         
 
@@ -109,6 +110,8 @@ class RegisterController extends Controller
            
         });
 
+        return $user;
+
        
     }
 
@@ -116,9 +119,9 @@ class RegisterController extends Controller
 
         $user=User::where('confirmation_code',$code)->first();
 
-        if(!$user){
+        if(!$user)
             return  redirect('/');
-        }
+        
 
         $user->confirmed=true;
         $user->confirmation_code=null;

@@ -34,6 +34,19 @@
                  
                 </div>
                 <div class="body">
+                    @if ($errors->any())
+                    <div class="col-md-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>!Revise los campos¡</strong>
+                                @foreach ($errors->all() as $error)
+                                    <span >{{ $error }}</span>
+                                @endforeach
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                    </div>
+                @endif
                     <form action="{{route('conceptosec.update',$concepto->id)}}" method="POST">
                     @method('PUT')
                     @csrf
@@ -48,7 +61,7 @@
                         <div class="col-lg-3 col-md-3">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" class="form-control text-center" name="codigo"  value="{{$concepto->codigo}}" placeholder="Codigo del concepto">
+                                    <input type="text"   class="form-control text-center" name="codigo"  value="{{$concepto->codigo}}" placeholder="Codigo del concepto">
                                 </div>
                             </div>
                         </div>
@@ -56,7 +69,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea rows="4" class="form-control no-resize" name="concepto" placeholder="Descripcion">{{$concepto->concepto}}</textarea>
+                                    <textarea rows="4" style="height: 100px" class="form-control no-resize" name="concepto" placeholder="Descripcion">{{$concepto->concepto}}</textarea>
                                 </div>
                             </div>
                         </div>

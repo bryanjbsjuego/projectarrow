@@ -265,17 +265,23 @@ class CodigoController extends Controller
 
     public function  createsecundario(Request $request){
 
-        $codigo_contrato=Concepto::where('id','=',$request->id_codigo)->first();
-        
+      
+        $codigo_contrato=Concepto::where('id','=',$request->id_codigo)->first();        
         $id_contrator=$codigo_contrato->id_contrato;
 
         $this->validate($request,
         [
             'codigo' => 'required',
             'concepto' => 'required',
-            'id_codigo' => 'required'        
-           
-        ]);
+            'id_codigo' => 'required'   
+            
+        ],
+        [
+            'codigo.required' => 'El campo nombre debe ser obligatorio'
+        ]
+        
+         );
+        
 
         $concepto= new Concepto();
         $concepto->codigo=$request->codigo;

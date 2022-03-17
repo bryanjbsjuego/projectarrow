@@ -33,35 +33,35 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->nombre }}"  id="nombre" name="nombre" placeholder="Nombre" >
+                                            <input type="text" class="form-control" value="{{ old('nombre',$empresa->nombre)  }}"  id="nombre" name="nombre" placeholder="Nombre" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" >{{ $empresa->ubicacion }}</textarea>
+                                            <textarea  style="height: 100px" class="form-control"  id="ubicacion" name="ubicacion" placeholder="Ubicación" >{{ old('ubicacion',$empresa->ubicacion) }}</textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->rfc }}"  id="rfc" name="rfc" placeholder="RFC" >
+                                            <input type="text" class="form-control" value="{{ old('rfc',$empresa->rfc) }}"  id="rfc" name="rfc" placeholder="RFC" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->imms }}"  id="imms" name="imms" placeholder="IMMS" >
+                                            <input type="text" class="form-control" value="{{ old('imms',$empresa->imms) }}"  id="imms" name="imms" placeholder="IMMS" >
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" value="{{ $empresa->ccem }}"  id="ccem" name="ccem" placeholder="CCEM" >
+                                            <input type="text" class="form-control" value="{{ old('ccem',$empresa->ccem) }}"  id="ccem" name="ccem" placeholder="CCEM" >
                                         </div>
                                     </div>
                                 </div>
